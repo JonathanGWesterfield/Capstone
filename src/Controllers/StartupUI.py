@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from src.Views import StartupView
+from src.Views import Startup
 
-class StartupUi(StartupView):
+class StartupUi(Startup):
 
     def __init__(self):
-        StartupView.__init__()
+        Startup.__init__()
