@@ -32,12 +32,25 @@ class TrackingView(BaseView):
 
         instructions = self.setFlightInstructions() # Setup the flight Instructions text editor
 
+        btnConfirm = self.setConfirmationBtn()
+
+        # Spacer to make the view more pleasing and less squished
+        verticalSpacer = qtw.QSpacerItem(20, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+
+        timer = self.setTimerLabel() # Get the label for the timer
+
+        startStop = self.setStartAndStopBtns()
+
 
         vLayout = qtw.QVBoxLayout()
         vLayout.addWidget(title)
         vLayout.addLayout(pilot)
         vLayout.addLayout(instructor)
         vLayout.addLayout(instructions)
+        vLayout.addLayout(btnConfirm)
+        vLayout.addSpacerItem(verticalSpacer)
+        vLayout.addLayout(timer)
+        vLayout.addLayout(startStop)
 
         # Attach the layout to the screen
         self.window = qtw.QWidget()
@@ -112,6 +125,57 @@ class TrackingView(BaseView):
 
         return vbox
 
+    def setConfirmationBtn(self) -> qtw.QHBoxLayout:
+        """
+        Sets the button for confirming the pilot, instructor, and flight instruction information.
+        :return: The confirmation button
+        """
+        self.__btnConfirm = qtw.QPushButton('Confirm')
+        space1 = qtw.QSpacerItem(200, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+        space2 = qtw.QSpacerItem(200, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+
+        hbox = qtw.QHBoxLayout()
+        hbox.addSpacerItem(space1)
+        hbox.addWidget(self.__btnConfirm)
+        hbox.addSpacerItem(space2)
+
+        return hbox
+
+    def setTimerLabel(self) -> qtw.QVBoxLayout:
+        """
+        Sets the label that will continuously update and display the time that the application has been
+        actively tracking. Need to attach a QTimer() to it.
+        :return: The label that will contain the timer.
+        """
+        lblTimerTitle = qtw.QLabel('Time Spent Tracking Drone:')
+        lblTimerTitle.setFont(self.RegularFont)
+        lblTimerTitle.setAlignment(qtc.Qt.AlignCenter)
+
+        self.__lblTimer = qtw.QLabel('00:00:00')
+        self.__lblTimer.setFont(self.RegularFont)
+        self.__lblTimer.setAlignment(qtc.Qt.AlignCenter)
+
+        vbox = qtw.QVBoxLayout()
+        vbox.addWidget(lblTimerTitle)
+        vbox.addWidget(self.__lblTimer)
+
+        return vbox
+
+    def setStartAndStopBtns(self) -> qtw.QHBoxLayout:
+        """
+        Sets up the start and stop buttons for tracking the drones.
+        :return:
+        """
+
+        self.__btnStart = qtw.QPushButton('Start Tracking')
+        self.__btnStop = qtw.QPushButton('Stop Tracking')
+
+        buttonBox = qtw.QHBoxLayout()
+        buttonBox.addWidget(self.__btnStart)
+        buttonBox.addWidget(self.__btnStop)
+
+        return buttonBox
+
     def showWindow(self):
         """
         Takes all of the elements from the view and displays the window.
@@ -119,6 +183,9 @@ class TrackingView(BaseView):
         """
         self.window.show()
         # self.app.exec_()
+
+    # TODO: MAKE SETTERS AND GETTERS FOR THE PILOT, INSTRUCTOR LABELS
+    # TODO: MAKE SETTERS AND GETTERS FOR THE CONFIRMATION, START AND STOP BUTTONS
 
     #region > Properties for this class so we can access them easily in child classes
 
@@ -172,6 +239,31 @@ class TrackingView(BaseView):
         """
         del self.__tbInstr
 
+    @property
+    def LblTimer(self) -> qtw.QLabel:
+        """
+        Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
+        application has been tracking the drone.
+        :return: The timer label
+        """
+        return self.__lblTimer
+
+    @LblTimer.setter
+    def set_LblTimer(self, lbl: qtw.QLabel):
+        """
+        Setter for the LblTimer property.
+        :param lbl: The label we want to replace the current one with.
+        :return: None
+        """
+        self.__lblTimer = lbl
+
+    @LblTimer.deleter
+    def del_LblTimer(self):
+        """
+        Deleter for the timer label.
+        :return: None
+        """
+        del self.__lblTimer
 
     #endregion
 
