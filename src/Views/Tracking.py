@@ -32,7 +32,7 @@ class TrackingView(BaseView):
 
         instructions = self.setFlightInstructions() # Setup the flight Instructions text editor
 
-        btnConfirm = self.setConfirmationBtn()
+        clrConfirm = self.setClrConfirmBtns()
 
         # Spacer to make the view more pleasing and less squished
         verticalSpacer = qtw.QSpacerItem(20, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
@@ -47,7 +47,7 @@ class TrackingView(BaseView):
         vLayout.addLayout(pilot)
         vLayout.addLayout(instructor)
         vLayout.addLayout(instructions)
-        vLayout.addLayout(btnConfirm)
+        vLayout.addLayout(clrConfirm)
         vLayout.addSpacerItem(verticalSpacer)
         vLayout.addLayout(timer)
         vLayout.addLayout(startStop)
@@ -73,16 +73,16 @@ class TrackingView(BaseView):
         session.
         :return: Returns a vertical layout with the pilot label over the pilot textbox
         """
-        lblPilot = qtw.QLabel('Pilot: ')
-        lblPilot.setFont(self.RegularFont)
-        lblPilot.setAlignment(qtc.Qt.AlignCenter)
+        self.__lblPilot = qtw.QLabel('Pilot: ')
+        self.__lblPilot.setFont(self.RegularFont)
+        self.__lblPilot.setAlignment(qtc.Qt.AlignCenter)
 
         self.__tbPilot = qtw.QLineEdit()
         self.__tbPilot.resize(280,40)
         self.__tbPilot.setAlignment(qtc.Qt.AlignCenter)
 
         vbox = qtw.QVBoxLayout()
-        vbox.addWidget(lblPilot)
+        vbox.addWidget(self.__lblPilot)
         vbox.addWidget(self.__tbPilot)
 
         return vbox
@@ -93,16 +93,16 @@ class TrackingView(BaseView):
         session.
         :return: Returns a vertical layout with the instructor label over the instructor textbox
         """
-        lblInstr = qtw.QLabel('Instructor: ')
-        lblInstr.setFont(self.RegularFont)
-        lblInstr.setAlignment(qtc.Qt.AlignCenter)
+        self.__lblInstr = qtw.QLabel('Instructor: ')
+        self.__lblInstr.setFont(self.RegularFont)
+        self.__lblInstr.setAlignment(qtc.Qt.AlignCenter)
 
         self.__tbInstr = qtw.QLineEdit()
         self.__tbInstr.resize(280, 40)
         self.__tbInstr.setAlignment(qtc.Qt.AlignCenter)
 
         vbox = qtw.QVBoxLayout()
-        vbox.addWidget(lblInstr)
+        vbox.addWidget(self.__lblInstr)
         vbox.addWidget(self.__tbInstr)
 
         return vbox
@@ -125,17 +125,19 @@ class TrackingView(BaseView):
 
         return vbox
 
-    def setConfirmationBtn(self) -> qtw.QHBoxLayout:
+    def setClrConfirmBtns(self) -> qtw.QHBoxLayout:
         """
-        Sets the button for confirming the pilot, instructor, and flight instruction information.
+        Sets the buttons for clearing and confirming the pilot, instructor, and flight instruction information.
         :return: The confirmation button
         """
+        self.__btnClear = qtw.QPushButton('Clear')
         self.__btnConfirm = qtw.QPushButton('Confirm')
-        space1 = qtw.QSpacerItem(200, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
-        space2 = qtw.QSpacerItem(200, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+        space1 = qtw.QSpacerItem(100, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+        space2 = qtw.QSpacerItem(100, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
 
         hbox = qtw.QHBoxLayout()
         hbox.addSpacerItem(space1)
+        hbox.addWidget(self.__btnClear)
         hbox.addWidget(self.__btnConfirm)
         hbox.addSpacerItem(space2)
 
@@ -184,11 +186,9 @@ class TrackingView(BaseView):
         self.window.show()
         # self.app.exec_()
 
-    # TODO: MAKE SETTERS AND GETTERS FOR THE PILOT, INSTRUCTOR LABELS
-    # TODO: MAKE SETTERS AND GETTERS FOR THE CONFIRMATION, START AND STOP BUTTONS
+    #region > Class Properties to attach functionality to in child classes
 
-    #region > Properties for this class so we can access them easily in child classes
-
+    # region > Pilot Textbox Property
     @property
     def TBPilot(self) -> qtw.QLineEdit:
         """
@@ -214,6 +214,37 @@ class TrackingView(BaseView):
         """
         del self.__tbPilot
 
+    # endregion
+
+    # region > Pilot Label Property
+    @property
+    def LblPilot(self) -> qtw.QLabel:
+        """
+        Getter for the Pilot label so we can attach functionality to it
+        :return: The pilot label
+        """
+        return self.__lblPilot
+
+    @LblPilot.setter
+    def set_LblPilot(self, lbl: qtw.QLabel):
+        """
+        Setter for the pilot label
+        :param lbl:  Label we want to replace the current one with
+        :return: None
+        """
+        self.__lblPilot = lbl
+
+    @LblPilot.deleter
+    def del_LblPilot(self):
+        """
+        Deleter for the pilot label
+        :return: None
+        """
+        del self.__lblPilot
+
+    # endregion
+
+    # region > Instructor TextBox Property
     @property
     def TBInstructor(self) -> qtw.QLineEdit:
         """
@@ -239,6 +270,120 @@ class TrackingView(BaseView):
         """
         del self.__tbInstr
 
+    # endregion
+
+    # region > Instructor Label Property
+    @property
+    def LblInstructor(self) -> qtw.QLabel:
+        """
+        Getter for the Instructor label so we can attach functionality to it later.
+        :return: The instructor label
+        """
+        return self.__lblInstr
+
+    @LblInstructor.setter
+    def set_LblInstructor(self, lbl: qtw.QLabel):
+        """
+        Setter for the instructor label
+        :param lbl: The label we want to replace the current one with
+        :return: None
+        """
+        self.__lblInstr = lbl
+
+    @LblInstructor.deleter
+    def del_LblInstructor(self):
+        """
+        Deleter for the instructor label
+        :return: None
+        """
+        del self.__lblInstr
+
+    # endregion
+
+    #region > Instructions TextEditBox Property
+    @property
+    def TEInstructions(self) -> qtw.QPlainTextEdit:
+        """
+        Getter for the instructions text edit box
+        :return: Reference to the instructions text edit box
+        """
+        return self.__teInstr
+
+    @TEInstructions.setter
+    def set_TEInstructions(self, te: qtw.QPlainTextEdit):
+        """
+        Setter for the instructions text edit box
+        :param te: The Text edit box we want to replace the current one with.
+        :return: None
+        """
+        self.__teInstr = te
+
+    @TEInstructions.deleter
+    def del_TEInstructions(self):
+        """
+        Deleter for the Instructions Text edit box
+        :return: None
+        """
+        del self.__teInstr
+    # endregion
+
+    # region > Clear Button Property
+    @property
+    def BtnClear(self) -> qtw.QPushButton:
+        """
+        Getter for the Clear button so we can attach functionality to it later.
+        :return: Reference to the clear button
+        """
+        return self.__btnClear
+
+    @BtnClear.setter
+    def set_BtnClear(self, btn: qtw.QPushButton):
+        """
+        Setter for the clear button.
+        :param btn: The button we want to replace the current one with.
+        :return: None
+        """
+        self.__btnClear = btn
+
+    @BtnClear.deleter
+    def del_BtnClear(self):
+        """
+        Deleter for the clear button.
+        :return: None
+        """
+        del self.__btnClear
+
+    # endregion
+
+    # region > Confirmation Button Property
+    @property
+    def BtnConfirm(self) -> qtw.QPushButton:
+        """
+        Getter for the Confirm button so we can attach functionality to it later.
+        :return: Reference to the confirm button
+        """
+        return self.__btnConfirm
+
+    @BtnConfirm.setter
+    def set_BtnConfirm(self, btn: qtw.QPushButton):
+        """
+        Setter for the confirm button.
+        :param btn: The button we want to replace the current one with.
+        :return: None
+        """
+        self.__btnConfirm = btn
+
+    @BtnConfirm.deleter
+    def del_BtnConfirm(self):
+        """
+        Deleter for the confirm button.
+        :return: None
+        """
+        del self.__btnConfirm
+
+    # endregion
+
+    # region > Timer Label Property
     @property
     def LblTimer(self) -> qtw.QLabel:
         """
@@ -265,7 +410,65 @@ class TrackingView(BaseView):
         """
         del self.__lblTimer
 
+    # endregion
+
+    # region > Start Button Property
+    @property
+    def BtnStart(self) -> qtw.QPushButton:
+        """
+        Getter for the Start button
+        :return: Reference to the start button
+        """
+        return self.__btnStart
+
+    @BtnStart.setter
+    def set_BtnStart(self, btn: qtw.QPushButton):
+        """
+        Setter for the start button.
+        :param btn: Button we want to replace the current one with.
+        :return: None
+        """
+        self.__btnStart = btn
+
+    @BtnStart.deleter
+    def del_BtnStart(self):
+        """
+        Deleter for the start button.
+        :return: None
+        """
+        del self.__btnStart
+
+    # endregion
+
+    # region > Stop Button Property
+    @property
+    def BtnStop(self) -> qtw.QPushButton:
+        """
+        Getter for the Stop button
+        :return: Reference to the stop button
+        """
+        return self.__btnStop
+
+    @BtnStop.setter
+    def set_BtnStop(self, btn: qtw.QPushButton):
+        """
+        Setter for the stop button.
+        :param btn: Button we want to replace the current one with.
+        :return: None
+        """
+        self.__btnStop = btn
+
+    @BtnStop.deleter
+    def del_BtnStop(self):
+        """
+        Deleter for the stop button.
+        :return: None
+        """
+        del self.__btnStop
+    # endregion
+
     #endregion
+
 
 
 app = qtw.QApplication([])
