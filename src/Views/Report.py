@@ -8,8 +8,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import (
         FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
-from matplotlib.backends.qt_compat import QtCore, QtWidgets, is_pyqt5
+from matplotlib.backends.qt_compat import QtCore, QtWidgets
 from matplotlib.figure import Figure
+from mpl_toolkits.mplot3d import Axes3D
 
 import datetime as dt
 
@@ -33,7 +34,7 @@ class ReportView(BaseView):
 
         gridLayout = qtw.QGridLayout()
         gridLayout.addLayout(flInfoLayout, 0, 0)
-        # gridLayout.addWidget(graph, 0, 0)
+        gridLayout.addWidget(graph, 1, 0)
 
 
         vLayout = qtw.QVBoxLayout()
@@ -92,13 +93,52 @@ class ReportView(BaseView):
         on the graph. Found how to do it here:
         https://stackoverflow.com/questions/44355546/how-to-connect-points-in-python-ax-scatter-3d-plot
         :return: A 3D plot that we can put information into later
+        :todo: IMPROVE THIS
         """
-        canvas = FigureCanvas(Figure(figsize=(5, 3)))
+        vbox = qtw.QVBoxLayout()
+        x, y, z = [1, 1.5, 3], [1, 2.4, 3], [3.4, 1.4, 1]
 
-        self.__graph = plt.plot(projection="3d")
+        fig = plt.figure()
 
-        return self.__graph
+        self.line = fig.add_subplot(1, 1, 1, projection='3d')
+        self.line.plot(x, y, z, color='r')
+        self.line.scatter(x, y, z, c='r')
 
+        canvas = FigureCanvas(fig)
+        vbox.addWidget(canvas)
+
+        return canvas
+
+
+    # from mpl_toolkits.mplot3d import Axes3D
+    # import matplotlib.pyplot as plt
+    # import numpy as np
+    #
+    # def randrange(n, vmin, vmax):
+    #     '''
+    #     Helper function to make an array of random numbers having shape (n, )
+    #     with each number distributed Uniform(vmin, vmax).
+    #     '''
+    #     return (vmax - vmin) * np.random.rand(n) + vmin
+    #
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111, projection='3d')
+    #
+    # n = 100
+    #
+    # # For each set of style and range settings, plot n random points in the box
+    # # defined by x in [23, 32], y in [0, 100], z in [zlow, zhigh].
+    # for c, m, zlow, zhigh in [('r', 'o', -50, -25), ('b', '^', -30, -5)]:
+    #     xs = randrange(n, 23, 32)
+    #     ys = randrange(n, 0, 100)
+    #     zs = randrange(n, zlow, zhigh)
+    #     ax.scatter(xs, ys, zs, c=c, marker=m)
+    #
+    # ax.set_xlabel('X Label')
+    # ax.set_ylabel('Y Label')
+    # ax.set_zlabel('Z Label')
+    #
+    # plt.show()
 
     def showWindow(self):
         """
@@ -107,7 +147,6 @@ class ReportView(BaseView):
         """
         self.window.show()
         # self.app.exec_()
-
 
 
 app = qtw.QApplication([])
