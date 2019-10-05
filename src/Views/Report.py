@@ -93,52 +93,22 @@ class ReportView(BaseView):
         on the graph. Found how to do it here:
         https://stackoverflow.com/questions/44355546/how-to-connect-points-in-python-ax-scatter-3d-plot
         :return: A 3D plot that we can put information into later
-        :todo: IMPROVE THIS
+        :todo: IMPROVE THIS MAKE IT INTERACTIVE AGAIN (DRAGGING)
         """
         vbox = qtw.QVBoxLayout()
         x, y, z = [1, 1.5, 3], [1, 2.4, 3], [3.4, 1.4, 1]
 
         fig = plt.figure()
 
-        self.line = fig.add_subplot(1, 1, 1, projection='3d')
-        self.line.plot(x, y, z, color='r')
-        self.line.scatter(x, y, z, c='r')
+        self.__line = fig.add_subplot(1, 1, 1, projection='3d')
+        self.__line.plot(x, y, z, color='r')
+        self.__line.scatter(x, y, z, c='r')
 
         canvas = FigureCanvas(fig)
         vbox.addWidget(canvas)
 
         return canvas
 
-
-    # from mpl_toolkits.mplot3d import Axes3D
-    # import matplotlib.pyplot as plt
-    # import numpy as np
-    #
-    # def randrange(n, vmin, vmax):
-    #     '''
-    #     Helper function to make an array of random numbers having shape (n, )
-    #     with each number distributed Uniform(vmin, vmax).
-    #     '''
-    #     return (vmax - vmin) * np.random.rand(n) + vmin
-    #
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
-    #
-    # n = 100
-    #
-    # # For each set of style and range settings, plot n random points in the box
-    # # defined by x in [23, 32], y in [0, 100], z in [zlow, zhigh].
-    # for c, m, zlow, zhigh in [('r', 'o', -50, -25), ('b', '^', -30, -5)]:
-    #     xs = randrange(n, 23, 32)
-    #     ys = randrange(n, 0, 100)
-    #     zs = randrange(n, zlow, zhigh)
-    #     ax.scatter(xs, ys, zs, c=c, marker=m)
-    #
-    # ax.set_xlabel('X Label')
-    # ax.set_ylabel('Y Label')
-    # ax.set_zlabel('Z Label')
-    #
-    # plt.show()
 
     def showWindow(self):
         """
@@ -147,6 +117,145 @@ class ReportView(BaseView):
         """
         self.window.show()
         # self.app.exec_()
+
+    #region > Report View Properties
+
+    #region > Pilot Label Property
+    @property
+    def LblPilot(self) -> qtw.QLabel:
+        """
+        Getter for the Pilot label so we can set who the pilot is for the flight in child class.
+        :return: Reference to the pilot label.
+        """
+        return self.__lblPilot
+
+    @LblPilot.setter
+    def set_LblPilot(self, lbl: qtw.QLabel):
+        """
+        Setter for the pilot Label.
+        :param lbl: The label we want to replace the current one with.
+        :return: None
+        """
+        self.__lblPilot = lbl
+
+    @LblPilot.deleter
+    def del_LblPilot(self):
+        """
+        Deleter for the pilot label.
+        :return: None
+        """
+        del self.__lblPilot
+    #endregion
+
+    #region > Instructor Label Property
+    @property
+    def LblInstructor(self) -> qtw.QLabel:
+        """
+        Getter for the instructor label so we can attach functionality to it in the child class.
+        :return: Reference to the instructor label.
+        """
+        return self.__lblInstructor
+
+    @LblInstructor.setter
+    def set_LblInstructor(self, lbl: qtw.QLabel):
+        """
+        Setter for the instructor Label.
+        :param lbl: The label we want to replace the current one with.
+        :return: None
+        """
+        self.__lblInstructor = lbl
+
+    @LblInstructor.deleter
+    def del_LblInstructor(self):
+        """
+        Deleter for the instructor label.
+        :return: None
+        """
+        del self.__lblInstructor
+    #endregion
+
+    #region > Flight Date Property
+    @property
+    def LblFlightDate(self) -> qtw.QLabel:
+        """
+        Getter for the flight date label so we can attach functionality to it in the child class.
+        :return: Reference to the flight date label.
+        """
+        return self.__lblFlDate
+
+    @LblFlightDate.setter
+    def set_LblFlightDate(self, lbl: qtw.QLabel):
+        """
+        Setter for the Flight date label.
+        :param lbl: The label we want to replace the current one with.
+        :return: None
+        """
+        self.__lblFlDate = lbl
+
+    @LblFlightDate.deleter
+    def del_LblFlightDate(self):
+        """
+        Deleter for the flight date label.
+        :return: None
+        """
+        del self.__lblFlDate
+    #endregion
+
+    #region > Flight Length Label Property
+    @property
+    def LblFlightLength(self) -> qtw.QLabel:
+        """
+        Getter for the flight length label so we can attach functionality to it in the child class.
+        :return: Reference to the flight length label.
+        """
+        return self.__lblFlLength
+
+    @LblFlightLength.setter
+    def set_LblFlightLength(self, lbl: qtw.QLabel):
+        """
+        Setter for the flight length label.
+        :param lbl: The label we want to replace the current one with.
+        :return: None
+        """
+        self.__lblFlLength = lbl
+
+    @LblFlightLength.deleter
+    def del_LblFlightLength(self):
+        """
+        Deleter for the flight length label.
+        :return: None
+        """
+        del self.__lblFlLength
+    #endregion
+
+    #region > 3D Matplot Plot Property
+    @property
+    def PltFlightPlot(self):
+        """
+        Getter for the flight plot so we can populate it with data and format it further in the child class.
+        :return: Reference to the 3D flight plot.
+        """
+        return self.__line
+
+    @PltFlightPlot.setter
+    def set_PltFlightPlot(self, fig: plt.Figure):
+        """
+        Setter for the 3D flight plot.
+        :param fig: The figure we want to replace the current one with (I might have the wrong type indicated)
+        :return: None
+        """
+        self.__line = fig
+
+    @PltFlightPlot.deleter
+    def del_PltFlightPlot(self):
+        """
+        Deleter for the 3D flight plot.
+        :return: None
+        """
+        del self.__line
+    #endregion
+
+    #endregion
 
 
 app = qtw.QApplication([])
