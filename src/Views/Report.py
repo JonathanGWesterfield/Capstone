@@ -1,16 +1,16 @@
 #!/usr/bin/env python
-import PyQt5.QtGui as qtg
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
+import PyQt5.QtGui as qtg
 
 import numpy as np
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_qt5agg import (
         FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.backends.qt_compat import QtCore, QtWidgets
 from matplotlib.figure import Figure
-from mpl_toolkits.mplot3d import Axes3D
 
 import datetime as dt
 
@@ -28,12 +28,13 @@ class ReportView(BaseView):
         :return: None
         """
         titleLayout = self.setupTitle()
-        graph = self.setupPlot()
         flInfoLayout = self.setupFlightInfo()
 
         gridLayout = qtw.QGridLayout()
         gridLayout.addLayout(flInfoLayout, 0, 0)
-        gridLayout.addWidget(graph, 1, 0)
+        btn = qtw.QPushButton('View Flight Path')
+        btn.clicked.connect(self.setupPlot)
+        gridLayout.addWidget(btn, 1, 0)
 
         vLayout = qtw.QVBoxLayout()
         vLayout.addLayout(titleLayout)
@@ -74,7 +75,6 @@ class ReportView(BaseView):
         self.__lblFlLength = qtw.QLabel('00:00:00')
         self.__lblFlSmoothness = qtw.QLabel('0')
 
-
         grid = qtw.QGridLayout()
         grid.addWidget(qtw.QLabel('Pilot: '), 0, 0)
         grid.addWidget(self.__lblPilot, 0, 1)
@@ -91,25 +91,30 @@ class ReportView(BaseView):
 
     def setupPlot(self):
         """
-        Uses a line plot and a scatter plot on the same graph so we can have points connected by lines
-        on the graph. Found how to do it here:
-        https://stackoverflow.com/questions/44355546/how-to-connect-points-in-python-ax-scatter-3d-plot
-        :return: A 3D plot that we can put information into later
-        :todo: IMPROVE THIS MAKE IT INTERACTIVE AGAIN (DRAGGING)
-        """
-        vbox = qtw.QVBoxLayout()
-        x, y, z = [1, 1.5, 3, 5], [1, 2.4, 3, 7], [3.4, 1.4, 1, 10]
-
+         Sets up the 3d plot for viewing upon click of button.
+         :return: None
+         """
         fig = plt.figure()
 
-        self.__line = fig.add_subplot(1, 1, 1, projection='3d')
-        self.__line.plot(x, y, z, color='r')
-        self.__line.scatter(x, y, z, c='r')
+        # Add points in
+        x, y, z = [1, 1.5, 3, 5], [1, 2.4, 3, 7], [3.4, 1.4, 1, 10]
 
-        canvas = FigureCanvas(fig)
-        vbox.addWidget(canvas)
+        # Define graph properties
+        ax = fig.add_subplot(111, projection='3d')
+        ax.scatter(x, y, z, c='r', marker='o')
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_zlabel('z');
+        ax.set_xlim3d(0, 30)
+        ax.set_ylim3d(0, 30)
+        ax.set_zlim3d(0, 10)
+        ax.set_title("Flight Path")
 
-        return canvas
+        # Define manager so figure can be viewed upon button click
+        new_manager = fig.canvas.manager
+        new_manager.canvas.figure = fig
+        fig.set_canvas(new_manager.canvas)
+        fig.show()
 
     def setButtonLayout(self) -> qtw.QHBoxLayout:
         """
