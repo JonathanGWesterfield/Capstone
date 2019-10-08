@@ -41,6 +41,7 @@ class TrackingView(BaseView):
 
         startStop = self.setStartAndStopBtns()
 
+        homeBtn = qtw.QPushButton('Return to Home')
 
         vLayout = qtw.QVBoxLayout()
         vLayout.addWidget(title)
@@ -51,6 +52,7 @@ class TrackingView(BaseView):
         vLayout.addSpacerItem(verticalSpacer)
         vLayout.addLayout(timer)
         vLayout.addLayout(startStop)
+        vLayout.addWidget(homeBtn)
 
         # Attach the layout to the screen
         self.window = qtw.QWidget()

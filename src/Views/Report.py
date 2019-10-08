@@ -97,17 +97,19 @@ class ReportView(BaseView):
          """
         fig = plt.figure()
 
-        # Add points in
-        x, y, z = [1, 1.5, 3, 5], [1, 2.4, 3, 7], [3.4, 1.4, 1, 10]
+        # Add points in (random points used below for visualization)
+        zdata = 10 * np.random.random(100)
+        xdata = np.sin(zdata) + 3 * np.random.randn(100)
+        ydata = np.cos(zdata) + 3 * np.random.randn(100)
 
         # Define graph properties
         ax = fig.add_subplot(111, projection='3d')
-        ax.scatter(x, y, z, c='r', marker='o')
+        ax.scatter(xdata, ydata, zdata, c='r', marker='o')
         ax.set_xlabel('x')
         ax.set_ylabel('y')
         ax.set_zlabel('z');
-        ax.set_xlim3d(0, 30)
-        ax.set_ylim3d(0, 30)
+        ax.set_xlim3d(-15, 15)
+        ax.set_ylim3d(-15, 15)
         ax.set_zlim3d(0, 10)
         ax.set_title("Flight Path")
 
