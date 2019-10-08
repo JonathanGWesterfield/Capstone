@@ -7,7 +7,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import (
-        FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+        FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.backends.qt_compat import QtCore, QtWidgets
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
@@ -31,11 +31,9 @@ class ReportView(BaseView):
         graph = self.setupPlot()
         flInfoLayout = self.setupFlightInfo()
 
-
         gridLayout = qtw.QGridLayout()
         gridLayout.addLayout(flInfoLayout, 0, 0)
         gridLayout.addWidget(graph, 1, 0)
-
 
         vLayout = qtw.QVBoxLayout()
         vLayout.addLayout(titleLayout)
@@ -66,7 +64,7 @@ class ReportView(BaseView):
 
     def setupFlightInfo(self) -> qtw.QGridLayout:
         """
-        Sets up the flight info (pilot, instructor, date) in a grid so it gets laid out nice and pretty.
+        Sets up the flight info (pilot, instructor, date, length, and smoothness score) in a grid so it gets laid out nice and pretty.
         :return: Grid layout of the flight information
         """
         # Setup all labels with default values for testing and detecting errors in the controls
@@ -74,6 +72,8 @@ class ReportView(BaseView):
         self.__lblInstructor = qtw.QLabel('None')
         self.__lblFlDate = qtw.QLabel(dt.date.today().strftime('%m/%d/%Y'))
         self.__lblFlLength = qtw.QLabel('00:00:00')
+        self.__lblFlSmoothness = qtw.QLabel('0')
+
 
         grid = qtw.QGridLayout()
         grid.addWidget(qtw.QLabel('Pilot: '), 0, 0)
@@ -84,6 +84,8 @@ class ReportView(BaseView):
         grid.addWidget(self.__lblFlDate, 2, 1)
         grid.addWidget(qtw.QLabel('Flight Length: '), 3, 0)
         grid.addWidget(self.__lblFlLength, 3, 1)
+        grid.addWidget(qtw.QLabel('Flight Smoothness Score: '), 4, 0)
+        grid.addWidget(self.__lblFlSmoothness, 4, 1)
 
         return grid
 
@@ -96,7 +98,7 @@ class ReportView(BaseView):
         :todo: IMPROVE THIS MAKE IT INTERACTIVE AGAIN (DRAGGING)
         """
         vbox = qtw.QVBoxLayout()
-        x, y, z = [1, 1.5, 3], [1, 2.4, 3], [3.4, 1.4, 1]
+        x, y, z = [1, 1.5, 3, 5], [1, 2.4, 3, 7], [3.4, 1.4, 1, 10]
 
         fig = plt.figure()
 
@@ -109,6 +111,22 @@ class ReportView(BaseView):
 
         return canvas
 
+    def setButtonLayout(self) -> qtw.QHBoxLayout:
+        """
+        Lays out the 'Test Config', 'Start' and 'Import' buttons into a horizontal layout to be
+        put on screen.
+        :return: The horizontal layout containing the 3 buttons
+        """
+        self.__btnTestConfig = qtw.QPushButton('Verify Camera Setup')
+        self.__btnStart = qtw.QPushButton('Start Tracking')
+        self.__btnImport = qtw.QPushButton('Import Previous Flight')
+
+        buttonBox = qtw.QHBoxLayout()
+        buttonBox.addWidget(self.__btnTestConfig)
+        buttonBox.addWidget(self.__btnStart)
+        buttonBox.addWidget(self.__btnImport)
+
+        return buttonBox
 
     def showWindow(self):
         """
