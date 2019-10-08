@@ -35,6 +35,7 @@ class ReportView(BaseView):
         btn = qtw.QPushButton('View Flight Path')
         btn.clicked.connect(self.setupPlot)
         gridLayout.addWidget(btn, 1, 0)
+        gridLayout.addLayout(self.setButtonLayout(), 2, 0) # layout the buttons
 
         vLayout = qtw.QVBoxLayout()
         vLayout.addLayout(titleLayout)
@@ -118,12 +119,12 @@ class ReportView(BaseView):
 
     def setButtonLayout(self) -> qtw.QHBoxLayout:
         """
-        Lays out the 'Test Config', 'Start' and 'Import' buttons into a horizontal layout to be
+        Lays out the 'Export Results', 'Fly Again' and 'Import Previous Flight' buttons into a horizontal layout to be
         put on screen.
         :return: The horizontal layout containing the 3 buttons
         """
-        self.__btnTestConfig = qtw.QPushButton('Verify Camera Setup')
-        self.__btnStart = qtw.QPushButton('Start Tracking')
+        self.__btnTestConfig = qtw.QPushButton('Export Results')
+        self.__btnStart = qtw.QPushButton('Fly Again')
         self.__btnImport = qtw.QPushButton('Import Previous Flight')
 
         buttonBox = qtw.QHBoxLayout()

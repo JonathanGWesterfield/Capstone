@@ -10,7 +10,7 @@ class BaseView:
 
     def __init__(self):
         # Set the default font for all child Views
-        self.__titleFont = qtg.QFont("Helvetica Neue", 48, qtg.QFont.Bold)
+        self.__titleFont = qtg.QFont("Helvetica Neue", 36, qtg.QFont.Bold)
         self.__mediumFont = qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold)
         self.__regularFont = qtg.QFont("Helvetica Neue", 14)
         self.__appName = 'UAS Performance Tracker'
