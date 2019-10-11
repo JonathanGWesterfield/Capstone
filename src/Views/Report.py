@@ -1,16 +1,9 @@
 #!/usr/bin/env python
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
-import PyQt5.QtGui as qtg
-
-import numpy as np
+import Graph
 
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.backends.backend_qt5agg import (
-        FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
-from matplotlib.backends.qt_compat import QtCore, QtWidgets
-from matplotlib.figure import Figure
 
 import datetime as dt
 
@@ -33,7 +26,7 @@ class ReportView(BaseView):
         gridLayout = qtw.QGridLayout()
         gridLayout.addLayout(flInfoLayout, 0, 0)
         btn = qtw.QPushButton('View Flight Path')
-        btn.clicked.connect(self.setupPlot)
+        btn.clicked.connect(self.setupGraph)
         gridLayout.addWidget(btn, 1, 0)
         gridLayout.addLayout(self.setButtonLayout(), 2, 0) # layout the buttons
 
@@ -90,28 +83,17 @@ class ReportView(BaseView):
 
         return grid
 
-    def setupPlot(self):
+    def setupGraph(self):
         """
          Sets up the 3d plot for viewing upon click of button.
          :return: None
          """
-        fig = plt.figure()
+        # fig = plt.figure()
+        # Import coordinates
+        x, y, z = Graph.readCoordinates(r'/Users/hayleyeckert/Desktop/test.rtf')
 
-        # Add points in (random points used below for visualization)
-        zdata = 10 * np.random.random(100)
-        xdata = np.sin(zdata) + 3 * np.random.randn(100)
-        ydata = np.cos(zdata) + 3 * np.random.randn(100)
-
-        # Define graph properties
-        ax = fig.add_subplot(111, projection='3d')
-        ax.scatter(xdata, ydata, zdata, c='r', marker='o')
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('z');
-        ax.set_xlim3d(-15, 15)
-        ax.set_ylim3d(-15, 15)
-        ax.set_zlim3d(0, 10)
-        ax.set_title("Flight Path")
+        # Generate and show graph
+        fig = Graph.genGraph(x, y, z)
 
         # Define manager so figure can be viewed upon button click
         new_manager = fig.canvas.manager
