@@ -54,9 +54,40 @@ class TrackingView(BaseView):
         vLayout.addLayout(startStop)
         vLayout.addWidget(homeBtn)
 
+        confirmBtn = self.BtnConfirm
+        confirmBtn.clicked.connect(self.confirmValues)
+
+        clearBtn = self.BtnClear
+        clearBtn.clicked.connect(self.clearValues)
+
         # Attach the layout to the screen
         self.window = qtw.QWidget()
         self.window.setLayout(vLayout)
+
+    def confirmValues(self):
+        """
+         Confirms the values in the textboxes by displaying a pop up message of the values.
+         :return: None
+         """
+        pilotName = self.TBPilot.text()
+        instructorName = self.TBInstructor.text()
+        instructions = self.TEInstructions.toPlainText()
+        msgBox = qtw.QMessageBox()
+        msgBox.setText("Pilot Name: \n" + pilotName + "\nInstructor Name: \n" + instructorName + "\nInstructions: \n" + instructions)
+        msgBox.exec()
+
+    def clearValues(self):
+        """
+         Clears the values in the text boxes.
+         :return: None
+         """
+        # TODO: Change cursor location out of text box so all boxes can clear at the same time
+        self.TBPilot.setText('')
+        qtw.QApplication.processEvents()
+        self.TBInstructor.setText('')
+        qtw.QApplication.processEvents()
+        self.TEInstructions.clear()
+        qtw.QApplication.processEvents()
 
     def setTitle(self) -> qtw.QLabel:
         """
@@ -79,7 +110,8 @@ class TrackingView(BaseView):
         self.__lblPilot.setFont(self.RegularFont)
         self.__lblPilot.setAlignment(qtc.Qt.AlignCenter)
 
-        self.__tbPilot = qtw.QLineEdit()
+        self.__tbPilot = qtw.QLineEdit('')
+        self.__tbPilot.setPlaceholderText('Pilot Name Here')
         self.__tbPilot.resize(280,40)
         self.__tbPilot.setAlignment(qtc.Qt.AlignCenter)
 
@@ -100,6 +132,7 @@ class TrackingView(BaseView):
         self.__lblInstr.setAlignment(qtc.Qt.AlignCenter)
 
         self.__tbInstr = qtw.QLineEdit()
+        self.__tbInstr.setPlaceholderText('Instructor Name Here')
         self.__tbInstr.resize(280, 40)
         self.__tbInstr.setAlignment(qtc.Qt.AlignCenter)
 
@@ -119,7 +152,8 @@ class TrackingView(BaseView):
         lblInstr.setFont(self.RegularFont)
         lblInstr.setAlignment(qtc.Qt.AlignCenter)
 
-        self.__teInstr = qtw.QPlainTextEdit('Add Flight Instructions Here')
+        self.__teInstr = qtw.QPlainTextEdit('')
+        self.__teInstr.setPlaceholderText('Add Flight Instructions Here')
 
         vbox = qtw.QVBoxLayout()
         vbox.addWidget(lblInstr)
