@@ -679,7 +679,6 @@ MigrationBackup/
 *.class
 
 # Generated files
-bin/
 gen/
 out/
 release/
