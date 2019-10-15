@@ -63,7 +63,7 @@ def velocityColors(vel):
             colors.append('g')
     return colors
 
-def genGraph(x, y, z):
+def generateGraph(x, y, z):
     """
     Driver function for generating the 3d graph of drone coordinates.
     :return: The figure to display as the 3d graph.
@@ -103,4 +103,4 @@ def genGraph(x, y, z):
 # x, y, z = readCoordinates(r'/Users/hayleyeckert/Desktop/test.rtf')
 
 # Generate and show graph
-# genGraph(x, y, z).show()
+# generateGraph(x, y, z).show()
