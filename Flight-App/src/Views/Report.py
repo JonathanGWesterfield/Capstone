@@ -88,7 +88,7 @@ class ReportView(BaseView):
          """
         # fig = plt.figure()
         # Import coordinates
-        x, y, z = Graph.readCoordinates('Tests/Test Files/coordinates_small.rtf')
+        x, y, z = Graph.readCoordinates('Tests/Test Files/coordinates_tiny.rtf')
 
         # Generate and show graph
         fig = Graph.genGraph(x, y, z)

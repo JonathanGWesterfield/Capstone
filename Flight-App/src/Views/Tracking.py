@@ -2,6 +2,7 @@
 import PyQt5.QtGui as qtg
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
+import time
 
 from src.Views.BaseUI import BaseView
 
@@ -60,9 +61,21 @@ class TrackingView(BaseView):
         clearBtn = self.BtnClear
         clearBtn.clicked.connect(self.clearValues)
 
+        # startBtn = self.BtnStart
+        # stopBtn = self.BtnStop
+        # startBtn.clicked.connect(self.updateLabel)
+
         # Attach the layout to the screen
         self.window = qtw.QWidget()
         self.window.setLayout(vLayout)
+
+    def updateLabel(self):
+        # TODO: Either bring in functionality in timer.py, or consider (perhaps better) getting the current time
+        #  at start and getting the current time at stop to compute the difference.
+        #  Another idea is to make a pop up that appears when you press Start Timing button
+        #  and has a button "Stop Timing".
+        self.LblTimer.setText('update')
+        self.LblTimer.show()
 
     def confirmValues(self):
         """

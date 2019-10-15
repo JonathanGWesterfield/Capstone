@@ -100,7 +100,7 @@ def generateGraph(x, y, z):
     return fig
 
 # Import coordinates
-# x, y, z = readCoordinates(r'/Users/hayleyeckert/Desktop/test.rtf')
+x, y, z = readCoordinates('../Tests/Test Files/coordinates_small_spiral.rtf')
 
 # Generate and show graph
-# generateGraph(x, y, z).show()
+generateGraph(x, y, z).show()

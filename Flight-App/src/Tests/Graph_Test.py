@@ -9,7 +9,7 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(velocity, math.sqrt(8))
 
     def test_readCoordinates(self):
-        x, y, z = Graph.readCoordinates('Tests/Test Files/coordinates_small.rtf')
+        x, y, z = Graph.readCoordinates('Tests/Test Files/coordinates_tiny.rtf')
         self.assertEqual(x, [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 3.0, 1.0])
         self.assertEqual(y, [0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 4.0, 6.0, 3.0])
         self.assertEqual(z, [0.0, 1.0, 3.0, 8.0, 10.0, 10.0, 10.0, 9.0, 8.0])
