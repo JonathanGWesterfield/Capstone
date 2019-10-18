@@ -30,4 +30,6 @@ public class MainActivity extends AppCompatActivity {
     {
 
     }
+
+    // TODO: CREATE ALERTS FOR ERROR MESSAGE AND WHEN THINGS START
 }
