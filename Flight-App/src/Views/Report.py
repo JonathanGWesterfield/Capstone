@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 import PyQt5.QtWidgets as qtw
 import PyQt5.QtCore as qtc
-import Graph
-
+import src.Views.Graph as Graph
 import matplotlib.pyplot as plt
-
 import datetime as dt
 
 from src.Views.BaseUI import BaseView
@@ -90,7 +88,7 @@ class ReportView(BaseView):
          """
         # fig = plt.figure()
         # Import coordinates
-        x, y, z = Graph.readCoordinates(r'/Users/hayleyeckert/Desktop/test.rtf')
+        x, y, z = Graph.readCoordinates('Tests/Test Files/coordinates_tiny.rtf')
 
         # Generate and show graph
         fig = Graph.genGraph(x, y, z)
