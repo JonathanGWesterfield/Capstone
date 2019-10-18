@@ -27,6 +27,8 @@ class NetConn implements Serializable
     private Socket socket;
     private BufferedWriter writer;
     private BufferedReader reader;
+    private ReadLoop listener;
+    private Thread listenerThread;
 
     static NetConn getInstance()
     {
@@ -129,8 +131,12 @@ class NetConn implements Serializable
         InetAddress address = InetAddress.getByName(this.ipAddr);
         this.socket = new Socket(address, this.port);
 
+        // Create the network readers and writers
         createWriter();
         createReader();
+
+        // Create the listener so we can spawn a new listener thread
+        this.listener = new ReadLoop(this.reader);
     }
 
     /**
@@ -171,12 +177,27 @@ class NetConn implements Serializable
         return true;
     }
 
-    public String readMessage()
+    /** Starts the listener thread so that we can read messages from the server while
+     * doing other things.
+     */
+    public void startListener()
     {
-        // TODO: FIGURE OUT HOW TO IMPLEMENT THIS
-        // POSSIBLY RUN IN A LOOP ON ITS OWN THREAD AND USE THE OBSERVER PATTERN TO NOTIFY
-        // ANY FUNCTIONS THAT NEED TO KNOW A MESSAGE CAME THROUGH
-        return null;
+        this.listenerThread = new Thread(this.listener);
+        this.listenerThread.start();
+        System.out.println("Started listening to the server (laptop)");
+        // TODO: PUT AN ALERT HERE THAT WE ARE NOW LISTENING TO THE LAPTOP
+    }
+
+    /**
+     * Allows us to subscribe to the listener so that we can get updates from the laptop
+     * while the rest of the app is running.
+     * @param observer The object that needs to listen to the server.
+     */
+    public void suscribeToListener(Observer observer)
+    {
+        if (this.listener == null)
+            this.listener = new ReadLoop(this.reader);
+        this.listener.addObserver(observer);
     }
 
     /**
@@ -187,6 +208,7 @@ class NetConn implements Serializable
     {
         try
         {
+            this.listenerThread.interrupt(); // kill the listener thread
             this.socket.close();
             this.instance = null; // delete this connection instance.
         }

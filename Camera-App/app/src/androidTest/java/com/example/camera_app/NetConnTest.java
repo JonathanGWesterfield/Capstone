@@ -112,7 +112,9 @@ public class NetConnTest
     }
 
     @Test
-    public void readMessage() {
+    public void readMessage()
+    {
+
     }
 
     /**
