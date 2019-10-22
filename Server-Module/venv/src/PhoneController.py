@@ -84,99 +84,6 @@ class PhoneControl:
 
         self.connected = True
 
-    def startRecording(self):
-        """
-        Call this in order to send a signal to the phones that they need to start recording.
-        :return:
-        """
-        threads = list()
-
-        try:
-            for conn in self.connections:
-                # Start a new thread and return its identifier
-                x = threading.Thread(target=self.threadStartRecording, args=(conn,))
-                threads.append(x)
-                x.start()
-
-            for index, thread in enumerate(threads):
-                thread.join()
-            print("Start Threads Joined!")
-
-        except Exception as e:
-            self.closeConn()
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-
-
-    def threadStartRecording(self, conn: socket.socket):
-        """
-        This is a thread for sending the message to the phone to start recording and then waiting for the
-        the phone to send back a response acknowledging it.
-        :param conn: A socket connection that has already been opened.
-        :return: None
-        """
-        try:
-            # Send the start command to the phone
-            timestamp = datetime.datetime.now()
-            command = bytes(("START-" + str(timestamp) + "\n"), 'utf-8')
-
-            print("Sending the Start Signal\n")
-            conn.sendall(command)
-            print("Start signal sent.\nWaiting for acknowledgment")
-
-            # Wait for the start acknowledgement
-            message = conn.recv(1024)
-
-            if message is None:
-                raise Exception('ERROR! Phone should have said something by now')
-
-            message = message.decode('utf-8').strip()
-
-            # If the function fails here it was going to be wrong anyway
-            if message == "START_ACKNOWLEDGE":
-                print("Success! The phone acknowledged the start command")
-                return
-
-            if message == "ILLEGAL":
-                raise Exception("ERROR! Phone sent back an illegal response")
-
-            errorMsg = "ERROR! Response received is not anything we expected! Recieved: " + message
-            raise Exception(errorMsg)
-
-        except Exception as e:
-            self.closeConn()
-            print(e)
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-
-    def stopRecording(self):
-        """
-        Call this in order to send a signal to the phones that they need to stop tracking. Sends both
-        phones a stop signal and the name of the file path that they will need to send their
-        videos to over FTP.
-        :return: None
-        """
-        threads = list()
-
-        try:
-            for conn in self.connections:
-                # Start a new thread and return its identifier
-                x = threading.Thread(target=self.threadStopRecording, args=(conn,))
-                threads.append(x)
-                x.start()
-
-            for index, thread in enumerate(threads):
-                thread.join()
-            print("Stop Threads Joined!")
-
-        except Exception as e:
-            self.closeConn()
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-
     def threadSendSignal(self,conn: socket.socket, signal: str, sigMessage: str, sigAck: str):
         """
         This function takes a signal and the expected output so that we don't have to rewrite the same code for
@@ -191,29 +98,29 @@ class PhoneControl:
         try:
             # Send the stop command to the phone
             timestamp = datetime.datetime.now()
-            command = bytes((signal + "-" + sigMessage + "\n"), 'utf-8') # need the '\n' char or the connection will hang
+            command = bytes((signal + ";" + sigMessage + "\n"), 'utf-8') # need the '\n' char or the connection will hang
 
-            print("Sending the " + signal + " Signal\n")
+            print("Sending the " + signal + " Signal")
             conn.sendall(command)
-            print(signal + " signal sent.\nWaiting for acknowledgment")
+            print(signal + " signal sent.\nWaiting for acknowledgment\n")
 
             # Wait for the start acknowledgement
             message = conn.recv(1024)
 
             if message is None:
-                raise Exception('ERROR! Phone should have said something by now')
+                raise Exception('ERROR! Phone should have said something by now!\n')
 
             message = message.decode('utf-8').strip()
 
             # If the function fails here it was going to be wrong anyway
             if message == sigAck:
-                print("Success! The phone acknowledged the " + signal + " command")
+                print("Success! The phone acknowledged the " + signal + " command\n")
                 return
 
             if message == "ILLEGAL":
-                raise Exception("ERROR! Phone sent back an illegal response")
+                raise Exception("ERROR! Phone sent back an illegal response!\n")
 
-            errorMsg = "ERROR! Response received is not anything we expected! Recieved: " + message
+            errorMsg = "ERROR! Response received is not anything we expected! Recieved: " + message + "\n"
             raise Exception(errorMsg)
 
         except Exception as e:
@@ -223,85 +130,88 @@ class PhoneControl:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
 
-    def threadStopRecording(self, conn: socket.socket):
+    def startRecording(self):
         """
-        This is a thread for sending the message to the phone to stop recording and then waiting for the
-        the phone to send back a response acknowledging it.
-        :param conn: A socket connection to a phone that has already been opened.
+        Call this in order to send a signal to the phones that they need to start recording.
         :return:
         """
+        threads = list()
+
         try:
-            # Send the stop command to the phone
-            timestamp = datetime.datetime.now()
-            command = bytes(("STOP-" + str(timestamp) + "\n"), 'utf-8') # need the '\n' char or the connection will hang
+            for conn in self.connections:
+                # Start a new thread and return its identifier
+                timestamp = datetime.datetime.now()
+                x = threading.Thread(target=self.threadSendSignal, args=(conn, "START", str(timestamp), "START_ACKNOWLEDGE"))
+                threads.append(x)
+                x.start()
 
-            print("Sending the Stop Signal\n")
-            conn.sendall(command)
-            print("Stop signal sent.\nWaiting for acknowledgment")
-
-            # Wait for the start acknowledgement
-            message = conn.recv(1024)
-
-            if message is None:
-                raise Exception('ERROR! Phone should have said something by now')
-
-            message = message.decode('utf-8').strip()
-
-            # If the function fails here it was going to be wrong anyway
-            if message == "STOP_ACKNOWLEDGE":
-                print("Success! The phone acknowledged the stop command")
-                return
-
-            if message == "ILLEGAL":
-                raise Exception("ERROR! Phone sent back an illegal response")
-
-            errorMsg = "ERROR! Response received is not anything we expected! Recieved: " + message
-            raise Exception(errorMsg)
+            for index, thread in enumerate(threads):
+                thread.join()
+            print("Start Threads Joined!\n")
 
         except Exception as e:
             self.closeConn()
-            print(e)
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
 
-    # def startFileTransfer(self, filepath: str):
-    #     """
-    #     Will send a signal to the phone that tells it to transfer the video files it recorded over to the laptop
-    #     by opening an FTP connection.
-    #     :param filepath: The file path on our laptop that the phones will need to send their videos to over FTP.
-    #     :return: None
-    #     """
-    #     threads = list()
-    #
-    #     try:
-    #         for conn in self.connections:
-    #             # Start a new thread and return its identifier
-    #             x = threading.Thread(target=self.threadStartFileTransfer, args=(conn, filepath))
-    #             threads.append(x)
-    #             x.start()
-    #
-    #         for index, thread in enumerate(threads):
-    #             thread.join()
-    #
-    #         print("Start FTP Threads Joined!")
-    #         self.transferFlag = True # Set flag that we are currently transferring the file over
-    #
-    #     except Exception as e:
-    #         self.closeConn()
-    #         exc_type, exc_obj, exc_tb = sys.exc_info()
-    #         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    #         print(exc_type, fname, exc_tb.tb_lineno)
-    #
-    #
-    # def threadStartFileTransfer(self, filepath: str):
-    #     """
-    #     This is a thread for sending the message to the phone to start transferring the video and then waiting for the
-    #     the phone to send back a response acknowledging it.
-    #     :param filepath: The file path on our laptop that the phones will need to send their videos to over FTP.
-    #     :return: None
-    #     """
-    #
+
+    def stopRecording(self):
+        """
+        Call this in order to send a signal to the phones that they need to stop tracking. Sends both
+        phones a stop signal and the name of the file path that they will need to send their
+        videos to over FTP.
+        :return: None
+        """
+        threads = list()
+
+        try:
+            for conn in self.connections:
+                # Start a new thread and return its identifier
+                timestamp = datetime.datetime.now()
+                x = threading.Thread(target=self.threadSendSignal, args=(conn, "STOP", str(timestamp), "STOP_ACKNOWLEDGE"))
+                threads.append(x)
+                x.start()
+
+            for index, thread in enumerate(threads):
+                thread.join()
+            print("Stop Threads Joined!\n")
+
+        except Exception as e:
+            self.closeConn()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno)
+
+    def startFileTransfer(self, filepath: str):
+        """
+        Will send a signal to the phone that tells it to transfer the video files it recorded over to the laptop
+        by opening an FTP connection.
+        :param filepath: The file path on our laptop that the phones will need to send their videos to over FTP.
+        :return: None
+        """
+        threads = list()
+
+        try:
+            for conn in self.connections:
+                # Start a new thread and return its identifier
+                x = threading.Thread(target=self.threadSendSignal, args=(conn, "START_FTP", filepath, "START_FTP_ACKNOWLEDGE"))
+                threads.append(x)
+                x.start()
+
+            for index, thread in enumerate(threads):
+                thread.join()
+
+            print("Start FTP Threads Joined!\n")
+            self.transferFlag = True # Set flag that we are currently transferring the file over
+
+        except Exception as e:
+            self.closeConn()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno)
+
+
     #
     # def waitForFileTransfer(self):
     #     """
@@ -326,6 +236,7 @@ def main():
     test.sync()
     test.startRecording()
     test.stopRecording()
+    test.startFileTransfer("Yeet/Street/Killem/StraightUp/Gay")
     test.closeConn()
 
 if __name__ ==  '__main__':
@@ -335,5 +246,91 @@ if __name__ ==  '__main__':
 
 
 
+
+
+
+    # def threadStopRecording(self, conn: socket.socket):
+    #     """
+    #     This is a thread for sending the message to the phone to stop recording and then waiting for the
+    #     the phone to send back a response acknowledging it.
+    #     :param conn: A socket connection to a phone that has already been opened.
+    #     :return:
+    #     """
+    #     try:
+    #         # Send the stop command to the phone
+    #         timestamp = datetime.datetime.now()
+    #         command = bytes(("STOP-" + str(timestamp) + "\n"), 'utf-8') # need the '\n' char or the connection will hang
+    #
+    #         print("Sending the Stop Signal\n")
+    #         conn.sendall(command)
+    #         print("Stop signal sent.\nWaiting for acknowledgment")
+    #
+    #         # Wait for the start acknowledgement
+    #         message = conn.recv(1024)
+    #
+    #         if message is None:
+    #             raise Exception('ERROR! Phone should have said something by now')
+    #
+    #         message = message.decode('utf-8').strip()
+    #
+    #         # If the function fails here it was going to be wrong anyway
+    #         if message == "STOP_ACKNOWLEDGE":
+    #             print("Success! The phone acknowledged the stop command")
+    #             return
+    #
+    #         if message == "ILLEGAL":
+    #             raise Exception("ERROR! Phone sent back an illegal response")
+    #
+    #         errorMsg = "ERROR! Response received is not anything we expected! Recieved: " + message
+    #         raise Exception(errorMsg)
+    #
+    #     except Exception as e:
+    #         self.closeConn()
+    #         print(e)
+    #         exc_type, exc_obj, exc_tb = sys.exc_info()
+    #         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    #         print(exc_type, fname, exc_tb.tb_lineno)
+
+    # def threadStartRecording(self, conn: socket.socket):
+    #     """
+    #     This is a thread for sending the message to the phone to start recording and then waiting for the
+    #     the phone to send back a response acknowledging it.
+    #     :param conn: A socket connection that has already been opened.
+    #     :return: None
+    #     """
+    #     try:
+    #         # Send the start command to the phone
+    #         timestamp = datetime.datetime.now()
+    #         command = bytes(("START-" + str(timestamp) + "\n"), 'utf-8')
+    #
+    #         print("Sending the Start Signal\n")
+    #         conn.sendall(command)
+    #         print("Start signal sent.\nWaiting for acknowledgment")
+    #
+    #         # Wait for the start acknowledgement
+    #         message = conn.recv(1024)
+    #
+    #         if message is None:
+    #             raise Exception('ERROR! Phone should have said something by now')
+    #
+    #         message = message.decode('utf-8').strip()
+    #
+    #         # If the function fails here it was going to be wrong anyway
+    #         if message == "START_ACKNOWLEDGE":
+    #             print("Success! The phone acknowledged the start command")
+    #             return
+    #
+    #         if message == "ILLEGAL":
+    #             raise Exception("ERROR! Phone sent back an illegal response")
+    #
+    #         errorMsg = "ERROR! Response received is not anything we expected! Recieved: " + message
+    #         raise Exception(errorMsg)
+    #
+    #     except Exception as e:
+    #         self.closeConn()
+    #         print(e)
+    #         exc_type, exc_obj, exc_tb = sys.exc_info()
+    #         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    #         print(exc_type, fname, exc_tb.tb_lineno)
 
 
