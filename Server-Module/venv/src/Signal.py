@@ -9,7 +9,8 @@ class Signals(Enum):
     STOP = 1
     START_ACKNOWLEDGE = 2
     STOP_ACKNOWLEDGE = 3
-    FTP_STARTED = 4
-    FTP_COMPLETED = 5
-    ILLEGAL = 6
-    NULL = 7
+    START_FTP = 4
+    START_FTP_ACKNOWLEDGE = 5
+    FTP_COMPLETED = 6
+    ILLEGAL = 7
+    NULL = 8
