@@ -3,7 +3,7 @@ import datetime
 from Signal import Signals
 import sys
 import os
-from Exceptions import RecordingNotStartedException, TransferNotStartedException
+from Exceptions import RecordingNotStartedException, TransferNotStartedException, PhonesNotSyncedException
 
 # import thread module
 from _thread import *
@@ -65,10 +65,16 @@ class PhoneControl:
         Closes all of the connections and the socket.
         :return: None
         """
+        # Make sure the phones are connected and synced first
+        if not self.connected:
+            raise PhonesNotSyncedException("ERROR: Phones not synced up yet!")
+
         for conn in self.connections:
             conn.close()
 
         self.socket.close()
+
+        self.connected = False
 
     def sync(self):
         """
@@ -138,6 +144,10 @@ class PhoneControl:
         """
         threads = list()
 
+        # Make sure the phones are connected and synced first
+        if not self.connected:
+            raise PhonesNotSyncedException("ERROR: Phones not synced up yet!")
+
         try:
             for conn in self.connections:
                 # Start a new thread and return its identifier
@@ -164,6 +174,10 @@ class PhoneControl:
         videos to over FTP.
         :return: None
         """
+        # Make sure the phones are connected and synced first
+        if not self.connected:
+            raise PhonesNotSyncedException("ERROR: Phones not synced up yet!")
+
         # make sure that we are recording first
         if not self.recording:
             raise RecordingNotStartedException("ERROR! Recording must be started to be stopped")
@@ -197,6 +211,10 @@ class PhoneControl:
         :param filepath: The file path on our laptop that the phones will need to send their videos to over FTP.
         :return: None
         """
+        # Make sure the phones are connected and synced first
+        if not self.connected:
+            raise PhonesNotSyncedException("ERROR: Phones not synced up yet!")
+
         threads = list()
 
         try:
@@ -218,14 +236,16 @@ class PhoneControl:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
 
-
-
     def waitForFileTransfer(self):
         """
         Spawns threads that will wait for both phones to send a signal saying that the file transfer
         of the videos is complete.
         :return: None
         """
+        # Make sure the phones are connected and synced first
+        if not self.connected:
+            raise PhonesNotSyncedException("ERROR: Phones not synced up yet!")
+
         threads = list()
 
         if not self.transferring:

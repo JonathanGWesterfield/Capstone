@@ -15,3 +15,11 @@ class TransferNotStartedException(Exception):
     """
     def __init__(self, message: str):
         Exception.__init__(self, message)
+
+class PhonesNotSyncedException(Exception):
+    """
+    This exception is for when the user tries to perform an operation with the phones without actually
+    syncing the phones first.
+    """
+    def __init__(self, message: str):
+        Exception.__init__(self, message)
