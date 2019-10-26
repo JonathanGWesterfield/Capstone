@@ -78,13 +78,14 @@ class StartupView(BaseView):
         Used for configuring the display for the logo on the startup screen.
         :return: None
         """
-        logo = qtw.QLabel()
-        logo.setAlignment(qtc.Qt.AlignCenter)
-        logo.setPixmap(qtg.QPixmap("src/resources/Tamu_Seal.png"))
-        # picture.(self.picture.width(), self.picture.height())
+        label = qtw.QLabel()
+        pixmap = qtg.QPixmap('../resources/DroneLogo.png')
+        pixmap2 = pixmap.scaled(512, 512, qtc.Qt.KeepAspectRatio)
+        label.setPixmap(pixmap2)
+        label.show()
 
         # TODO: FIX THIS, THE PICTURE DOESN'T SHOW UP FOR SOME REASON AND NO ERROR IS THROWN
-        return logo
+        return label
 
 
     def showWindow(self):
