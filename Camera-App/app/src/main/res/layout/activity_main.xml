@@ -24,6 +24,7 @@
         android:id="@+id/btnConnect"
         android:layout_width="252dp"
         android:layout_height="56dp"
+        android:onClick="btnConnClk"
         android:text="Connect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,6 +43,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
 
+    <TextView
+        android:id="@+id/lblLaptopPort"
+        android:layout_width="206dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="280dp"
+        android:text="Laptop Port Number"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
+
     <EditText
         android:id="@+id/tbIPAddress"
         android:layout_width="290dp"
@@ -53,5 +68,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblLaptopIP" />
+
+    <EditText
+        android:id="@+id/tbPortNum"
+        android:layout_width="290dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblLaptopPort" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

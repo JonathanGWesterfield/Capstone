@@ -1,5 +1,6 @@
 package com.example.camera_app;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -10,6 +11,8 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.RecursiveAction;
+import android.util.Log;
 
 import static org.junit.Assert.*;
 
@@ -27,6 +30,8 @@ public class NetConnTest
 
         assertEquals(ipAddr, conn.getIpAddr());
         assertEquals(portNum, conn.getPort());
+
+        conn.closeConn();
     }
 
     @Test
@@ -43,6 +48,7 @@ public class NetConnTest
     {
         NetConn conn = NetConn.getInstance();
         conn.setPortNumber(8000);
+        conn.closeConn();
 
         assertEquals(portNum, conn.getPort());
     }
@@ -58,9 +64,12 @@ public class NetConnTest
             conn.createConn();
             assertEquals(true, conn.isAlive());
 
+            conn.closeConn();
         }
         catch(Exception e)
-        { /* Do Nothing */ }
+        {
+            fail("ERROR: " + e.getMessage());
+        }
     }
 
     @Test
@@ -71,6 +80,7 @@ public class NetConnTest
         {
             NetConn conn = NetConn.getInstance();
             conn.createConn();
+            conn.closeConn();
         }
         catch(InstantiationException e)
         {
@@ -104,11 +114,18 @@ public class NetConnTest
             // Verify the message that was sent
             String receivedMessage = reader.readLine();
 
+            Log.d("OUTPUT", receivedMessage);
+
             assertEquals(message, receivedMessage);
+
+            conn.closeConn();
 
         }
         catch(Exception e)
-        { /* Do Nothing */ }
+        {
+            Log.e("ERROR", e.getMessage());
+            Assert.fail("ERROR" + e.getMessage());
+        }
     }
 
     @Test
@@ -134,7 +151,11 @@ public class NetConnTest
         catch(IOException e)
         {
             System.err.println("SOCKET READER COULD NOT BE CREATED");
+            Log.e("ERROR", e.getMessage());
+            fail("ERROR: " + e.getMessage());
         }
         return null;
     }
+
+    // TODO: All of the tests can't be verified
 }

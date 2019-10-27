@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Camera-App</string>
+    <string name="title_activity_camera">Camera</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="message_need_permission">Permission Needed</string>
+    <string name="message_permission">
+        Need Permission to Use Camera. If no permission is granted application cannot continue.
+    </string>
+
+    <string name="title_go_to_setting">Settings</string>
 </resources>

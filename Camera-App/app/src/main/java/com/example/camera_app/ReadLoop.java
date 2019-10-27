@@ -12,6 +12,7 @@ public class ReadLoop implements Runnable, Observable
     private BufferedReader reader;
     private ArrayList<Observer> subscribers;
 
+    //region > Observable Interface Functions
     /**
      * Implements the addObserver function in the Observable interface. Adds objects that
      * need to be updated of the status from this loop.
@@ -52,12 +53,25 @@ public class ReadLoop implements Runnable, Observable
         for(Observer observer : this.subscribers)
             observer.update(signal, message);
     }
+    //endregion
 
     public ReadLoop(BufferedReader reader)
     {
         this.reader = reader;
         this.subscribers = new ArrayList<>();
     }
+
+    //region > Getter Functions
+
+    /**
+     * Allows us to get the number of subscribers current subscribed to this observable instance.
+     * @return
+     */
+    public int getNumObservers()
+    {
+        return this.subscribers.size();
+    }
+    //endregion
 
 //    /**
 //     * Gets this instances thread object so that it can interrupt it
@@ -108,33 +122,35 @@ public class ReadLoop implements Runnable, Observable
     /** Starts the thread */
     public void run()
     {
-        while(!Thread.interrupted())
-        {
-            System.out.println("Starting network reading");
+        String message = "";
 
-            try
+        try
+        {
+            while(!Thread.interrupted() && (message = this.reader.readLine()) != null)
             {
-                String message = this.reader.readLine();
+                System.out.println("Starting network reading");
+
                 notifyObservers(parseSignal(message), parseMessage(message));
                 Thread.sleep(1000); // this is going to poll for new messages every second
             }
-            catch (IOException e)
-            {
-                // TODO: THROW AN ERROR HERE ON THE PHONE SCREEN
-                System.err.println(e.getMessage());
-                e.printStackTrace();
-            }
-            catch (InterruptedException e)
-            {
-                // TODO: THROW AN ERROR HERE ON THE PHONE SCREEN
-                System.err.println(e.getMessage());
-                e.printStackTrace();
-            }
+        }
+        catch (IOException e)
+        {
+            // TODO: THROW AN ERROR HERE ON THE PHONE SCREEN
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+        catch (InterruptedException e)
+        {
+            // TODO: THROW AN ERROR HERE ON THE PHONE SCREEN
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
         // Cleanup
         removeAllObservers();
         System.out.println("Thread has stopped");
+        NetConn.getInstance().closeConn();
         return;
     }
 }

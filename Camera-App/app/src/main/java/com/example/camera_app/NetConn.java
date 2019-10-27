@@ -96,6 +96,15 @@ class NetConn implements Serializable
         return this.port;
     }
 
+    /**
+     * Getter for the reader once it is instanciated.
+     * @return The buffered reader so we can start reading network messages.
+     */
+    public BufferedReader getReader()
+    {
+        return this.reader;
+    }
+
     //endregion
 
     /**
@@ -208,8 +217,11 @@ class NetConn implements Serializable
     {
         try
         {
-            this.listenerThread.interrupt(); // kill the listener thread
-            this.socket.close();
+            if(this.listenerThread != null)
+                this.listenerThread.interrupt(); // kill the listener thread
+            if(this.socket != null)
+                this.socket.close();
+
             this.instance = null; // delete this connection instance.
         }
         catch (IOException e)

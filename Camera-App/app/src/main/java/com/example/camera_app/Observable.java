@@ -10,13 +10,13 @@ public interface Observable
      * Adds a new observer to notify when there is a network signal received.
      * @param observer The concrete observer to add.
      */
-    public void addObserver(Observer observer);
+    void addObserver(Observer observer);
 
     /**
      * Removes the specified observer from the subscriber list.
      * @param observer The concrete observer we want to remove.
      */
-    public void removeObserver(Observer observer);
+    void removeObserver(Observer observer);
 
     /**
      * The function that will call the observers update() method and send the signal
@@ -24,5 +24,5 @@ public interface Observable
      * @param signal The signal received from the server.
      * @param message The optional message that accompanied the signal.
      */
-    public void notifyObservers(Signal signal, String message);
+    void notifyObservers(Signal signal, String message);
 }

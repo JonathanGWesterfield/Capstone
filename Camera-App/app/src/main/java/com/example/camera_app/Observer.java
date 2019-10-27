@@ -11,7 +11,5 @@ public interface Observer
      * @param signal The signal type that was received from the laptop.
      * @param message The optional message that accompanied the signal.
      */
-    public void update(Signal signal, String message);
-
-
+    void update(Signal signal, String message);
 }
