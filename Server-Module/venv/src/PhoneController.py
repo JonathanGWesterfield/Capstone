@@ -1,6 +1,6 @@
 import socket
 import datetime
-from Signal import Signals
+# from Signal import Signals
 import sys
 import os
 from Exceptions import RecordingNotStartedException, TransferNotStartedException, PhonesNotSyncedException
@@ -73,7 +73,6 @@ class PhoneControl:
             conn.close()
 
         self.socket.close()
-
         self.connected = False
 
     def sync(self):
@@ -111,7 +110,7 @@ class PhoneControl:
             conn.sendall(command)
             print(signal + " signal sent.\nWaiting for acknowledgment\n")
 
-            # Wait for the start acknowledgement
+            # Wait for the acknowledgement
             message = conn.recv(1024)
 
             if message is None:
