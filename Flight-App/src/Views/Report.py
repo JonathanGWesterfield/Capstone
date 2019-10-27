@@ -4,8 +4,8 @@ import PyQt5.QtCore as qtc
 import src.Views.Graph as Graph
 import matplotlib.pyplot as plt
 import datetime as dt
-
 from src.Views.BaseUI import BaseView
+import PyQt5.QtGui as qtg
 
 class ReportView(BaseView):
 
@@ -20,13 +20,15 @@ class ReportView(BaseView):
         """
         titleLayout = self.setupTitle()
         flInfoLayout = self.setupFlightInfo()
+        statistics = self.createTable()
 
         gridLayout = qtw.QGridLayout()
         gridLayout.addLayout(flInfoLayout, 0, 0)
+        gridLayout.addWidget(statistics, 1, 0)
         btn = qtw.QPushButton('View Flight Path')
         btn.clicked.connect(self.setupGraph)
-        gridLayout.addWidget(btn, 1, 0)
-        gridLayout.addLayout(self.setButtonLayout(), 2, 0) # layout the buttons
+        gridLayout.addWidget(btn, 2, 0)
+        gridLayout.addLayout(self.setButtonLayout(), 3, 0) # layout the buttons
 
         vLayout = qtw.QVBoxLayout()
         vLayout.addLayout(titleLayout)
@@ -68,16 +70,21 @@ class ReportView(BaseView):
         self.__lblFlSmoothness = qtw.QLabel('0')
 
         grid = qtw.QGridLayout()
-        grid.addWidget(qtw.QLabel('Pilot: '), 0, 0)
-        grid.addWidget(self.__lblPilot, 0, 1)
-        grid.addWidget(qtw.QLabel('Instructor: '), 1, 0)
-        grid.addWidget(self.__lblInstructor, 1, 1)
-        grid.addWidget(qtw.QLabel('Flight Date: '), 2, 0)
-        grid.addWidget(self.__lblFlDate, 2, 1)
-        grid.addWidget(qtw.QLabel('Flight Length: '), 3, 0)
-        grid.addWidget(self.__lblFlLength, 3, 1)
-        grid.addWidget(qtw.QLabel('Flight Smoothness Score: '), 4, 0)
-        grid.addWidget(self.__lblFlSmoothness, 4, 1)
+        flightInfoTitle = qtw.QLabel('Flight Information')
+        flightInfoTitle.setFont(qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold))
+        grid.addWidget(flightInfoTitle, 0, 0)
+        grid.addWidget(qtw.QLabel('Pilot: '), 1, 0)
+        grid.addWidget(self.__lblPilot, 1, 1)
+        grid.addWidget(qtw.QLabel('Instructor: '), 2, 0)
+        grid.addWidget(self.__lblInstructor, 2, 1)
+        grid.addWidget(qtw.QLabel('Flight Date: '), 3, 0)
+        grid.addWidget(self.__lblFlDate, 3, 1)
+        grid.addWidget(qtw.QLabel('Flight Length: '), 4, 0)
+        grid.addWidget(self.__lblFlLength, 4, 1)
+
+        statisticsInfoTitle = qtw.QLabel('Statistics')
+        statisticsInfoTitle.setFont(qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold))
+        grid.addWidget(statisticsInfoTitle, 5, 0)
 
         return grid
 
@@ -88,8 +95,7 @@ class ReportView(BaseView):
          """
         # fig = plt.figure()
         # Import coordinates
-        x, y, z = Graph.readCoordinates('Tests/Test Files/coordinates_tiny.rtf')
-
+        x, y, z = Graph.readCoordinates('../Tests/TestFiles/coordinates_tiny.rtf')
         # Generate and show graph
         fig = Graph.genGraph(x, y, z)
 
@@ -107,7 +113,7 @@ class ReportView(BaseView):
         """
         self.__btnTestConfig = qtw.QPushButton('Export Results')
         self.__btnStart = qtw.QPushButton('Fly Again')
-        self.__btnImport = qtw.QPushButton('Import Previous Flight')
+        self.__btnImport = qtw.QPushButton('Return to Home')
 
         buttonBox = qtw.QHBoxLayout()
         buttonBox.addWidget(self.__btnTestConfig)
@@ -123,6 +129,27 @@ class ReportView(BaseView):
         """
         self.window.show()
         # self.app.exec_()
+
+    def createTable(self):
+        # Create table
+        self.tableWidget = qtw.QTableWidget()
+        self.tableWidget.setRowCount(4)
+        self.tableWidget.setColumnCount(2)
+        self.tableWidget.setHorizontalHeaderLabels(['Property', 'Value'])
+        header = self.tableWidget.horizontalHeader()
+        self.tableWidget.setFixedHeight(144)
+        header.setSectionResizeMode(0, qtw.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, qtw.QHeaderView.Stretch)
+        self.tableWidget.setItem(0, 0, qtw.QTableWidgetItem("Smoothness"))
+        self.tableWidget.setItem(0, 1, qtw.QTableWidgetItem("Smoothness Value"))
+        self.tableWidget.setItem(1, 0, qtw.QTableWidgetItem("Average Velocity"))
+        self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem("Average Velocity Value"))
+        self.tableWidget.setItem(2, 0, qtw.QTableWidgetItem("Minimum Velocity"))
+        self.tableWidget.setItem(2, 1, qtw.QTableWidgetItem("Minimum Velocity Value"))
+        self.tableWidget.setItem(3, 0, qtw.QTableWidgetItem("Maximum Velocity"))
+        self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem("Maximum Velocity Value"))
+
+        return self.tableWidget
 
     #region > Report View Properties
 

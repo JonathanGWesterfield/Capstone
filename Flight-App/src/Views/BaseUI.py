@@ -10,6 +10,7 @@ class BaseView:
 
     def __init__(self):
         # Set the default font for all child Views
+        self.__subtitleFont = qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold)
         self.__titleFont = qtg.QFont("Helvetica Neue", 36, qtg.QFont.Bold)
         self.__mediumFont = qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold)
         self.__regularFont = qtg.QFont("Helvetica Neue", 14)
@@ -103,6 +104,33 @@ class BaseView:
         """
         del self.__mediumFont
     #endregion
+
+    # region > Subtitle Font Property
+    @property
+    def SubtitleFont(self):
+        """
+        Get the current default subtitle font for all child Views
+        :return: The current subtitle Font
+        """
+        return self.__subtitleFont
+
+    @SubtitleFont.setter
+    def set_SubtitleFont(self, font: qtg.QFont):
+        """
+        Set the default subtitle font for all child Views.
+        :param font: The font we want to change to
+        :return: None
+        """
+        self.__subtitleFont = font
+
+    @SubtitleFont.deleter
+    def del_SubtitleFont(self):
+        """
+        Deleter for the subtitle font.
+        :return: None
+        """
+        del self.__subtitleFont
+    # endregion
 
     def get_appName(self) -> str:
         """
