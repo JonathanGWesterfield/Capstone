@@ -82,6 +82,7 @@ class StartupView(BaseView):
         pixmap = qtg.QPixmap('../resources/DroneLogo.png')
         pixmap2 = pixmap.scaled(512, 512, qtc.Qt.KeepAspectRatio)
         label.setPixmap(pixmap2)
+        label.setAlignment(qtc.Qt.AlignCenter)
         label.show()
 
         # TODO: FIX THIS, THE PICTURE DOESN'T SHOW UP FOR SOME REASON AND NO ERROR IS THROWN
