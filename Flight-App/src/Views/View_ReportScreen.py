@@ -1,54 +1,98 @@
-#!/usr/bin/env python
-import PyQt5.QtWidgets as qtw
-import PyQt5.QtCore as qtc
+import sys
+from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
 import src.Views.Graph as Graph
 import matplotlib.pyplot as plt
 import datetime as dt
-from src.Views.BaseUI import BaseView
-import PyQt5.QtGui as qtg
 
-class ReportView(BaseView):
+class ReportWindow(qtw.QWidget):
+    """
+    The view for the report page that is shown when the user opens the application.
+
+    :ivar __btnExport: The class property for the 'Export Results' button. Allows us to attach functionality to it.
+    :ivar __btnFlyAgain: The class property for the 'Fly Again' button. Allows us to attach functionality to it.
+    :ivar __btnHome: The class property for the 'Return to Home' button. Allows us to attach functionality to it.
+    :ivar __btnViewGraph: The class property for the 'View Flight Path Graph' button. Allows us to attach functionality to it.
+    """
+
+    # Initialize signals. Use for switching between views.
+    sigExportResults = qtc.pyqtSignal()
+    sigStartTracking = qtc.pyqtSignal()
+    sigReturnHome = qtc.pyqtSignal()
 
     def __init__(self):
-        super().__init__()
+        """
+        Class Constructor
+        """
+        qtw.QWidget.__init__(self)
         self.initView()
 
     def initView(self):
         """
-        Creates the view with all of the control and display elements.
+        Sets up the view and lays out all of the components.
         :return: None
         """
+
+        # Set up the title, flight information section, and statistics table.
+        self.setWindowTitle('Report Window')
         titleLayout = self.setupTitle()
         flInfoLayout = self.setupFlightInfo()
         statistics = self.createTable()
 
+        # Initialize buttons and attach functionality.
+        self.__btnViewGraph = qtw.QPushButton('View Flight Path')
+        btnLayout = self.setButtonLayout()
+        self.BtnExport.clicked.connect(self.signalExportResults)
+        self.BtnFlyAgain.clicked.connect(self.signalStartTracking)
+        self.BtnHome.clicked.connect(self.signalReturnHome)
+        self.BtnViewGraph.clicked.connect(self.setupGraph)
+
+        # Create a grid layout for all elements except the title.
         gridLayout = qtw.QGridLayout()
         gridLayout.addLayout(flInfoLayout, 0, 0)
         gridLayout.addWidget(statistics, 1, 0)
-        btn = qtw.QPushButton('View Flight Path')
-        btn.clicked.connect(self.setupGraph)
-        gridLayout.addWidget(btn, 2, 0)
-        gridLayout.addLayout(self.setButtonLayout(), 3, 0) # layout the buttons
+        gridLayout.addWidget(self.BtnViewGraph, 2, 0)
+        gridLayout.addLayout(btnLayout, 3, 0)  # layout the buttons
 
+        # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
         vLayout.addLayout(titleLayout)
         vLayout.addLayout(gridLayout)
 
         # Attach the layout to the screen
-        self.window = qtw.QWidget()
-        self.window.setLayout(vLayout)
+        self.setLayout(vLayout)
+
+    def signalExportResults(self):
+        """
+        Sends a signal to the main controller that the Export Results button was pushed.
+        :return: none
+        """
+        self.sigExportResults.emit()
+
+    def signalStartTracking(self):
+        """
+        Sends a signal to the main controller that the Fly Again button was pushed.
+        :return: none
+        """
+        self.sigStartTracking.emit()
+
+    def signalReturnHome(self):
+        """
+        Sends a signal to the main controller that the Return Home button was pushed.
+        :return: none
+        """
+        self.sigReturnHome.emit()
 
     def setupTitle(self) -> qtw.QVBoxLayout:
         """
         Sets up the title with the application title on top and the name of the screen just below it.
         :return: Layout with the application title and screen title labels
         """
-        lblTitle = qtw.QLabel(self.get_appName())
-        lblTitle.setFont(self.TitleFont)
+        lblTitle = qtw.QLabel("UAS Performance Tracker")
+        lblTitle.setFont(qtg.QFont("Helvetica Neue", 36, qtg.QFont.Bold))
         lblTitle.setAlignment(qtc.Qt.AlignCenter)
 
         lblScreenTitle = qtw.QLabel('Flight Report')
-        lblScreenTitle.setFont(self.MediumFont)
+        lblScreenTitle.setFont(qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold))
         lblScreenTitle.setAlignment(qtc.Qt.AlignCenter)
 
         vbox = qtw.QVBoxLayout()
@@ -111,14 +155,14 @@ class ReportView(BaseView):
         put on screen.
         :return: The horizontal layout containing the 3 buttons
         """
-        self.__btnTestConfig = qtw.QPushButton('Export Results')
-        self.__btnStart = qtw.QPushButton('Fly Again')
-        self.__btnImport = qtw.QPushButton('Return to Home')
+        self.__btnExport = qtw.QPushButton('Export Results')
+        self.__btnFlyAgain = qtw.QPushButton('Fly Again')
+        self.__btnHome = qtw.QPushButton('Return to Home')
 
         buttonBox = qtw.QHBoxLayout()
-        buttonBox.addWidget(self.__btnTestConfig)
-        buttonBox.addWidget(self.__btnStart)
-        buttonBox.addWidget(self.__btnImport)
+        buttonBox.addWidget(self.__btnExport)
+        buttonBox.addWidget(self.__btnFlyAgain)
+        buttonBox.addWidget(self.__btnHome)
 
         return buttonBox
 
@@ -151,9 +195,10 @@ class ReportView(BaseView):
 
         return self.tableWidget
 
-    #region > Report View Properties
+        # region > Report View Properties
 
-    #region > Pilot Label Property
+        # region > Pilot Label Property
+
     @property
     def LblPilot(self) -> qtw.QLabel:
         """
@@ -178,9 +223,10 @@ class ReportView(BaseView):
         :return: None
         """
         del self.__lblPilot
-    #endregion
 
-    #region > Instructor Label Property
+    # endregion
+
+    # region > Instructor Label Property
     @property
     def LblInstructor(self) -> qtw.QLabel:
         """
@@ -205,9 +251,10 @@ class ReportView(BaseView):
         :return: None
         """
         del self.__lblInstructor
-    #endregion
 
-    #region > Flight Date Property
+    # endregion
+
+    # region > Flight Date Property
     @property
     def LblFlightDate(self) -> qtw.QLabel:
         """
@@ -232,9 +279,10 @@ class ReportView(BaseView):
         :return: None
         """
         del self.__lblFlDate
-    #endregion
 
-    #region > Flight Length Label Property
+    # endregion
+
+    # region > Flight Length Label Property
     @property
     def LblFlightLength(self) -> qtw.QLabel:
         """
@@ -259,9 +307,10 @@ class ReportView(BaseView):
         :return: None
         """
         del self.__lblFlLength
-    #endregion
 
-    #region > 3D Matplot Plot Property
+    # endregion
+
+    # region > 3D Matplot Plot Property
     @property
     def PltFlightPlot(self):
         """
@@ -286,15 +335,114 @@ class ReportView(BaseView):
         :return: None
         """
         del self.__line
-    #endregion
 
-    #endregion
+    # endregion
 
+    # region > Properties for the buttons so we can attach functionality to them in child classes
 
-app = qtw.QApplication([])
+    @property
+    def BtnExport(self) -> qtw.QPushButton:
+        """
+        The test light button for the view. Need to access this to attach functionality to the button in a
+        child controller class.
+        :return: None
+        """
+        return self.__btnExport
 
-ui = ReportView()
-ui.showWindow()
+    @BtnExport.setter
+    def set_BtnExport(self, btn: qtw.QPushButton):
+        """
+        The setter for the test light button.
+        :param btn: A Qt QPushButton we want to replace the start button with.
+        :return: None
+        """
+        self.__btnExport = btn
 
-app.exec()
+    @BtnExport.deleter
+    def del_BtnExport(self):
+        """
+        Deleter for the test light button. Never call this.
+        :return: None
+        """
+        del self.__btnExport
 
+    @property
+    def BtnFlyAgain(self) -> qtw.QPushButton:
+        """
+        The test full setup button for the view. Need to access this to attach functionality to the button in a
+        child controller class. Is used to import past flight files.
+        :return: None
+        """
+        return self.__btnFlyAgain
+
+    @BtnFlyAgain.setter
+    def set_BtnFlyAgain(self, btn: qtw.QPushButton):
+        """
+        Setter for the test full setup button.
+        :param btn: A Qt QPushButton we want to replace the import button with.
+        :return: None
+        """
+        self.__btnFlyAgain = btn
+
+    @BtnFlyAgain.deleter
+    def del_BtnFlyAgain(self):
+        """
+        Deleter for the test full setup button. Never call this.
+        :return: None
+        """
+        del self.__btnFlyAgain
+
+    @property
+    def BtnHome(self) -> qtw.QPushButton:
+        """
+        The home for the view. Need to access this to attach functionality to the button in a
+        child controller class. Is used to return to home screen.
+        :return: None
+        """
+        return self.__btnHome
+
+    @BtnHome.setter
+    def set_BtnHome(self, btn: qtw.QPushButton):
+        """
+        Setter for the home button.
+        :param btn: A Qt QPushButton we want to replace the import button with.
+        :return: None
+        """
+        self.__btnHome = btn
+
+    @BtnHome.deleter
+    def del_BtnHome(self):
+        """
+        Deleter for the home button. Never call this.
+        :return: None
+        """
+        del self.__btnHome
+
+    @property
+    def BtnViewGraph(self) -> qtw.QPushButton:
+        """
+        The home for the view. Need to access this to attach functionality to the button in a
+        child controller class. Is used to return to home screen.
+        :return: None
+        """
+        return self.__btnViewGraph
+
+    @BtnViewGraph.setter
+    def set_BtnViewGraph(self, btn: qtw.QPushButton):
+        """
+        Setter for the home button.
+        :param btn: A Qt QPushButton we want to replace the import button with.
+        :return: None
+        """
+        self.__btnViewGraph = btn
+
+    @BtnViewGraph.deleter
+    def del_BtnViewGraph(self):
+        """
+        Deleter for the home button. Never call this.
+        :return: None
+        """
+        del self.__btnViewGraph
+    # endregion
+
+    # endregion

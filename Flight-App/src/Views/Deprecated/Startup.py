@@ -6,7 +6,6 @@ import PyQt5.QtGui as qtg
 
 from src.Views.BaseUI import BaseView
 
-
 class StartupView(BaseView):
     """
     The view for the startup page that is shown when the user starts the application. Inherits from the BaseView Class.
@@ -37,7 +36,7 @@ class StartupView(BaseView):
         lblTitle.setFont(self.TitleFont)
         lblTitle.setAlignment(qtc.Qt.AlignCenter)
 
-        # Set the app logo TODO: NOT WORKING NEED TO FIX
+        # Set the app logo
         logo = self.setupPicture()
 
         # Set the label with the team members
@@ -85,7 +84,6 @@ class StartupView(BaseView):
         label.setAlignment(qtc.Qt.AlignCenter)
         label.show()
 
-        # TODO: FIX THIS, THE PICTURE DOESN'T SHOW UP FOR SOME REASON AND NO ERROR IS THROWN
         return label
 
 
@@ -177,12 +175,6 @@ class StartupView(BaseView):
         del self.__btnImport
 
     #endregion
-
-
-    # # Creating the class properties for the buttons. Allows to easily attach functionality to them
-    # btnTestConfig = property(btnTestConfig, set_btnTestConfig, del_btnTestConfig)
-    # btnStart = property(btnStart, set_btnStart, del_btnStart)
-    # btnImport = property(btnImport, set_btnImport, del_btnImport)
 
 
 ui = StartupView()
