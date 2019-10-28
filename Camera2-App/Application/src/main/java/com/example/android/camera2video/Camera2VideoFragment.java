@@ -66,7 +66,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class Camera2VideoFragment extends Fragment
-        implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
+        implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback, Observer {
 
     private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
     private static final int SENSOR_ORIENTATION_INVERSE_DEGREES = 270;
@@ -116,6 +116,11 @@ public class Camera2VideoFragment extends Fragment
      * preview.
      */
     private CameraCaptureSession mPreviewSession;
+
+    /**
+     * Our access to the {@link com.example.android.camera2video.NetConn} singleton so we can send and receive messages
+     */
+    private NetConn conn;
 
     /**
      * {@link TextureView.SurfaceTextureListener} handles several lifecycle events on a
@@ -239,11 +244,15 @@ public class Camera2VideoFragment extends Fragment
      * @return The video size
      */
     private static Size chooseVideoSize(Size[] choices) {
-        for (int i = choices.length - 1; i >= 0; --i) {
-            if (choices[i].getWidth() == choices[i].getHeight() * 16 / 9 && choices[i].getWidth() <= 2160) {
-                return choices[i];
-            }
-        }
+//        for (int i = choices.length - 1; i >= 0; --i) {
+//            if (choices[i].getWidth() == choices[i].getHeight() * 16 / 9 && choices[i].getWidth() <= 2160) {
+//                return choices[i];
+//            }
+//        }
+        // Get rid of this after testing
+        for(Size size : choices)
+            if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 1080)
+                return size;
         Log.e(TAG, "Couldn't find any suitable video size");
         return choices[choices.length - 1];
     }
@@ -292,6 +301,8 @@ public class Camera2VideoFragment extends Fragment
         mButtonVideo = (Button) view.findViewById(R.id.video);
         mButtonVideo.setOnClickListener(this);
         view.findViewById(R.id.info).setOnClickListener(this);
+
+        conn = NetConn.getInstance();
     }
 
     @Override
@@ -333,6 +344,38 @@ public class Camera2VideoFragment extends Fragment
                 }
                 break;
             }
+        }
+    }
+
+    /**
+     * The update function for this application. We need to listen for network signals so
+     * we can start/stop recording and file transferring.
+     * @param signal The signal type that was received from the laptop.
+     * @param message The optional message that accompanied the signal.
+     */
+    public void update(Signal signal, String message)
+    {
+        try
+        {
+            switch(signal)
+            {
+                case START:
+                    startRecordingVideo();
+                    conn.sendMessage(Signal.START_ACKNOWLEDGE.toString());
+                    break;
+                case STOP:
+                    stopRecordingVideo();
+                    conn.sendMessage(Signal.STOP_ACKNOWLEDGE.toString());
+                    break;
+                case START_FTP:
+                    // TODO: PUT THE FILE TRANSFER FUNCTION CALL HERE
+                    conn.sendMessage(Signal.START_FTP_ACKNOWLEDGE.toString());
+                    break;
+            }
+        }
+        catch (IOException e)
+        {
+            Log.e("ERROR", e.getMessage());
         }
     }
 
@@ -595,29 +638,29 @@ public class Camera2VideoFragment extends Fragment
 
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath);
 
-        // Get highest resolution the camera has (which should be 4K on the real phone)
-        CamcorderProfile uHDprof = CamcorderProfile.get(Integer.parseInt(mCameraDevice.getId()),
-                CamcorderProfile.QUALITY_HIGH);
-
-        // Check to make sure that this 4k video profile is valid for phone its on
-        for(Size size : map.getOutputSizes(MediaRecorder.class))
-        {
-            if (size.getHeight() == uHDprof.videoFrameHeight && size.getWidth() == uHDprof.videoFrameWidth) {
-                // you may use this profile
-                mMediaRecorder.setProfile(uHDprof);
-                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-                switch (mSensorOrientation) {
-                    case SENSOR_ORIENTATION_DEFAULT_DEGREES:
-                        mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
-                        break;
-                    case SENSOR_ORIENTATION_INVERSE_DEGREES:
-                        mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
-                        break;
-                }
-                mMediaRecorder.prepare();
-                return;
-            }
-        }
+//        // Get highest resolution the camera has (which should be 4K on the real phone)
+//        CamcorderProfile uHDprof = CamcorderProfile.get(Integer.parseInt(mCameraDevice.getId()),
+//                CamcorderProfile.QUALITY_LOW);
+//
+//        // Check to make sure that this 4k video profile is valid for phone its on
+//        for(Size size : map.getOutputSizes(MediaRecorder.class))
+//        {
+//            if (size.getHeight() == uHDprof.videoFrameHeight && size.getWidth() == uHDprof.videoFrameWidth) {
+//                // you may use this profile
+//                mMediaRecorder.setProfile(uHDprof);
+//                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+//                switch (mSensorOrientation) {
+//                    case SENSOR_ORIENTATION_DEFAULT_DEGREES:
+//                        mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
+//                        break;
+//                    case SENSOR_ORIENTATION_INVERSE_DEGREES:
+//                        mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
+//                        break;
+//                }
+//                mMediaRecorder.prepare();
+//                return;
+//            }
+//        }
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mMediaRecorder.setVideoEncodingBitRate(10000000);
         mMediaRecorder.setVideoFrameRate(30);

@@ -25,10 +25,17 @@ public class CameraActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        Camera2VideoFragment fragment = Camera2VideoFragment.newInstance();
+        NetConn conn = NetConn.getInstance();
+        conn.getReadLoop().addObserver(fragment); // add the Camera fragment as an observer
+        conn.startReadLoop();
+
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, Camera2VideoFragment.newInstance())
+                    .replace(R.id.container, fragment)
                     .commit();
+
         }
     }
 
