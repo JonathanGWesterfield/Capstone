@@ -12,10 +12,36 @@ def readCoordinates(filename):
     with open(filename, 'r') as f:
         reader = csv.reader(f, delimiter=' ')
         for row in reader:
-            x.append(float(row[0]))
-            y.append(float(row[1]))
-            z.append(float(row[2]))
+            xCoord = float(row[0])
+            yCoord = float(row[1])
+            zCoord = float(row[2])
+            if (checkLegalInput(xCoord,yCoord,zCoord)):
+                x.append(xCoord)
+                y.append(yCoord)
+                z.append(zCoord)
     return x, y, z
+
+def checkLegalInput(x, y, z):
+    """
+    Checks if the inputted 3D coordinate is within legal bounds. Legal bounds are:
+    x, y, z > 0 and x < 30 and y < 15 and z < 10
+    return: A boolean denoting if legal or not (true if legal, false if outside bounds).
+    """
+    if math.isnan(x) or math.isnan(y) or math.isnan(z):
+        return False
+    elif x < 0 or y < 0 or z < 0:
+        return False
+    elif x > 30:
+        return False
+    elif y > 15:
+        return False
+    elif z > 10:
+        return False
+    else:
+        return True
+
+    return True
+
 
 def computeVelocity(x1, y1, z1, x2, y2, z2, t1, t2):
     """
