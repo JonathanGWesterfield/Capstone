@@ -39,11 +39,11 @@ class LoadingWindow(qtw.QWidget):
         #  mapping in Controller class once the functionality is implemented to automatically load report view after
         #  analysis.
         self.__btnTestReport = qtw.QPushButton("Test Report View")
-        self.__btnTestReport.clicked.connect(self.signalTestReport)
+        self.BtnTestReport.clicked.connect(self.signalTestReport)
 
         # Initialize and attach functionality to home button
         self.__btnHome = qtw.QPushButton('Cancel Analysis and Return to Home')
-        self.__btnHome.clicked.connect(self.returnHome)
+        self.BtnHome.clicked.connect(self.returnHome)
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
@@ -129,5 +129,30 @@ class LoadingWindow(qtw.QWidget):
         :return: None
         """
         del self.__btnHome
+
+    @property
+    def BtnTestReport(self) -> qtw.QPushButton:
+        """
+        The test report for the view. Is used to switch to the test report screen.
+        :return: None
+        """
+        return self.__btnTestReport
+
+    @BtnTestReport.setter
+    def set_BtnTestReport(self, btn: qtw.QPushButton):
+        """
+        Setter for the test report button.
+        :param btn: A Qt QPushButton we want to replace the test report button with.
+        :return: None
+        """
+        self.__btnTestReport = btn
+
+    @BtnTestReport.deleter
+    def del_BtnTestReport(self):
+        """
+        Deleter for the test report button. Never call this.
+        :return: None
+        """
+        del self.__btnTestReport
 
     # endregion
