@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
-import src.Views.Graph as Graph
+import Graph
 import matplotlib.pyplot as plt
 import datetime as dt
 
@@ -149,9 +149,9 @@ class ReportWindow(qtw.QWidget):
          """
         # fig = plt.figure()
         # Import coordinates
-        x, y, z = Graph.readCoordinates('../Tests/TestFiles/coordinates_tiny.rtf')
+        x, y, z, timearray = Graph.readCoordinates('../Tests/TestFiles/coordinates_tiny.rtf', 1)
         # Generate and show graph
-        fig = Graph.genGraph(x, y, z)
+        fig = Graph.generateGraph(x, y, z, timearray)
 
         # Define manager so figure can be viewed upon button click
         new_manager = fig.canvas.manager

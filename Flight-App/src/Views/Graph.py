@@ -3,23 +3,34 @@ import matplotlib.pyplot as plt
 import csv
 import math
 
-def readCoordinates(filename):
+def readCoordinates(filename, timeStep):
     """
-    Reads the input file of drone coordinates, where a 3d coordinate is stored as a row.
-    :return: An array of x coordinates, an array of y coordinates, an array of z coordinates
+    Reads the input file of drone coordinates, where a 3d coordinate is stored as a row. Also takes in a value timeStep
+    denoting the time difference (in seconds) between coordinates.
+    :return: An array of x coordinates, an array of y coordinates, an array of z coordinates, an array of time values
+    as seconds counting up from 0 with change timeStep between two legal inputs.
     """
-    x, y, z = [], [], []
+    # Initialize time at 0
+    initialTime = 0
+    timeDiff = initialTime
+
+    # Initialize arrays
+    x, y, z, timearray = [], [], [], []
+
+    # Read line by line through the file. Only add the point if legal input. Time value should still increment even if
+    # value is illegal input.
     with open(filename, 'r') as f:
         reader = csv.reader(f, delimiter=' ')
         for row in reader:
-            xCoord = float(row[0])
-            yCoord = float(row[1])
-            zCoord = float(row[2])
-            if (checkLegalInput(xCoord,yCoord,zCoord)):
-                x.append(xCoord)
-                y.append(yCoord)
-                z.append(zCoord)
-    return x, y, z
+            if (checkLegalInput(row[0],row[1],row[2])):
+                x.append(float(row[0]))
+                y.append(float(row[1]))
+                z.append(float(row[2]))
+                timearray.append(timeDiff)
+            timeDiff = timeDiff + timeStep
+
+    # Return arrays
+    return x, y, z, timearray
 
 def checkLegalInput(x, y, z):
     """
@@ -27,6 +38,12 @@ def checkLegalInput(x, y, z):
     x, y, z > 0 and x < 30 and y < 15 and z < 10
     return: A boolean denoting if legal or not (true if legal, false if outside bounds).
     """
+    try:
+        x = float(x)
+        y = float(y)
+        z = float(z)
+    except:
+        return False
     if math.isnan(x) or math.isnan(y) or math.isnan(z):
         return False
     elif x < 0 or y < 0 or z < 0:
@@ -44,7 +61,7 @@ def checkLegalInput(x, y, z):
 
 def computeVelocity(x1, y1, z1, x2, y2, z2, t1, t2):
     """
-    Computes the velocity of the drone between two points in time.
+    Computes the velocity of the drone between two points (x1,y1,z1) and (x2,y2,z2) at respective times t1 and t2.
     :return: A float value representing the velocity of the drone.
     """
     distance = math.sqrt(math.pow(x2 - x1, 2) +
@@ -54,9 +71,11 @@ def computeVelocity(x1, y1, z1, x2, y2, z2, t1, t2):
     velocity = distance/timestep
     return velocity
 
-def velocityPoints(x, y, z):
+def velocityPoints(x, y, z, timearray):
     """
     Calculates the velocity of the drone between consecutive points for the entire flight.
+    Input: array of x coordinates, array of y coordinates, array of z coordinates, array of time values as seconds
+    counting up from 0.
     :return: An array of velocity points for the drone.
     """
     if len(x) != len(y) or len(y) != len(z) or len(y) != len(x):
@@ -64,7 +83,7 @@ def velocityPoints(x, y, z):
     velocityArray = []
     i=0
     for i in range(len(x)-1):
-       vel = computeVelocity(x[i], y[i], z[i],x[i+1],y[i+1],z[i+1],0,1)
+       vel = computeVelocity(x[i], y[i], z[i],x[i+1],y[i+1],z[i+1],timearray[i],timearray[i+1])
        velocityArray.append(vel)
 
     return velocityArray
@@ -88,9 +107,11 @@ def velocityColors(vel):
             colors.append('g')
     return colors
 
-def generateGraph(x, y, z):
+def generateGraph(x, y, z, timearray):
     """
     Driver function for generating the 3d graph of drone coordinates.
+    Input: array of x coordinates, array of y coordinates, array of z coordinates, array of time values as seconds
+    counting up from 0.
     :return: The figure to display as the 3d graph.
     """
     # Plot points on the graph
@@ -99,7 +120,7 @@ def generateGraph(x, y, z):
     ax.scatter(x, y, z, c="k", marker='o')
 
     # Get velocities and line segment coloring
-    vel = velocityPoints(x, y, z)
+    vel = velocityPoints(x, y, z, timearray)
     colors = velocityColors(vel)
 
     # Add line segment coloring
@@ -125,7 +146,7 @@ def generateGraph(x, y, z):
     return fig
 
 # Import coordinates
-x, y, z = readCoordinates('../Tests/TestFiles/coordinates_small_spiral.rtf')
+# x, y, z, timearray = readCoordinates('../Tests/TestFiles/coordinates_small_spiral.rtf', 1)
 
 # Generate and show graph
-generateGraph(x, y, z).show()
+# generateGraph(x, y, z, timearray).show()
