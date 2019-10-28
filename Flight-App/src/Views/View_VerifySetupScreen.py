@@ -20,7 +20,7 @@ class VerifySetupWindow(qtw.QWidget):
         Class Constructor
         """
         qtw.QWidget.__init__(self)
-        self.setFixedSize(550, 250)
+        self.setFixedSize(550, 550)
         self.initView()
 
     def initView(self):
@@ -28,6 +28,7 @@ class VerifySetupWindow(qtw.QWidget):
         Sets up the view and lays out all of the components.
         :return: None
         """
+        self.setWindowTitle('Verify Setup Screen')
 
         # Set the title label
         title = self.setTitle()
@@ -122,8 +123,7 @@ class VerifySetupWindow(qtw.QWidget):
     @property
     def BtnTestLight(self) -> qtw.QPushButton:
         """
-        The test light button for the view. Need to access this to attach functionality to the button in a
-        child controller class.
+        The test light button so we can attach functionality to it later on.
         :return: None
         """
         return self.__btnTestLight
@@ -148,8 +148,8 @@ class VerifySetupWindow(qtw.QWidget):
     @property
     def BtnTestFull(self) -> qtw.QPushButton:
         """
-        The test full setup button for the view. Need to access this to attach functionality to the button in a
-        child controller class. Is used to import past flight files.
+        The test full setup button for the view so we can attach functionality to it later on.
+        Is used to import past flight files.
         :return: None
         """
         return self.__btnTestFull
@@ -158,7 +158,7 @@ class VerifySetupWindow(qtw.QWidget):
     def set_BtnTestFull(self, btn: qtw.QPushButton):
         """
         Setter for the test full setup button.
-        :param btn: A Qt QPushButton we want to replace the import button with.
+        :param btn: A Qt QPushButton we want to replace the test full setup button with.
         :return: None
         """
         self.__btnTestFull = btn
@@ -174,8 +174,7 @@ class VerifySetupWindow(qtw.QWidget):
     @property
     def BtnHome(self) -> qtw.QPushButton:
         """
-        The home for the view. Need to access this to attach functionality to the button in a
-        child controller class. Is used to return to home screen.
+        The home for the view. Is used to return to home screen.
         :return: None
         """
         return self.__btnHome
@@ -184,7 +183,7 @@ class VerifySetupWindow(qtw.QWidget):
     def set_BtnHome(self, btn: qtw.QPushButton):
         """
         Setter for the home button.
-        :param btn: A Qt QPushButton we want to replace the import button with.
+        :param btn: A Qt QPushButton we want to replace the home button with.
         :return: None
         """
         self.__btnHome = btn
@@ -200,8 +199,8 @@ class VerifySetupWindow(qtw.QWidget):
     @property
     def BtnCheck(self) -> qtw.QPushButton:
         """
-        The check status button for the view. Need to access this to attach functionality to the button in a
-        child controller class. Is used to check the status of the set up procedures.
+        The check status button for the view so we can attach functionality to it later on.
+        Is used to check the status of the set up procedures.
         :return: None
         """
         return self.__btnCheck
@@ -210,7 +209,7 @@ class VerifySetupWindow(qtw.QWidget):
     def set_BtnCheck(self, btn: qtw.QPushButton):
         """
         Setter for the check status button.
-        :param btn: A Qt QPushButton we want to replace the import button with.
+        :param btn: A Qt QPushButton we want to replace the check status button with.
         :return: None
         """
         self.__btnCheck = btn

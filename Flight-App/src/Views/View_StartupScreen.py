@@ -29,7 +29,7 @@ class StartupWindow(qtw.QWidget):
         Sets up the view and lays out all of the components.
         :return: None
         """
-        self.setWindowTitle('Startup Window')
+        self.setWindowTitle('Home Screen')
 
         # Set the labels for title and team members
         lblTitle = self.setTitle()
@@ -37,6 +37,9 @@ class StartupWindow(qtw.QWidget):
 
         # Set the app logo
         logo = self.setupPicture()
+
+        # Set up the Texas A&M icon
+        icon = self.setupAMLogo()
 
         # Initialize buttons and attach functionality
         btnLayout = self.setButtonLayout()
@@ -55,6 +58,7 @@ class StartupWindow(qtw.QWidget):
         vLayout.addWidget(logo)
         vLayout.addLayout(btnLayout)
         vLayout.addWidget(self.__btnTestReport)
+        vLayout.addWidget(icon)
         vLayout.addWidget(lblTeam)
 
         # Attach the layout to the screen
@@ -145,6 +149,20 @@ class StartupWindow(qtw.QWidget):
         label = qtw.QLabel()
         pixmap = qtg.QPixmap('../resources/DroneLogo.png')
         pixmap2 = pixmap.scaled(512, 512, qtc.Qt.KeepAspectRatio)
+        label.setPixmap(pixmap2)
+        label.setAlignment(qtc.Qt.AlignCenter)
+        label.show()
+
+        return label
+
+    def setupAMLogo(self):
+        """
+        Used for configuring the display for the A&M logo on the startup screen.
+        :return: None
+        """
+        label = qtw.QLabel()
+        pixmap = qtg.QPixmap('../resources/Tamu_Seal.png')
+        pixmap2 = pixmap.scaled(128, 128, qtc.Qt.KeepAspectRatio)
         label.setPixmap(pixmap2)
         label.setAlignment(qtc.Qt.AlignCenter)
         label.show()

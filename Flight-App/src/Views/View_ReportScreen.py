@@ -34,7 +34,7 @@ class ReportWindow(qtw.QWidget):
         """
 
         # Set up the title, flight information section, and statistics table.
-        self.setWindowTitle('Report Window')
+        self.setWindowTitle('Report Screen')
         titleLayout = self.setupTitle()
         flInfoLayout = self.setupFlightInfo()
         statistics = self.createTable()

@@ -16,6 +16,7 @@ class TrackingWindow(qtw.QWidget):
     """
     # Initialize signals. Use for switching between views.
     sigReturnHome = qtc.pyqtSignal()
+    sigStopTracking = qtc.pyqtSignal()
 
     def __init__(self):
         """
@@ -30,8 +31,9 @@ class TrackingWindow(qtw.QWidget):
          Initializes and lays out all of the controls and elements on the view.
          :return: None
          """
+        self.setWindowTitle('Tracking Screen')
+
         # Initialize titles
-        self.setWindowTitle('Tracking Window')
         title = self.setTitle()
         sectionTitle = self.setSubTitle("Flight Information")
 
@@ -46,8 +48,11 @@ class TrackingWindow(qtw.QWidget):
         startStop = self.setStartAndStopBtns()
         homeBtn = qtw.QPushButton('Return to Home')
 
-        # Attach functionality to clear, confirm, home buttons
+        # Attach functionality to stop and home buttons
         homeBtn.clicked.connect(self.returnHome)
+        self.BtnStop.clicked.connect(self.stopTracking)
+
+        # Initialize and attach functionality to clear, confirm buttons
         confirmBtn = self.BtnConfirm
         confirmBtn.clicked.connect(self.confirmValues)
         clearBtn = self.BtnClear
@@ -78,6 +83,13 @@ class TrackingWindow(qtw.QWidget):
         :return: none
         """
         self.sigReturnHome.emit()
+
+    def stopTracking(self):
+        """
+        Sends a signal to the main controller that the Stop Tracking button was pushed.
+        :return: none
+        """
+        self.sigStopTracking.emit()
 
     def setTitle(self) -> qtw.QVBoxLayout:
         """
