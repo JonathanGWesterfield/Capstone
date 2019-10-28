@@ -256,10 +256,14 @@ class TrackingWindow(qtw.QWidget):
 
         self.__btnStart = qtw.QPushButton('Start Tracking')
         self.__btnStop = qtw.QPushButton('Stop Tracking')
+        space1 = qtw.QSpacerItem(100, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+        space2 = qtw.QSpacerItem(100, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
 
         buttonBox = qtw.QHBoxLayout()
+        buttonBox.addSpacerItem(space1)
         buttonBox.addWidget(self.__btnStart)
         buttonBox.addWidget(self.__btnStop)
+        buttonBox.addSpacerItem(space2)
 
         return buttonBox
 

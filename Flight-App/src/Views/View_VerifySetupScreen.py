@@ -32,17 +32,26 @@ class VerifySetupWindow(qtw.QWidget):
 
         # Set the title label
         title = self.setTitle()
+        logo = self.setupPicture()
 
         # Initialize check status and home buttons
         self.__btnCheck = qtw.QPushButton('Check Setup Status')
         self.__btnHome = qtw.QPushButton('Return to Home')
 
         # Attach functionality to buttons
-        self.__btnHome.clicked.connect(self.returnHome)
+        self.BtnHome.clicked.connect(self.returnHome)
+        self.BtnCheck.clicked.connect(self.checkStatus)
+
+        # Spacer to make the view more pleasing
+        verticalSpacer = qtw.QSpacerItem(20, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+        verticalSpacer2 = qtw.QSpacerItem(20, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
         vLayout.addLayout(title)
+        vLayout.addSpacerItem(verticalSpacer)
+        vLayout.addWidget(logo)
+        vLayout.addSpacerItem(verticalSpacer2)
         vLayout.addLayout(self.setButtonLayout())  # layout the buttons
         vLayout.addWidget(self.__btnCheck)
         vLayout.addWidget(self.__btnHome)
@@ -92,6 +101,31 @@ class VerifySetupWindow(qtw.QWidget):
         buttonBox.addWidget(self.__btnTestFull)
 
         return buttonBox
+
+    def checkStatus(self):
+        """
+         Shows the status of the system setup.
+         TODO: Replace with bool once test functionality integrated
+         :return: None
+         """
+        msgBox = qtw.QMessageBox()
+        msgBox.setText(
+            "Phone Status: \n" + "Working" + "\nLight Status: \n" + "Working" + "\nFull Setup: \n" + "Working")
+        msgBox.exec()
+
+    def setupPicture(self):
+        """
+        Used for configuring the display for the logo on the screen.
+        :return: None
+        """
+        label = qtw.QLabel()
+        pixmap = qtg.QPixmap('../resources/DroneLogo.png')
+        pixmap2 = pixmap.scaled(512, 512, qtc.Qt.KeepAspectRatio)
+        label.setPixmap(pixmap2)
+        label.setAlignment(qtc.Qt.AlignCenter)
+        label.show()
+
+        return label
 
     # region > Properties for the buttons so we can attach functionality to them in child classes
 
