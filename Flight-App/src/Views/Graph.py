@@ -42,7 +42,6 @@ def checkLegalInput(x, y, z):
 
     return True
 
-
 def computeVelocity(x1, y1, z1, x2, y2, z2, t1, t2):
     """
     Computes the velocity of the drone between two points in time.

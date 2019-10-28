@@ -33,7 +33,6 @@ class Graph_Test(unittest.TestCase):
         # Check not a number
         self.assertFalse(Graph.checkLegalInput("\n", 5, 3))
 
-
     def test_readCoordinates(self):
         x, y, z = Graph.readCoordinates('TestFiles/coordinates_tiny.rtf')
         self.assertEqual(x, [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 3.0, 1.0])
