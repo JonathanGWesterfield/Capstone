@@ -1,0 +1,176 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:2:1-34:12
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:2:1-34:12
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:2:1-34:12
+MERGED from [com.android.support:support-v13:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-v13-28.0.0.aar/918ff716294d3253ba9ea7101e3d62bf/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-v4:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-v4-28.0.0.aar/8e184572cc4928f69dc7d9bd7ab8225f/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:cardview-v7:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/cardview-v7-28.0.0.aar/a2894f7e219492dec1074e2c33ede3c8/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/2fa3729906ae848976af8e10e16e1a7c/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/565a9806f9f3a349d5f91b2a10cf5c53/AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:support-media-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-media-compat-28.0.0.aar/b216099fa7d34fb6e4c21e29c1ad3370/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/17b63dcef308b519cccc05fbf40641b0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/7bf14be8af9c51004894716e406fdb13/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/81ab8cf09f693bf4734c8b9efa972701/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/f7874d916a4a435a8357fe02d19333ab/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/609f88a97ae4f8065a250fa217fab2ed/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:loader:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/0705464900b41687748d9cc1be02933e/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:viewpager:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/bb9a7e5249046aecfb27a91016cee696/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/c60f63bfad854f68f94222dadfaab1d5/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:drawerlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/6ae2cbcbf2e86368233b3f42fccf0040/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/74d434b7a1f31cb8cd989dfde933ad32/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:customview:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/45385bf7092395ebbdfbaff8dd49f1ef/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/afb6bf15a2c50640699c2ba3b0035299/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/ec449a94f4607b93a3ec9f9eac8f5e6c/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/e624ec2cc221ba74a42ebb16071609bd/AndroidManifest.xml:17:1-24:12
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/1af6d49d675634850d3a6bda34079144/AndroidManifest.xml:17:1-25:12
+MERGED from [com.android.support:cursoradapter:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/03ca68295bbc4f576e647496427c3b2e/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/0f9ed34a69c336bc04bea0bc21ec40ba/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:documentfile:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/e96298eafc2c2cba3269c3894a727c87/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/89e44f9f5aa72c5cd99531063ba2637f/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:print:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/673c5dddfd61a180f76ee24b4404975b/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:interpolator:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/757ba29cf248d2357e575ff816846ef1/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/9c1f02867161818f71b2a4a5115db816/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/29c6c3f7f603d1689c2751e184e7a2d7/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/1dbb59e6d8ebb1815946e60b88803074/AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/21a959a5fa82e084c861855016b038be/AndroidManifest.xml:17:1-22:12
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:2:1-34:12
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:2:1-34:12
+	package
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:3:5-47
+	android:versionName
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:5:5-30
+		INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+		INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:4:5-28
+		INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+		INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+uses-permission#android.permission.CAMERA
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:7:5-65
+	android:name
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:7:22-62
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:8:5-71
+	android:name
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:8:22-68
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:9:5-81
+	android:name
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:9:22-78
+application
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:11:5-32:19
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/565a9806f9f3a349d5f91b2a10cf5c53/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/565a9806f9f3a349d5f91b2a10cf5c53/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support:support-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/e624ec2cc221ba74a42ebb16071609bd/AndroidManifest.xml:22:5-94
+MERGED from [com.android.support:support-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/e624ec2cc221ba74a42ebb16071609bd/AndroidManifest.xml:22:5-94
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/1af6d49d675634850d3a6bda34079144/AndroidManifest.xml:22:5-23:19
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/1af6d49d675634850d3a6bda34079144/AndroidManifest.xml:22:5-23:19
+	android:appComponentFactory
+		ADDED from [com.android.support:support-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/e624ec2cc221ba74a42ebb16071609bd/AndroidManifest.xml:22:18-91
+	android:label
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:14:9-41
+	android:icon
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:13:9-45
+	android:allowBackup
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:12:9-35
+	android:theme
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:15:9-45
+activity#com.example.android.camera2video.Connect
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:16:9-22:20
+	android:name
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:16:19-42
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:17:13-21:29
+action#android.intent.action.MAIN
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:18:17-69
+	android:name
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:18:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:20:17-77
+	android:name
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:20:27-74
+activity#com.example.android.camera2video.CameraActivity
+ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:23:9-31:20
+	android:label
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:25:13-45
+	android:name
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml:24:13-43
+uses-sdk
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+MERGED from [com.android.support:support-v13:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-v13-28.0.0.aar/918ff716294d3253ba9ea7101e3d62bf/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v13:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-v13-28.0.0.aar/918ff716294d3253ba9ea7101e3d62bf/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-v4-28.0.0.aar/8e184572cc4928f69dc7d9bd7ab8225f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-v4-28.0.0.aar/8e184572cc4928f69dc7d9bd7ab8225f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/cardview-v7-28.0.0.aar/a2894f7e219492dec1074e2c33ede3c8/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/cardview-v7-28.0.0.aar/a2894f7e219492dec1074e2c33ede3c8/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/2fa3729906ae848976af8e10e16e1a7c/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/2fa3729906ae848976af8e10e16e1a7c/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/565a9806f9f3a349d5f91b2a10cf5c53/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/565a9806f9f3a349d5f91b2a10cf5c53/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-media-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-media-compat-28.0.0.aar/b216099fa7d34fb6e4c21e29c1ad3370/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-media-compat-28.0.0.aar/b216099fa7d34fb6e4c21e29c1ad3370/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/17b63dcef308b519cccc05fbf40641b0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/17b63dcef308b519cccc05fbf40641b0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/7bf14be8af9c51004894716e406fdb13/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-28.0.0.aar/7bf14be8af9c51004894716e406fdb13/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/81ab8cf09f693bf4734c8b9efa972701/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-core-ui-28.0.0.aar/81ab8cf09f693bf4734c8b9efa972701/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/f7874d916a4a435a8357fe02d19333ab/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-core-utils-28.0.0.aar/f7874d916a4a435a8357fe02d19333ab/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/609f88a97ae4f8065a250fa217fab2ed/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-28.0.0.aar/609f88a97ae4f8065a250fa217fab2ed/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:loader:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/0705464900b41687748d9cc1be02933e/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:loader:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/loader-28.0.0.aar/0705464900b41687748d9cc1be02933e/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:viewpager:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/bb9a7e5249046aecfb27a91016cee696/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:viewpager:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/viewpager-28.0.0.aar/bb9a7e5249046aecfb27a91016cee696/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/c60f63bfad854f68f94222dadfaab1d5/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:coordinatorlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-28.0.0.aar/c60f63bfad854f68f94222dadfaab1d5/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:drawerlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/6ae2cbcbf2e86368233b3f42fccf0040/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:drawerlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/drawerlayout-28.0.0.aar/6ae2cbcbf2e86368233b3f42fccf0040/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/74d434b7a1f31cb8cd989dfde933ad32/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:slidingpanelayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-28.0.0.aar/74d434b7a1f31cb8cd989dfde933ad32/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customview:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/45385bf7092395ebbdfbaff8dd49f1ef/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customview:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/customview-28.0.0.aar/45385bf7092395ebbdfbaff8dd49f1ef/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/afb6bf15a2c50640699c2ba3b0035299/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:swiperefreshlayout:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-28.0.0.aar/afb6bf15a2c50640699c2ba3b0035299/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/ec449a94f4607b93a3ec9f9eac8f5e6c/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:asynclayoutinflater:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-28.0.0.aar/ec449a94f4607b93a3ec9f9eac8f5e6c/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/e624ec2cc221ba74a42ebb16071609bd/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/e624ec2cc221ba74a42ebb16071609bd/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/1af6d49d675634850d3a6bda34079144/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:versionedparcelable:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/versionedparcelable-28.0.0.aar/1af6d49d675634850d3a6bda34079144/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cursoradapter:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/03ca68295bbc4f576e647496427c3b2e/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cursoradapter:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/cursoradapter-28.0.0.aar/03ca68295bbc4f576e647496427c3b2e/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/0f9ed34a69c336bc04bea0bc21ec40ba/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/0f9ed34a69c336bc04bea0bc21ec40ba/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:documentfile:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/e96298eafc2c2cba3269c3894a727c87/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:documentfile:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/documentfile-28.0.0.aar/e96298eafc2c2cba3269c3894a727c87/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/89e44f9f5aa72c5cd99531063ba2637f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:localbroadcastmanager:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-28.0.0.aar/89e44f9f5aa72c5cd99531063ba2637f/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:print:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/673c5dddfd61a180f76ee24b4404975b/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:print:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/print-28.0.0.aar/673c5dddfd61a180f76ee24b4404975b/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/757ba29cf248d2357e575ff816846ef1/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:interpolator:28.0.0] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/interpolator-28.0.0.aar/757ba29cf248d2357e575ff816846ef1/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/9c1f02867161818f71b2a4a5115db816/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.1.aar/9c1f02867161818f71b2a4a5115db816/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/29c6c3f7f603d1689c2751e184e7a2d7/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/livedata-1.1.1.aar/29c6c3f7f603d1689c2751e184e7a2d7/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/1dbb59e6d8ebb1815946e60b88803074/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.1.aar/1dbb59e6d8ebb1815946e60b88803074/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/21a959a5fa82e084c861855016b038be/AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.1] /Users/jgwesterfield/.gradle/caches/transforms-1/files-1.1/runtime-1.1.1.aar/21a959a5fa82e084c861855016b038be/AndroidManifest.xml:20:5-44
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+		INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+		ADDED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
+		INJECTED from /Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Camera2-App/Application/src/main/AndroidManifest.xml
