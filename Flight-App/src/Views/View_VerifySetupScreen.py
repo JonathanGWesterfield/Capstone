@@ -5,11 +5,11 @@ class VerifySetupWindow(qtw.QWidget):
     """
     The view for the verify setup page that is shown when the user presses the "Verify Setup" button on the home page.
 
-    :ivar __btnPhoneSync: The class property for the 'Phone Sync' button. Allows us to attach functionality to it.
-    :ivar __btnTestLight: The class property for the 'Test Light' button. Allows us to attach functionality to it.
-    :ivar __btnTestFull: The class property for the 'Test Full Setup' button. Allows us to attach functionality to it.
-    :ivar __btnCheck: The class property for the 'Check Status' button. Allows us to attach functionality to it.
-    :ivar __btnHome: The class property for the 'Return to Home' button. Allows us to attach functionality to it.
+    :ivar __btnPhoneSync: The class property for the 'Phone Sync' button.
+    :ivar __btnTestLight: The class property for the 'Test Light' button.
+    :ivar __btnTestFull: The class property for the 'Test Full Setup' button.
+    :ivar __btnCheck: The class property for the 'Check Status' button.
+    :ivar __btnHome: The class property for the 'Return to Home' button.
     """
 
     # Initialize signals. Use for switching between views.
@@ -20,6 +20,7 @@ class VerifySetupWindow(qtw.QWidget):
         Class Constructor
         """
         qtw.QWidget.__init__(self)
+        self.setFixedSize(550, 250)
         self.initView()
 
     def initView(self):
@@ -40,7 +41,7 @@ class VerifySetupWindow(qtw.QWidget):
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
-        vLayout.addWidget(title)
+        vLayout.addLayout(title)
         vLayout.addLayout(self.setButtonLayout())  # layout the buttons
         vLayout.addWidget(self.__btnCheck)
         vLayout.addWidget(self.__btnHome)
@@ -55,16 +56,24 @@ class VerifySetupWindow(qtw.QWidget):
         """
         self.sigReturnHome.emit()
 
-    def setTitle(self) -> qtw.QLabel:
+    def setTitle(self) -> qtw.QVBoxLayout:
         """
-        Sets up the title label for the window
-        :return: Title label
+        Sets up the title with the application title on top and the name of the screen just below it.
+        :return: Layout with the application title and screen title labels
         """
-        lblTitle = qtw.QLabel('Verify Setup')
-        lblTitle.setFont(qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold))
+        lblTitle = qtw.QLabel("UAS Performance Tracker")
+        lblTitle.setFont(qtg.QFont("Helvetica Neue", 36, qtg.QFont.Bold))
         lblTitle.setAlignment(qtc.Qt.AlignCenter)
 
-        return lblTitle
+        lblTitle2 = qtw.QLabel('Verify Setup')
+        lblTitle2.setFont(qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold))
+        lblTitle2.setAlignment(qtc.Qt.AlignCenter)
+
+        vbox = qtw.QVBoxLayout()
+        vbox.addWidget(lblTitle)
+        vbox.addWidget(lblTitle2)
+
+        return vbox
 
     def setButtonLayout(self) -> qtw.QHBoxLayout:
         """

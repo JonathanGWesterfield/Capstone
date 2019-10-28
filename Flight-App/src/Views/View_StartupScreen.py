@@ -5,9 +5,9 @@ class StartupWindow(qtw.QWidget):
     """
     The view for the home Startup page that is shown when the user opens the application.
 
-    :ivar __btnVerifySetup: The class property for the 'Verify Setup' button. Allows us to attach functionality to it.
-    :ivar __btnStart: The class property for the 'Start Tracking' button. Allows us to attach functionality to it.
-    :ivar __btnImport: The class property for the 'Import Previous Flight' button. Allows us to attach functionality to it.
+    :ivar __btnVerifySetup: The class property for the 'Verify Setup' button.
+    :ivar __btnStart: The class property for the 'Start Tracking' button.
+    :ivar __btnImport: The class property for the 'Import Previous Flight' button.
     """
 
     # Initialize signals. Use for switching between views.
@@ -21,6 +21,7 @@ class StartupWindow(qtw.QWidget):
         Class Constructor
         """
         qtw.QWidget.__init__(self)
+        self.setFixedSize(550, 550)
         self.initView()
 
     def initView(self):
@@ -31,7 +32,7 @@ class StartupWindow(qtw.QWidget):
         self.setWindowTitle('Startup Window')
 
         # Set the labels for title and team members
-        lblTitle = self.setTitle("UAS Performance Tracker")
+        lblTitle = self.setTitle()
         lblTeam = self.setTeamMembers()
 
         # Set the app logo
@@ -50,7 +51,7 @@ class StartupWindow(qtw.QWidget):
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
-        vLayout.addWidget(lblTitle)
+        vLayout.addLayout(lblTitle)
         vLayout.addWidget(logo)
         vLayout.addLayout(btnLayout)
         vLayout.addWidget(self.__btnTestReport)
@@ -88,27 +89,36 @@ class StartupWindow(qtw.QWidget):
         """
         self.sigTestReport.emit()
 
-    def setTitle(self, text) -> qtw.QLabel:
+    def setTitle(self) -> qtw.QVBoxLayout:
         """
-        Sets up the title label for the window
-        :return: Title of the application
+        Sets up the title with the application title on top and the name of the screen just below it.
+        :return: Layout with the application title and screen title labels
         """
-        lblTitle = qtw.QLabel(text)
-        lblTitle.setFont(qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold))
+        lblTitle = qtw.QLabel("UAS Performance Tracker")
+        lblTitle.setFont(qtg.QFont("Helvetica Neue", 36, qtg.QFont.Bold))
         lblTitle.setAlignment(qtc.Qt.AlignCenter)
 
-        return lblTitle
+        lblTitle2 = qtw.QLabel('Home Screen')
+        lblTitle2.setFont(qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold))
+        lblTitle2.setAlignment(qtc.Qt.AlignCenter)
 
-    def setTeamMembers(self) -> qtw.QLabel:
+        vbox = qtw.QVBoxLayout()
+        vbox.addWidget(lblTitle)
+        vbox.addWidget(lblTitle2)
+
+        return vbox
+
+    def setTeamMembers(self) -> qtw.QVBoxLayout:
         """
         Sets up the team members label for the window
         :return: Team members label of the application
         """
-        lblTeam = qtw.QLabel("Jonathan Westerfield, Hayley Eckert, Donald Elrod, Ismael Rodriguez, Ariana Boroujerdi")
-        lblTeam.setFont(qtg.QFont("Helvetica Neue", 14))
-        lblTeam.setAlignment(qtc.Qt.AlignCenter)
+        lblTeam1 = qtw.QLabel("Team members:\nJonathan Westerfield, Hayley Eckert, Donald Elrod, \nIsmael Rodriguez, Ariana Boroujerdi")
+        lblTeam1.setFont(qtg.QFont("Helvetica Neue", 14))
+        lblTeam1.setAlignment(qtc.Qt.AlignCenter)
+        lblTeam1.setWordWrap(True)
 
-        return lblTeam
+        return lblTeam1
 
     def setButtonLayout(self) -> qtw.QHBoxLayout:
         """

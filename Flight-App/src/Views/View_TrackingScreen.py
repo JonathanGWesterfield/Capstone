@@ -6,8 +6,13 @@ from PyQt5 import QtGui as qtg
 
 class TrackingWindow(qtw.QWidget):
     """
-    This is the screen view that allows the user to input the pilot and instructor information,
-    and start tracking the drone.
+    The view for the tracking view page that is shown when the user presses the "Start Tracking" button on the home page.
+    Allows the user to enter in flight information and begin tracking the drone.
+
+    :ivar __btnConfirm: The class property for the 'Confirm' button.
+    :ivar __btnClear: The class property for the 'Clear' button.
+    :ivar __btnStart: The class property for the 'Start Tracking' button.
+    :ivar __btnStop: The class property for the 'Stop Tracking' button.
     """
     # Initialize signals. Use for switching between views.
     sigReturnHome = qtc.pyqtSignal()
@@ -17,6 +22,7 @@ class TrackingWindow(qtw.QWidget):
         Class Constructor
         """
         qtw.QWidget.__init__(self)
+        self.setFixedSize(550, 550)
         self.initView()
 
     def initView(self):
@@ -26,7 +32,8 @@ class TrackingWindow(qtw.QWidget):
          """
         # Initialize titles
         self.setWindowTitle('Tracking Window')
-        title = self.setTitle("Flight Information")
+        title = self.setTitle()
+        sectionTitle = self.setSubTitle("Flight Information")
 
         # Initialize textboxes
         pilot = self.setPilot()  # Setup the pilot textbox
@@ -51,7 +58,8 @@ class TrackingWindow(qtw.QWidget):
 
         # Layout the elements
         vLayout = qtw.QVBoxLayout()
-        vLayout.addWidget(title)
+        vLayout.addLayout(title)
+        vLayout.addWidget(sectionTitle)
         vLayout.addLayout(pilot)
         vLayout.addLayout(instructor)
         vLayout.addLayout(instructions)
@@ -71,14 +79,33 @@ class TrackingWindow(qtw.QWidget):
         """
         self.sigReturnHome.emit()
 
-    def setTitle(self, text) -> qtw.QLabel:
+    def setTitle(self) -> qtw.QVBoxLayout:
         """
-        Sets up the title label for the window
-        :return: Title of the application taken from the base class
+        Sets up the title with the application title on top and the name of the screen just below it.
+        :return: Layout with the application title and screen title labels
+        """
+        lblTitle = qtw.QLabel("UAS Performance Tracker")
+        lblTitle.setFont(qtg.QFont("Helvetica Neue", 36, qtg.QFont.Bold))
+        lblTitle.setAlignment(qtc.Qt.AlignCenter)
+
+        lblTitle2 = qtw.QLabel('Tracking View')
+        lblTitle2.setFont(qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold))
+        lblTitle2.setAlignment(qtc.Qt.AlignCenter)
+
+        vbox = qtw.QVBoxLayout()
+        vbox.addWidget(lblTitle)
+        vbox.addWidget(lblTitle2)
+
+        return vbox
+
+    def setSubTitle(self, text) -> qtw.QLabel:
+        """
+        Sets up a subtitle label for the window
+        :return: Subtitle of the application taken from the "text" parameter
         """
         lblTitle = qtw.QLabel(text)
-        lblTitle.setFont(qtg.QFont("Helvetica Neue", 24, qtg.QFont.Bold))
-        lblTitle.setAlignment(qtc.Qt.AlignCenter)
+        lblTitle.setFont(qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold))
+        lblTitle.setAlignment(qtc.Qt.AlignLeft)
 
         return lblTitle
 
@@ -123,12 +150,12 @@ class TrackingWindow(qtw.QWidget):
         :return: Returns a vertical layout with the pilot label over the pilot textbox
         """
         self.__lblPilot = qtw.QLabel('Pilot: ')
-        self.__lblPilot.setAlignment(qtc.Qt.AlignCenter)
+        self.__lblPilot.setAlignment(qtc.Qt.AlignLeft)
 
         self.__tbPilot = qtw.QLineEdit('')
         self.__tbPilot.setPlaceholderText('Pilot Name Here')
         self.__tbPilot.resize(280, 40)
-        self.__tbPilot.setAlignment(qtc.Qt.AlignCenter)
+        self.__tbPilot.setAlignment(qtc.Qt.AlignLeft)
 
         vbox = qtw.QVBoxLayout()
         vbox.addWidget(self.__lblPilot)
@@ -143,12 +170,12 @@ class TrackingWindow(qtw.QWidget):
         :return: Returns a vertical layout with the instructor label over the instructor textbox
         """
         self.__lblInstr = qtw.QLabel('Instructor: ')
-        self.__lblInstr.setAlignment(qtc.Qt.AlignCenter)
+        self.__lblInstr.setAlignment(qtc.Qt.AlignLeft)
 
         self.__tbInstr = qtw.QLineEdit()
         self.__tbInstr.setPlaceholderText('Instructor Name Here')
         self.__tbInstr.resize(280, 40)
-        self.__tbInstr.setAlignment(qtc.Qt.AlignCenter)
+        self.__tbInstr.setAlignment(qtc.Qt.AlignLeft)
 
         vbox = qtw.QVBoxLayout()
         vbox.addWidget(self.__lblInstr)
@@ -162,7 +189,7 @@ class TrackingWindow(qtw.QWidget):
         to try to match.
         :return: A vertical layout with the Instructions label on top of the text box
         """
-        lblInstr = self.setTitle('Flight Instructions')
+        lblInstr = self.setSubTitle('Flight Instructions')
 
         self.__teInstr = qtw.QPlainTextEdit('')
         self.__teInstr.setPlaceholderText('Add Flight Instructions Here')

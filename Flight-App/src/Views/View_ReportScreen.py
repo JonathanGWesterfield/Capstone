@@ -8,10 +8,10 @@ class ReportWindow(qtw.QWidget):
     """
     The view for the report page that is shown when the user opens the application.
 
-    :ivar __btnExport: The class property for the 'Export Results' button. Allows us to attach functionality to it.
-    :ivar __btnFlyAgain: The class property for the 'Fly Again' button. Allows us to attach functionality to it.
-    :ivar __btnHome: The class property for the 'Return to Home' button. Allows us to attach functionality to it.
-    :ivar __btnViewGraph: The class property for the 'View Flight Path Graph' button. Allows us to attach functionality to it.
+    :ivar __btnExport: The class property for the 'Export Results' button.
+    :ivar __btnFlyAgain: The class property for the 'Fly Again' button.
+    ivar __btnHome: The class property for the 'Return to Home' button.
+    :ivar __btnViewGraph: The class property for the 'View Flight Path' button.
     """
 
     # Initialize signals. Use for switching between views.
@@ -24,6 +24,7 @@ class ReportWindow(qtw.QWidget):
         Class Constructor
         """
         qtw.QWidget.__init__(self)
+        self.setFixedSize(550, 550)
         self.initView()
 
     def initView(self):
@@ -101,6 +102,17 @@ class ReportWindow(qtw.QWidget):
 
         return vbox
 
+    def setSubTitle(self, text) -> qtw.QLabel:
+        """
+        Sets up a subtitle label for the window
+        :return: Subtitle of the application taken from the "text" parameter
+        """
+        lblTitle = qtw.QLabel(text)
+        lblTitle.setFont(qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold))
+        lblTitle.setAlignment(qtc.Qt.AlignLeft)
+
+        return lblTitle
+
     def setupFlightInfo(self) -> qtw.QGridLayout:
         """
         Sets up the flight info (pilot, instructor, date, length, and smoothness score) in a grid so it gets laid out nice and pretty.
@@ -114,8 +126,7 @@ class ReportWindow(qtw.QWidget):
         self.__lblFlSmoothness = qtw.QLabel('0')
 
         grid = qtw.QGridLayout()
-        flightInfoTitle = qtw.QLabel('Flight Information')
-        flightInfoTitle.setFont(qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold))
+        flightInfoTitle = self.setSubTitle('Flight Information')
         grid.addWidget(flightInfoTitle, 0, 0)
         grid.addWidget(qtw.QLabel('Pilot: '), 1, 0)
         grid.addWidget(self.__lblPilot, 1, 1)
@@ -126,8 +137,7 @@ class ReportWindow(qtw.QWidget):
         grid.addWidget(qtw.QLabel('Flight Length: '), 4, 0)
         grid.addWidget(self.__lblFlLength, 4, 1)
 
-        statisticsInfoTitle = qtw.QLabel('Statistics')
-        statisticsInfoTitle.setFont(qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold))
+        statisticsInfoTitle = self.setSubTitle("Statistics")
         grid.addWidget(statisticsInfoTitle, 5, 0)
 
         return grid
