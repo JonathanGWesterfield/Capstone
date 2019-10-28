@@ -10,6 +10,7 @@ class LoadingWindow(qtw.QWidget):
 
     # Initialize signals. Use for switching between views.
     sigReturnHome = qtc.pyqtSignal()
+    sigTestReport = qtc.pyqtSignal()
 
     def __init__(self):
         """
@@ -32,16 +33,23 @@ class LoadingWindow(qtw.QWidget):
         # Set up loading icon
         loadingIcon = self.setupLoadingIcon()
 
-        # Initialize check status and home buttons
-        self.__btnHome = qtw.QPushButton('Cancel Analysis and Return to Home')
+        # Initialize and attach functionality to view report button
+        # TODO: For testing purposes only.
+        #  Remove button btnTestReport, function signalTestReport, signal sigTestReport, and associated
+        #  mapping in Controller class once the functionality is implemented to automatically load report view after
+        #  analysis.
+        self.__btnTestReport = qtw.QPushButton("Test Report View")
+        self.__btnTestReport.clicked.connect(self.signalTestReport)
 
-        # Attach functionality to buttons
+        # Initialize and attach functionality to home button
+        self.__btnHome = qtw.QPushButton('Cancel Analysis and Return to Home')
         self.__btnHome.clicked.connect(self.returnHome)
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
         vLayout.addLayout(title)
         vLayout.addWidget(loadingIcon)
+        vLayout.addWidget(self.__btnTestReport)
         vLayout.addWidget(self.__btnHome)
 
         # Attach the layout to the screen
@@ -53,6 +61,14 @@ class LoadingWindow(qtw.QWidget):
         :return: none
         """
         self.sigReturnHome.emit()
+
+    def signalTestReport(self):
+        """
+        Sends a signal to the main controller that the Test Report button was pushed.
+        NOTE: ONLY USED FOR TESTING PURPOSES
+        :return: none
+        """
+        self.sigTestReport.emit()
 
     def setTitle(self) -> qtw.QVBoxLayout:
         """

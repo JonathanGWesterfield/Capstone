@@ -14,7 +14,6 @@ class StartupWindow(qtw.QWidget):
     sigVerifySetup = qtc.pyqtSignal()
     sigStartTracking = qtc.pyqtSignal()
     sigImportFlight = qtc.pyqtSignal()
-    sigTestReport = qtc.pyqtSignal()
 
     def __init__(self):
         """
@@ -43,21 +42,15 @@ class StartupWindow(qtw.QWidget):
 
         # Initialize buttons and attach functionality
         btnLayout = self.setButtonLayout()
-        # TODO: Remove button btnTestReport, function signalTestReport, signal sigTestReport, and associated
-        #  mapping in Controller class once the functionality is implemented to automatically load report view after
-        #  analysis. For now, used for testing purposes.
-        self.__btnTestReport = qtw.QPushButton("Test Report View")
         self.BtnVerifySetup.clicked.connect(self.signalVerifySetup)
         self.BtnStart.clicked.connect(self.signalStartTracking)
         self.BtnImport.clicked.connect(self.signalImportFlight)
-        self.__btnTestReport.clicked.connect(self.signalTestReport)
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
         vLayout.addLayout(lblTitle)
         vLayout.addWidget(logo)
         vLayout.addLayout(btnLayout)
-        vLayout.addWidget(self.__btnTestReport)
         vLayout.addWidget(icon)
         vLayout.addWidget(lblTeam)
 
@@ -84,14 +77,6 @@ class StartupWindow(qtw.QWidget):
         :return: none
         """
         self.sigImportFlight.emit()
-
-    def signalTestReport(self):
-        """
-        Sends a signal to the main controller that the Test Report button was pushed.
-        NOTE: ONLY USED FOR TESTING PURPOSES
-        :return: none
-        """
-        self.sigTestReport.emit()
 
     def setTitle(self) -> qtw.QVBoxLayout:
         """
