@@ -158,6 +158,11 @@ public class Camera2VideoFragment extends Fragment
     private Size mVideoSize;
 
     /**
+     * The map of different aspect ratios that the phone camera can handle.
+     */
+    private StreamConfigurationMap map;
+
+    /**
      * MediaRecorder
      */
     private MediaRecorder mMediaRecorder;
@@ -225,16 +230,18 @@ public class Camera2VideoFragment extends Fragment
     }
 
     /**
-     * In this sample, we choose a video size with 3x4 aspect ratio. Also, we don't use sizes
-     * larger than 1080p, since MediaRecorder cannot handle such a high-resolution video.
+     * In this sample, we choose a video size with 16x9 aspect ratio. Also, we will
+     * be trying to get the biggest size that fits our aspect ratio so we can
+     * get the highest resolution video possible. These sizes make the emulator run
+     * hella slow but hopefully a real phone will handle the load much better.
      *
      * @param choices The list of available sizes
      * @return The video size
      */
     private static Size chooseVideoSize(Size[] choices) {
-        for (Size size : choices) {
-            if (size.getWidth() == size.getHeight() * 16 / 9 && size.getWidth() <= 2160) {
-                return size;
+        for (int i = choices.length - 1; i >= 0; --i) {
+            if (choices[i].getWidth() == choices[i].getHeight() * 16 / 9 && choices[i].getWidth() <= 2160) {
+                return choices[i];
             }
         }
         Log.e(TAG, "Couldn't find any suitable video size");
@@ -433,7 +440,7 @@ public class Camera2VideoFragment extends Fragment
 
             // Choose the sizes for camera preview and video recording
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-            StreamConfigurationMap map = characteristics
+            map = characteristics
                     .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             mSensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             if (map == null) {
@@ -580,32 +587,43 @@ public class Camera2VideoFragment extends Fragment
         if (null == activity) {
             return;
         }
+        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 
-        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
-        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        if (mNextVideoAbsolutePath == null || mNextVideoAbsolutePath.isEmpty()) {
+        if (mNextVideoAbsolutePath == null || mNextVideoAbsolutePath.isEmpty())
             mNextVideoAbsolutePath = getVideoFilePath(getActivity());
-        }
+
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath);
+
+        // Get highest resolution the camera has (which should be 4K on the real phone)
+        CamcorderProfile uHDprof = CamcorderProfile.get(Integer.parseInt(mCameraDevice.getId()),
+                CamcorderProfile.QUALITY_HIGH);
+
+        // Check to make sure that this 4k video profile is valid for phone its on
+        for(Size size : map.getOutputSizes(MediaRecorder.class))
+        {
+            if (size.getHeight() == uHDprof.videoFrameHeight && size.getWidth() == uHDprof.videoFrameWidth) {
+                // you may use this profile
+                mMediaRecorder.setProfile(uHDprof);
+                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+                switch (mSensorOrientation) {
+                    case SENSOR_ORIENTATION_DEFAULT_DEGREES:
+                        mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
+                        break;
+                    case SENSOR_ORIENTATION_INVERSE_DEGREES:
+                        mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
+                        break;
+                }
+                mMediaRecorder.prepare();
+                return;
+            }
+        }
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mMediaRecorder.setVideoEncodingBitRate(10000000);
         mMediaRecorder.setVideoFrameRate(30);
-//        CamcorderProfile prof = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-//        prof.videoFrameWidth = 640;
-//        prof.videoFrameHeight = 480;
-////      prof.videoFrameRate = 15;
-//        prof.videoCodec = MediaRecorder.VideoEncoder.H264;
-////      prof.audioCodec = MediaRecorder.AudioEncoder.AAC;
-//        prof.fileFormat = MediaRecorder.OutputFormat.MPEG_4;
-//        prof.videoFrameWidth = 3480;
-//        prof.videoFrameHeight = 2160;
-//        mMediaRecorder.setProfile(prof); // Make it take 4k video
-        mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
-//        mMediaRecorder.setVideoSize(3840, 2160);
         mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         switch (mSensorOrientation) {
             case SENSOR_ORIENTATION_DEFAULT_DEGREES:
