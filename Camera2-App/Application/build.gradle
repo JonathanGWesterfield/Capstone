@@ -29,7 +29,7 @@ dependencies {
 
     // File Transfer library
     implementation 'commons-net:commons-net:3.6'
-    implementation group: 'com.jcraft', name: 'jsch', version: '0.1.44-1'
+    implementation group: 'com.jcraft', name: 'jsch', version: '0.1.52'
 
     // Required for instrumented tests
     androidTestImplementation 'com.android.support:support-annotations:24.0.0'

@@ -58,15 +58,12 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class Camera2VideoFragment extends Fragment
-        implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback, Observer {
+        implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
 
     private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
     private static final int SENSOR_ORIENTATION_INVERSE_DEGREES = 270;
@@ -347,37 +344,6 @@ public class Camera2VideoFragment extends Fragment
         }
     }
 
-    /**
-     * The update function for this application. We need to listen for network signals so
-     * we can start/stop recording and file transferring.
-     * @param signal The signal type that was received from the laptop.
-     * @param message The optional message that accompanied the signal.
-     */
-    public void update(Signal signal, String message)
-    {
-        try
-        {
-            switch(signal)
-            {
-                case START:
-                    startRecordingVideo();
-                    conn.sendMessage(Signal.START_ACKNOWLEDGE.toString());
-                    break;
-                case STOP:
-                    stopRecordingVideo();
-                    conn.sendMessage(Signal.STOP_ACKNOWLEDGE.toString());
-                    break;
-                case START_FTP:
-                    // TODO: PUT THE FILE TRANSFER FUNCTION CALL HERE
-                    conn.sendMessage(Signal.START_FTP_ACKNOWLEDGE.toString());
-                    break;
-            }
-        }
-        catch (IOException e)
-        {
-            Log.e("ERROR", e.getMessage());
-        }
-    }
 
     /**
      * Starts a background thread and its {@link Handler}.
@@ -638,6 +604,7 @@ public class Camera2VideoFragment extends Fragment
 
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath);
 
+        // TODO: PUT THIS BACK INTO THE CODE WHEN WE GET A REAL PHONE HERE
 //        // Get highest resolution the camera has (which should be 4K on the real phone)
 //        CamcorderProfile uHDprof = CamcorderProfile.get(Integer.parseInt(mCameraDevice.getId()),
 //                CamcorderProfile.QUALITY_LOW);
@@ -679,13 +646,41 @@ public class Camera2VideoFragment extends Fragment
         mMediaRecorder.prepare();
     }
 
+    /**
+     * Used for determining the file path of the video footage once it is recorded.
+     * @param context The context this fragment is in.
+     * @return The file path the video needs to be sent to.
+     */
     private String getVideoFilePath(Context context) {
         final File dir = context.getExternalFilesDir(null);
+//        final String storageDirectory = "/sdcard/drone-tracker";
+
+        //File name is the time stamp the recording started
+        String currTime = Calendar.getInstance().getTime().toString().replaceAll(" ", "-");
+//        File storageDir = new File(storageDirectory);
+//
+//        // If the storage directory does not exist on the sd card, we must create it then save the file there
+//        if (!(storageDir.exists() && storageDir.isDirectory())) {
+//            Log.d(TAG, "Storage directory does not exist!");
+//            if (storageDir.mkdirs())
+//                Log.i(TAG, "Created the storage directory!");
+//            else
+//                Log.i(TAG, "Storage Directory Failed to create!!!");
+//        }
+//
+//        File videoFile = new File(storageDirectory + "/" + currTime);
+//        String filePath = videoFile.toString() + ".mp4";
+//
+//        return filePath;
+
+//        return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
+//                + System.currentTimeMillis() + ".mp4";
+
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
-                + System.currentTimeMillis() + ".mp4";
+                + currTime + ".mp4";
     }
 
-    private void startRecordingVideo() {
+    public void startRecordingVideo() {
         if (null == mCameraDevice || !mTextureView.isAvailable() || null == mPreviewSize) {
             return;
         }
@@ -750,22 +745,45 @@ public class Camera2VideoFragment extends Fragment
         }
     }
 
-    private void stopRecordingVideo() {
+    public void stopRecordingVideo() {
         // UI
         mIsRecordingVideo = false;
-        mButtonVideo.setText(R.string.record);
-        // Stop recording
-        mMediaRecorder.stop();
-        mMediaRecorder.reset();
+//        mButtonVideo.setText(R.string.record);
 
-        Activity activity = getActivity();
-        if (null != activity) {
-            Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,
-                    Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Video saved: " + mNextVideoAbsolutePath);
-        }
-        mNextVideoAbsolutePath = null;
-        startPreview();
+        // Have to put this on the main thread or else will get a CalledFromWrongThreadException
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mButtonVideo.setText(R.string.record);
+                // Stop recording
+                mMediaRecorder.stop();
+                mMediaRecorder.reset();
+
+                Activity activity = getActivity();
+                if (null != activity) {
+                    Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,
+                            Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Video saved: " + mNextVideoAbsolutePath);
+                }
+                mNextVideoAbsolutePath = null;
+                startPreview();
+            }
+        });
+
+//        // Stop recording
+//        mMediaRecorder.stop();
+//        mMediaRecorder.reset();
+//
+//        Activity activity = getActivity();
+//        if (null != activity) {
+//            Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,
+//                    Toast.LENGTH_SHORT).show();
+//            Log.d(TAG, "Video saved: " + mNextVideoAbsolutePath);
+//        }
+//        mNextVideoAbsolutePath = null;
+//        startPreview();
     }
 
     /**

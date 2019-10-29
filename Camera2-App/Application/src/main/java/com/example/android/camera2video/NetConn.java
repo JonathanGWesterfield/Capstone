@@ -21,6 +21,8 @@ class NetConn implements Serializable
     private int port;
     private String username;
     private String password;
+    private String fromFTPPath;
+    private String toFTPPath;
 
     private Socket socket;
     private BufferedWriter writer;
@@ -220,6 +222,8 @@ class NetConn implements Serializable
     {
         if (this.writer == null)
             throw new NullPointerException("ERROR! The Writer has not been initialized!!");
+
+        // TODO: MAKE THIS INTO A THREADED FUNCTION
 
         // Need an newline character or else the pipe won't close
         String endMessage = message + "\n";

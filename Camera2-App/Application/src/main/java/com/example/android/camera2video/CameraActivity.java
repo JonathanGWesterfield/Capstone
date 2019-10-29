@@ -18,25 +18,64 @@ package com.example.android.camera2video;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
-public class CameraActivity extends Activity {
+import java.io.IOException;
+
+public class CameraActivity extends Activity implements Observer
+{
+    Camera2VideoFragment cameraFrag;
+    NetConn conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        Camera2VideoFragment fragment = Camera2VideoFragment.newInstance();
-        NetConn conn = NetConn.getInstance();
-        conn.getReadLoop().addObserver(fragment); // add the Camera fragment as an observer
+        cameraFrag = Camera2VideoFragment.newInstance();
+        conn = NetConn.getInstance();
+        conn.getReadLoop().addObserver(this); // add the Camera fragment as an observer
         conn.startReadLoop();
 
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment)
+                    .replace(R.id.container, cameraFrag)
                     .commit();
 
         }
     }
 
+    /**
+     * The update function for this application. We need to listen for network signals so
+     * we can start/stop recording and file transferring.
+     * @param signal The signal type that was received from the laptop.
+     * @param message The optional message that accompanied the signal.
+     */
+    public void update(Signal signal, String message)
+    {
+        try
+        {
+            switch(signal)
+            {
+                case START:
+                    cameraFrag.startRecordingVideo();
+                    conn.sendMessage(Signal.START_ACKNOWLEDGE.toString());
+                    break;
+                case STOP:
+                    cameraFrag.stopRecordingVideo();
+                    conn.sendMessage(Signal.STOP_ACKNOWLEDGE.toString());
+                    break;
+                case START_FTP:
+                    // TODO: PUT THE FILE TRANSFER FUNCTION CALL HERE
+                    conn.sendMessage(Signal.START_FTP_ACKNOWLEDGE.toString());
+                    break;
+            }
+        }
+        catch (IOException e)
+        {
+            Log.e("ERROR", e.getMessage());
+        }
+    }
+
+    // TODO: FIX THE CALLEDFROMWRONGTHREADEXCEPTION using this 'https://stackoverflow.com/questions/5161951/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi'
 }
