@@ -144,9 +144,3 @@ def generateGraph(x, y, z, timearray):
     ax.set_title("Flight Path")
 
     return fig
-
-# Import coordinates
-# x, y, z, timearray = readCoordinates('../Tests/TestFiles/coordinates_small_spiral.rtf', 1)
-
-# Generate and show graph
-# generateGraph(x, y, z, timearray).show()
