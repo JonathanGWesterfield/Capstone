@@ -138,8 +138,8 @@ def generateGraph(x, y, z, timearray):
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_zlabel('z')
-    ax.set_xlim3d(-15, 15)
-    ax.set_ylim3d(-15, 15)
+    ax.set_xlim3d(0, 30)
+    ax.set_ylim3d(0, 15)
     ax.set_zlim3d(0, 10)
     ax.set_title("Flight Path")
 
