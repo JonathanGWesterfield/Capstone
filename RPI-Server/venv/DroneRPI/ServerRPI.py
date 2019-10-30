@@ -1,4 +1,8 @@
-
+import socket
+import datetime
+import sys
+import os
+import time
 
 class ServerRPi:
     """
@@ -26,6 +30,7 @@ class ServerRPi:
     def setupSocket(self):
         """
         Creates the socket that we will use to listen for incoming connections
+        :raises: OSError Will throw an os error if the socket was closed too recently. "Address already in use"
         :return: None
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -45,6 +50,20 @@ class ServerRPi:
         """
         self.conn, self.addr = self.socket.accept()
         self.connected = True
+
+    def closeConn(self):
+        """
+        Closes all of the connections and the socket.
+        :return: None
+        """
+        # Make sure the phones are connected and synced first
+        if not self.connected:
+            return
+
+        self.socket.shutdown(2)
+        self.socket.close()
+        self.connected = False
+        print("Connection closed")
 
     def sendCommand(self, message: str):
         """
@@ -79,36 +98,41 @@ class ServerRPi:
             raise Exception('ERROR! Phone should have said something by now!\n')
 
         message = message.decode('utf-8').strip()
+        print("Received: ", message, "\n")
 
         return message
-
-
 
 def main():
     """
     This main loop will run forever or until the RPI is manually killed.
-    If the user sends the DISCONNECT command, we will disconnect but essentially start again so
-    we can reconnect. The only time this program really dies is when the user throws a keyboard
-    interrupt or shuts down the RPi
+    If the user sends the DISCONNECT command, we will disconnect and end the program. Being able to ssh into
+    the RPI is essential.
     :return: None
     """
-    while(True):
-        server = ServerRPi()
-        stop = false
-        while (True):
+    try:
+        server = ServerRPi(8001)
+        stop = False
+        while (not stop):
             message = server.listen()  # wait until we get a response from the laptop
             if message == 'FLASH':
-                pass  # TODO: PUT THE FUNCTION TO FLASH THE LIGHT HERE
+                """
+                TODO: PUT THE FUNCTION TO FLASH THE LIGHT HERE
+                """
+                server.sendCommand("FLASH_ACKNOWLEDGE")
             elif message == 'DISCONNECT':
                 stop = True
 
-if __name__ ==  '__main__':
-    try:
-        main()
+        # If the inner loop is escaped, it means kill connection and start over
+        print("Killing server to start again")
+        server.closeConn()
     except KeyboardInterrupt:
         print('\n\nQuitting!')
         try:
+            server.closeConn()
             sys.exit(0)
         except SystemExit:
             os._exit(0)
+
+if __name__ ==  '__main__':
+    main()
 
