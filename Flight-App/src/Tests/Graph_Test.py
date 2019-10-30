@@ -176,6 +176,35 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(z), numLegal)
         self.assertEqual(len(timearray), numLegal)
 
+    def test_graphShows_noError(self):
+        """
+        Test that graph generates correctly for data set of 200, then 800, then 1200 data points.
+        For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in return result.
+        :return: None
+        """
+
+        # Test small data sets
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+
+        # Test medium data sets
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+
+        # Test largest data sets
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+
     def test_velocityPoints(self):
         """
         Test that velocity between consecutive points is computed as expected.
@@ -199,6 +228,70 @@ class Graph_Test(unittest.TestCase):
         timearray = [0, 1, 2, 3, 4, 5, 6, 7, 8]
         vel = Graph.velocityPoints(x,y,z, timearray)
         self.assertEqual(Graph.velocityColors(vel), ['g', 'g', 'g', 'r','y','r','g','g'])
+
+    def test_velocityComputes_correctSize(self):
+        """
+        Test that velocityPoints returns array of correct size when inputted data set of 200, then 800, then 1200 data points.
+        For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in return result.
+        :return: None
+        """
+
+        # Test small data sets
+        size = 200
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
+        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), size-1)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
+        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), (.8*size - 1))
+
+        # Test medium data sets
+        size = 800
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
+        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), size-1)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
+        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), (.8*size - 1))
+
+        # Test largest data sets
+        size = 1200
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
+        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), size-1)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
+        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), (.8*size - 1))
+
+    def test_velocityColorsComputes_correctSize(self):
+        """
+        Test that velocityColors returns array of correct size when inputted data set of 200, then 800, then 1200 data points.
+        For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in return result.
+        :return: None
+        """
+
+        # Test small data sets
+        size = 200
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
+        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), size-1)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
+        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), (.8*size - 1))
+
+        # Test medium data sets
+        size = 800
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
+        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), size-1)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
+        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), (.8*size - 1))
+
+        # Test largest data sets
+        size = 1200
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
+        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), size-1)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
+        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), (.8*size - 1))
 
 if __name__ == '__main__':
     unittest.main()
