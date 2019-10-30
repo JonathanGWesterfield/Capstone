@@ -71,6 +71,111 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(z, [0.0, 1.0, 3.0, 8.0, 10.0, 10.0, 10.0, 9.0, 8.0])
         self.assertEqual(timearray, [0, 1, 2, 3, 5, 6, 7, 9, 11])
 
+    def test_readCoordinates_size200(self):
+        """
+        Test that file containing 200 (x,y,z) points is read in correctly.
+        One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in return result.
+        :return: None
+        """
+        length = 200
+        numLegal = 200 * 0.8
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
+        self.assertEqual(len(x), length)
+        self.assertEqual(len(y), length)
+        self.assertEqual(len(z), length)
+        self.assertEqual(len(timearray), length)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
+        self.assertEqual(len(x), numLegal)
+        self.assertEqual(len(y), numLegal)
+        self.assertEqual(len(z), numLegal)
+        self.assertEqual(len(timearray), numLegal)
+
+    def test_readCoordinates_size400(self):
+        """
+        Test that file containing 400 (x,y,z) points is read in correctly.
+        One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in return result.
+        :return: None
+        """
+        length = 400
+        numLegal = length * 0.8
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size400_legal100.txt', 1)
+        self.assertEqual(len(x), length)
+        self.assertEqual(len(y), length)
+        self.assertEqual(len(z), length)
+        self.assertEqual(len(timearray), length)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size400_legal80.txt', 1)
+        self.assertEqual(len(x), numLegal)
+        self.assertEqual(len(y), numLegal)
+        self.assertEqual(len(z), numLegal)
+        self.assertEqual(len(timearray), numLegal)
+
+    def test_readCoordinates_size800(self):
+        """
+        Test that file containing 800 (x,y,z) points is read in correctly.
+        One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in return result.
+        :return: None
+        """
+        length = 800
+        numLegal = length * 0.8
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
+        self.assertEqual(len(x), length)
+        self.assertEqual(len(y), length)
+        self.assertEqual(len(z), length)
+        self.assertEqual(len(timearray), length)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
+        self.assertEqual(len(x), numLegal)
+        self.assertEqual(len(y), numLegal)
+        self.assertEqual(len(z), numLegal)
+        self.assertEqual(len(timearray), numLegal)
+
+    def test_readCoordinates_size1000(self):
+        """
+        Test that file containing 1000 (x,y,z) points is read in correctly.
+        One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in return result.
+        :return: None
+        """
+        length = 1000
+        numLegal = length * 0.8
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1000_legal100.txt', 1)
+        self.assertEqual(len(x), length)
+        self.assertEqual(len(y), length)
+        self.assertEqual(len(z), length)
+        self.assertEqual(len(timearray), length)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1000_legal80.txt', 1)
+        self.assertEqual(len(x), numLegal)
+        self.assertEqual(len(y), numLegal)
+        self.assertEqual(len(z), numLegal)
+        self.assertEqual(len(timearray), numLegal)
+
+    def test_readCoordinates_size1200(self):
+        """
+        Test that file containing 1200 (x,y,z) points is read in correctly.
+        One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in return result.
+        :return: None
+        """
+        length = 1200
+        numLegal = length * 0.8
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
+        self.assertEqual(len(x), length)
+        self.assertEqual(len(y), length)
+        self.assertEqual(len(z), length)
+        self.assertEqual(len(timearray), length)
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
+        self.assertEqual(len(x), numLegal)
+        self.assertEqual(len(y), numLegal)
+        self.assertEqual(len(z), numLegal)
+        self.assertEqual(len(timearray), numLegal)
+
     def test_velocityPoints(self):
         """
         Test that velocity between consecutive points is computed as expected.

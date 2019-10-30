@@ -149,7 +149,7 @@ class ReportWindow(qtw.QWidget):
          """
         # fig = plt.figure()
         # Import coordinates
-        x, y, z, timearray = Graph.readCoordinates('../Tests/TestFiles/coordinates_tiny.rtf', 1)
+        x, y, z, timearray = Graph.readCoordinates('../Tests/TestFiles/spiral_size200_legal100.txt', 1)
         # Generate and show graph
         fig = Graph.generateGraph(x, y, z, timearray)
 
