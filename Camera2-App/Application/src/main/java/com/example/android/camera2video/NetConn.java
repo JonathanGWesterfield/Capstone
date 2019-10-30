@@ -29,6 +29,7 @@ class NetConn implements Serializable
     private BufferedReader reader;
     private ReadLoop listener;
     private Thread listenerThread;
+    private FTPConn ftpConn;
 
     static NetConn getInstance()
     {
@@ -44,7 +45,7 @@ class NetConn implements Serializable
     { /* Empty Default Constructor */ }
 
     /**
-     * Class constructor. Takes in the arguments and creates a connection to the target address.
+     * Class constructor.
      * @param ipAddr The IP address we are trying to connect to (the laptop).
      * @param port The port number that we must go through.
      */
@@ -52,6 +53,21 @@ class NetConn implements Serializable
     {
         this.ipAddr = ipAddr;
         this.port = port;
+    }
+
+    /**
+     * Class constructor
+     * @param ipAddr The IP address we are trying to connect to (the laptop).
+     * @param port The port number that we must go through.
+     * @param username The username of the user on the laptop.
+     * @param password The password of the user on the laptop.
+     */
+    private NetConn(String ipAddr, int port, String username, String password)
+    {
+        this.ipAddr = ipAddr;
+        this.port = port;
+        this.username = username;
+        this.password = password;
     }
 
     //region > Setters and getters for this class
@@ -136,6 +152,16 @@ class NetConn implements Serializable
         return this.listener;
     }
 
+    /**
+     * Getter for the user to access the FTP connection functions like setting the source or
+     * destination file locations.
+     * @return The current instance of the FTPConn class.
+     */
+    public FTPConn getFtpConn()
+    {
+        return this.ftpConn;
+    }
+
     //endregion
 
     /**
@@ -152,6 +178,24 @@ class NetConn implements Serializable
         {
             return false;
         }
+    }
+
+    /**
+     * Creates this classes instance of the FTP connection. Any action to get to the FTP connection
+     * must come through this NetConn singleton instance.
+     * @throws InstantiationException Thrown if port number, ip address, username or password is not set
+     */
+    public void createFTPConn() throws InstantiationException
+    {
+        // A port number of 0 means it wasn't set
+        if(this.port == 0 || this.ipAddr == null || this.username == null || this.password == null)
+            throw new InstantiationException(
+                    "IP Address, Port Number, Username, and Password must be set before a connection can be established!!!");
+
+        ftpConn = new FTPConn()
+                .setHost(this.ipAddr)
+                .setUsername(this.username)
+                .setPassword(this.password);
     }
 
     /**
@@ -230,7 +274,7 @@ class NetConn implements Serializable
         String logMessage = "Sent message to the server: " + endMessage;
         this.writer.write(endMessage);
         this.writer.flush();
-        Log.i("INFO", logMessage);
+        Log.i("NetConn", logMessage);
 
         return true;
     }

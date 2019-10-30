@@ -8,6 +8,20 @@
     tools:context=".ConnectActivity">
 
     <TextView
+        android:id="@+id/lblUsername"
+        android:layout_width="141dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="344dp"
+        android:text="Username"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
+
+    <TextView
         android:id="@+id/lblTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +61,7 @@
         android:id="@+id/lblLaptopPort"
         android:layout_width="206dp"
         android:layout_height="43dp"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="220dp"
         android:text="Laptop Port Number"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -81,5 +95,46 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblLaptopPort" />
+
+    <TextView
+        android:id="@+id/lblPassword"
+        android:layout_width="109dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="468dp"
+        android:text="Password"
+        android:textAlignment="textStart"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
+
+    <EditText
+        android:id="@+id/tbPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblPassword" />
+
+    <EditText
+        android:id="@+id/tbUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblUsername" />
 
 </android.support.constraint.ConstraintLayout>

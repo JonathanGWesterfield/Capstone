@@ -16,11 +16,14 @@ import java.net.UnknownHostException;
 
 public class ConnectActivity extends Activity
 {
-    String ipaddr;
+    String ipaddr, username, password;
     int port;
+
     Button btnConnect;
     TextView tbIPAddr;
     TextView tbPortNum;
+    TextView tbUsername;
+    TextView tbPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +36,17 @@ public class ConnectActivity extends Activity
         StrictMode.setThreadPolicy(policy);
     }
 
+    /**
+     * Initializes the view and associates all of the view controls with class members
+     * in this class.
+     */
     public void init()
     {
         this.btnConnect = (Button) findViewById(R.id.btnConnect);
         this.tbIPAddr = (TextView) findViewById(R.id.tbIPAddress);
         this.tbPortNum = (TextView) findViewById(R.id.tbPortNum);
+        this.tbUsername = (TextView) findViewById(R.id.tbUsername);
+        this.tbPassword = (TextView) findViewById(R.id.tbPassword);
     }
 
     /**
@@ -49,15 +58,21 @@ public class ConnectActivity extends Activity
     {
         this.ipaddr = this.tbIPAddr.getText().toString();
         this.port = Integer.parseInt(this.tbPortNum.getText().toString());
-//        switchToCameraActivity();
+        this.username = this.tbUsername.getText().toString();
+        this.password = this.tbPassword.getText().toString();
 
         try
         {
             // Setup the connection
             NetConn conn = NetConn.getInstance()
                     .setIPAddress(this.ipaddr)
-                    .setPortNumber(this.port);
+                    .setPortNumber(this.port)
+                    .setUsername(this.username)
+                    .setPassword(this.password);
+
             conn.createConn();
+            conn.createFTPConn();
+
             switchToCameraActivity();
         }
         catch (UnknownHostException e)

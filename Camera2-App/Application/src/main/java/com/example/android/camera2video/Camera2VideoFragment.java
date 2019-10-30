@@ -604,6 +604,9 @@ public class Camera2VideoFragment extends Fragment
 
         mMediaRecorder.setOutputFile(mNextVideoAbsolutePath);
 
+        // set the source file path for the ftp connection
+        conn.getFtpConn().setSrcFilePath(mNextVideoAbsolutePath);
+
         // TODO: PUT THIS BACK INTO THE CODE WHEN WE GET A REAL PHONE HERE
 //        // Get highest resolution the camera has (which should be 4K on the real phone)
 //        CamcorderProfile uHDprof = CamcorderProfile.get(Integer.parseInt(mCameraDevice.getId()),
@@ -768,6 +771,7 @@ public class Camera2VideoFragment extends Fragment
                     Log.d(TAG, "Video saved: " + mNextVideoAbsolutePath);
                 }
                 mNextVideoAbsolutePath = null;
+
                 startPreview();
             }
         });

@@ -16,6 +16,8 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -23,12 +25,13 @@ import java.net.UnknownHostException;
 
 public class FTPConn implements Observer
 {
-    String host, username, password, destFilePath;
+    String host, username, password, srcFilePath, destFilePath;
     int port = 22;
     private final String TAG = "FTPConn";
 
-    Channel channel;
-    ChannelSftp sftp;
+    private Channel channel;
+    private ChannelSftp sftp;
+    private Session session;
 
 
     //region > Class Constructors
@@ -93,6 +96,17 @@ public class FTPConn implements Observer
     public FTPConn setPassword(String password)
     {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Setter for the destination file path we need to get the video file from.
+     * @param filepath The source file path
+     * @return The current instance of this class according to the builder design pattern
+     */
+    public FTPConn setSrcFilePath(String filepath)
+    {
+        this.srcFilePath = filepath;
         return this;
     }
 
@@ -162,7 +176,7 @@ public class FTPConn implements Observer
     public void setupConn() throws JSchException
     {
         JSch jsch = new JSch();
-        Session session = jsch.getSession(this.username, this.host, this.port);
+        session = jsch.getSession(this.username, this.host, this.port);
         session.setPassword(this.password);
 
 //        java.util.Properties config = new java.util.Properties();
@@ -184,8 +198,10 @@ public class FTPConn implements Observer
      */
     public void closeConn()
     {
+        sftp.exit();
         sftp.disconnect();
         channel.disconnect();
+
     }
 
     /**
@@ -193,24 +209,42 @@ public class FTPConn implements Observer
      * @return True if it succeeded, false otherwise.
      * @throws SftpException
      */
-    public boolean upload(String srcFilePath) throws InstantiationException
+    public boolean upload() throws InstantiationException
     {
+        if(sftp == null || session == null)
+            throw new InstantiationException("SFTP Connection not established!");
         if(!sftp.isConnected() || sftp.isClosed())
             throw new InstantiationException("SFTP Connection not established!");
 
         try
         {
+            File src = new File(this.srcFilePath);
             sftp.cd(this.destFilePath);
             int mode = sftp.OVERWRITE;
             SftpProgressMonitor monitor = new MyProgressMonitor();
 
-            sftp.put(srcFilePath, this.destFilePath, monitor, mode);
+//            sftp.put(this.srcFilePath, this.destFilePath, monitor, mode);
+            sftp.put(new FileInputStream(src), src.getName(), ChannelSftp.OVERWRITE);
             closeConn();
+            NetConn.getInstance().sendMessage(Signal.FTP_COMPLETED.toString());
             return true;
         }
-        catch (SftpException e)
+        catch (FileNotFoundException e)
         {
-            Log.d(TAG, e.getMessage());
+            String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
+            Log.d(TAG, errMess);
+            Log.d(TAG, "Failed to Transfer the file");
+        }
+        catch (IOException e)
+        {
+            String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
+            Log.d(TAG, errMess);
+            Log.d(TAG, "Failed to Transfer the file");
+        }
+        catch (SftpException  e)
+        {
+            String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
+            Log.d(TAG, errMess);
             Log.d(TAG, "Failed to Transfer the file");
         }
         return false;

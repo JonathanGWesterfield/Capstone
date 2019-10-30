@@ -118,6 +118,9 @@ public class ReadLoop implements Runnable, Observable
         // split on the '-' character. The first token is the signal type
         String[] splitMessage = message.split(";");
 
+        if (splitMessage.length < 2) // only signal was recieved with no message
+            return "";
+
         return splitMessage[1];
     }
 

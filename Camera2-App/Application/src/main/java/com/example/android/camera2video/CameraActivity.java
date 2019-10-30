@@ -20,12 +20,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.jcraft.jsch.JSchException;
+
 import java.io.IOException;
 
 public class CameraActivity extends Activity implements Observer
 {
-    Camera2VideoFragment cameraFrag;
-    NetConn conn;
+    private Camera2VideoFragment cameraFrag;
+    private NetConn conn;
+    private final String TAG = "CameraActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +69,27 @@ public class CameraActivity extends Activity implements Observer
                     conn.sendMessage(Signal.STOP_ACKNOWLEDGE.toString());
                     break;
                 case START_FTP:
-                    // TODO: PUT THE FILE TRANSFER FUNCTION CALL HERE
                     conn.sendMessage(Signal.START_FTP_ACKNOWLEDGE.toString());
+                    conn.getFtpConn().setupConn();
+                    conn.getFtpConn().setDestFilePath(message);
+                    conn.getFtpConn().upload(); // Start the file transfer
                     break;
             }
         }
+        catch(JSchException e)
+        {
+            String errMess = Integer.toString(e.getStackTrace()[0].getLineNumber()) + e.getMessage();
+            Log.e(TAG, errMess);
+        }
+        catch(InstantiationException e)
+        {
+            String errMess = Integer.toString(e.getStackTrace()[0].getLineNumber()) + e.getMessage();
+            Log.e(TAG, errMess);
+        }
         catch (IOException e)
         {
-            Log.e("ERROR", e.getMessage());
+            String errMess = Integer.toString(e.getStackTrace()[0].getLineNumber()) + e.getMessage();
+            Log.e(TAG, errMess);
         }
     }
-
-    // TODO: FIX THE CALLEDFROMWRONGTHREADEXCEPTION using this 'https://stackoverflow.com/questions/5161951/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi'
 }

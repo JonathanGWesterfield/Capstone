@@ -75,9 +75,10 @@ public class FTPConnTest {
                     .setPassword(password)
                     .setDestFilePath(destPath);
             conn.setupConn();
+            conn.setSrcFilePath(testFilePath);
 
-            boolean succeded = conn.upload(testFilePath);
-            assertEquals(true, succeded);
+            boolean succeeded = conn.upload();
+            assertEquals(true, succeeded);
         }
         catch(Exception e)
         {
