@@ -32,27 +32,31 @@ class ReportWindow(qtw.QWidget):
         Sets up the view and lays out all of the components.
         :return: None
         """
-
         # Set up the title, flight information section, and statistics table.
         self.setWindowTitle('Report Screen')
         titleLayout = self.setupTitle()
         flInfoLayout = self.setupFlightInfo()
         statistics = self.createTable()
 
-        # Initialize buttons and attach functionality.
-        self.__btnViewGraph = qtw.QPushButton('View Flight Path')
+        # Initialize buttons.
+        self.__btnViewGraphNoVelocity = qtw.QPushButton('View Flight Path')
+        self.__btnViewGraphVelocity = qtw.QPushButton('View Flight Path with Velocity Changes')
         btnLayout = self.setButtonLayout()
+
+        # Attach funtionality to buttons.
         self.BtnExport.clicked.connect(self.signalExportResults)
         self.BtnFlyAgain.clicked.connect(self.signalStartTracking)
         self.BtnHome.clicked.connect(self.signalReturnHome)
-        self.BtnViewGraph.clicked.connect(self.setupGraph)
+        self.BtnViewGraphNoVelocity.clicked.connect(lambda *args: self.setupGraph(False))
+        self.BtnViewGraphVelocity.clicked.connect(lambda *args: self.setupGraph(True))
 
         # Create a grid layout for all elements except the title.
         gridLayout = qtw.QGridLayout()
         gridLayout.addLayout(flInfoLayout, 0, 0)
         gridLayout.addWidget(statistics, 1, 0)
-        gridLayout.addWidget(self.BtnViewGraph, 2, 0)
-        gridLayout.addLayout(btnLayout, 3, 0)  # layout the buttons
+        gridLayout.addWidget(self.BtnViewGraphNoVelocity, 2, 0)
+        gridLayout.addWidget(self.BtnViewGraphVelocity, 3, 0)
+        gridLayout.addLayout(btnLayout, 4, 0)  # layout the buttons
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
@@ -142,16 +146,17 @@ class ReportWindow(qtw.QWidget):
 
         return grid
 
-    def setupGraph(self):
+    def setupGraph(self, velocity: bool):
         """
-         Sets up the 3d plot for viewing upon click of button.
+         Sets up the 3d plot for viewing upon click of button. Velocity is a boolean denoting if the graph should
+         display colored segments for velocity.
          :return: None
          """
         # fig = plt.figure()
         # Import coordinates
         x, y, z, timearray = Graph.readCoordinates('../Tests/TestFiles/coordinates_tiny_centered.rtf', 1)
         # Generate and show graph
-        fig = Graph.generateGraph(x, y, z, timearray)
+        fig = Graph.generateGraph(x, y, z, timearray, velocity)
         # Define manager so figure can be viewed upon button click
         new_manager = fig.canvas.manager
         new_manager.canvas.figure = fig
@@ -428,30 +433,54 @@ class ReportWindow(qtw.QWidget):
         del self.__btnHome
 
     @property
-    def BtnViewGraph(self) -> qtw.QPushButton:
+    def BtnViewGraphVelocity(self) -> qtw.QPushButton:
         """
-        The home for the view. Need to access this to attach functionality to the button in a
-        child controller class. Is used to return to home screen.
+        The home for the view graph with velocity button. Is used to return to home screen.
         :return: None
         """
-        return self.__btnViewGraph
+        return self.__btnViewGraphVelocity
 
-    @BtnViewGraph.setter
-    def set_BtnViewGraph(self, btn: qtw.QPushButton):
+    @BtnViewGraphVelocity.setter
+    def set_BtnViewGraphVelocity(self, btn: qtw.QPushButton):
         """
-        Setter for the home button.
+        Setter for the view graph with velocity button.
         :param btn: A Qt QPushButton we want to replace the import button with.
         :return: None
         """
-        self.__btnViewGraph = btn
+        self.__btnViewGraphVelocity = btn
 
-    @BtnViewGraph.deleter
-    def del_BtnViewGraph(self):
+    @BtnViewGraphVelocity.deleter
+    def del_BtnViewGraphVelocity(self):
         """
-        Deleter for the home button. Never call this.
+        Deleter for the view graph with velocity button. Never call this.
         :return: None
         """
-        del self.__btnViewGraph
+        del self.__btnViewGraphVelocity
+
+    @property
+    def BtnViewGraphNoVelocity(self) -> qtw.QPushButton:
+        """
+        The home for the view graph without velocity button. Is used to return to home screen.
+        :return: None
+        """
+        return self.__btnViewGraphNoVelocity
+
+    @BtnViewGraphNoVelocity.setter
+    def set_BtnViewGraphNoVelocity(self, btn: qtw.QPushButton):
+        """
+        Setter for the view graph without velocity button.
+        :param btn: A Qt QPushButton we want to replace the import button with.
+        :return: None
+        """
+        self.__btnViewGraphNoVelocity = btn
+
+    @BtnViewGraphNoVelocity.deleter
+    def del_BtnViewGraphNoVelocity(self):
+        """
+        Deleter for the view graph without velocity button. Never call this.
+        :return: None
+        """
+        del self.__btnViewGraphNoVelocity
     # endregion
 
     # endregion

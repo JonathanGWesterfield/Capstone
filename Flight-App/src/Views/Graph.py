@@ -107,11 +107,12 @@ def velocityColors(vel):
             colors.append('g')
     return colors
 
-def generateGraph(x, y, z, timearray):
+def generateGraph(x, y, z, timearray, velocity):
     """
     Driver function for generating the 3d graph of drone coordinates.
     Input: array of x coordinates, array of y coordinates, array of z coordinates, array of time values as seconds
     counting up from 0.
+    Changes in velocity are displayed if "velocity" is true.
     :return: The figure to display as the 3d graph.
     """
     # Plot points on the graph
@@ -119,20 +120,14 @@ def generateGraph(x, y, z, timearray):
     ax = fig.add_subplot(111, projection='3d')
     ax.scatter(x, y, z, s=6, c="k", marker='o')
 
-    # Get velocities and line segment coloring
-    vel = velocityPoints(x, y, z, timearray)
-    colors = velocityColors(vel)
+    if velocity is True:
+        # Get velocities and line segment coloring
+        vel = velocityPoints(x, y, z, timearray)
+        colors = velocityColors(vel)
 
-    # Add line segment coloring
-    for i in range(len(vel)):
-        plt.plot([x[i], x[i + 1]], [y[i], y[i + 1]], [z[i], z[i + 1]], colors[i], linewidth = 1)
-
-    # TODO: try to use the below method to do all the plotting in one swoop (may be faster)
-    # ax.plot(x, y, z, '-p', color=colors,
-    #         markersize=15, linewidth=4,
-    #         markerfacecolor='white',
-    #         markeredgecolor='gray',
-    #         markeredgewidth=2)
+        # Add line segment coloring
+        for i in range(len(vel)):
+            plt.plot([x[i], x[i + 1]], [y[i], y[i + 1]], [z[i], z[i + 1]], colors[i], linewidth = 1)
 
     # Set axis limits
     ax.set_xlabel('x')

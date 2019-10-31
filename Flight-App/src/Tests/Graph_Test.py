@@ -186,24 +186,30 @@ class Graph_Test(unittest.TestCase):
 
         # Test small data sets
         x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
 
         x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
 
         # Test medium data sets
         x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
 
         x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
 
         # Test largest data sets
         x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
 
         x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
 
     def test_velocityPoints(self):
         """
