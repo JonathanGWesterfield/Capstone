@@ -117,7 +117,7 @@ def generateGraph(x, y, z, timearray):
     # Plot points on the graph
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(x, y, z, c="k", marker='o')
+    ax.scatter(x, y, z, s=6, c="k", marker='o')
 
     # Get velocities and line segment coloring
     vel = velocityPoints(x, y, z, timearray)
@@ -125,7 +125,7 @@ def generateGraph(x, y, z, timearray):
 
     # Add line segment coloring
     for i in range(len(vel)):
-        plt.plot([x[i], x[i + 1]], [y[i], y[i + 1]], [z[i], z[i + 1]], colors[i])
+        plt.plot([x[i], x[i + 1]], [y[i], y[i + 1]], [z[i], z[i + 1]], colors[i], linewidth = 1)
 
     # TODO: try to use the below method to do all the plotting in one swoop (may be faster)
     # ax.plot(x, y, z, '-p', color=colors,
