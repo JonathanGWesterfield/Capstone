@@ -13,7 +13,7 @@ class StartupWindow(qtw.QWidget):
     # Initialize signals. Use for switching between views.
     sigVerifySetup = qtc.pyqtSignal()
     sigStartTracking = qtc.pyqtSignal()
-    sigImportFlight = qtc.pyqtSignal()
+    sigImportFlight = qtc.pyqtSignal(str)
 
     def __init__(self):
         """
@@ -73,10 +73,12 @@ class StartupWindow(qtw.QWidget):
 
     def signalImportFlight(self):
         """
+        Calls function to allow user to select a file for import.
         Sends a signal to the main controller that the Import Previous Flight button was pushed.
-        :return: none
+        :return: None.
         """
-        self.sigImportFlight.emit()
+        fileName = self.openFileNameDialog()
+        self.sigImportFlight.emit(fileName)
 
     def setTitle(self) -> qtw.QVBoxLayout:
         """
@@ -153,6 +155,18 @@ class StartupWindow(qtw.QWidget):
         label.show()
 
         return label
+
+    def openFileNameDialog(self):
+        """
+        Allows user to select a file from a file dialog window.
+        :return: Path to selected file as a string.
+        """
+        options = qtw.QFileDialog.Options()
+        options |= qtw.QFileDialog.DontUseNativeDialog
+        fileName, _ = qtw.QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+                                                  "All Files (*);;Python Files (*.py)", options=options)
+
+        return fileName
 
     # region > Properties for the buttons so we can attach functionality to them in child classes
 
