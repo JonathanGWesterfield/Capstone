@@ -17,6 +17,7 @@ class TrackingWindow(qtw.QWidget):
     # Initialize signals. Use for switching between views.
     sigReturnHome = qtc.pyqtSignal()
     sigStopTracking = qtc.pyqtSignal()
+    sigFlightInfoConfirmed = qtc.pyqtSignal(str, str, str)
 
     def __init__(self):
         """
@@ -137,6 +138,8 @@ class TrackingWindow(qtw.QWidget):
         pilotName = self.TBPilot.text()
         instructorName = self.TBInstructor.text()
         instructions = self.TEInstructions.toPlainText()
+        self.sigFlightInfoConfirmed.emit(pilotName, instructorName, instructions)
+
         msgBox = qtw.QMessageBox()
         msgBox.setText(
             "Pilot Name: \n" + pilotName + "\nInstructor Name: \n" + instructorName + "\nInstructions: \n" + instructions)

@@ -11,7 +11,8 @@ class ReportWindow(qtw.QWidget):
     :ivar __btnExport: The class property for the 'Export Results' button.
     :ivar __btnFlyAgain: The class property for the 'Fly Again' button.
     ivar __btnHome: The class property for the 'Return to Home' button.
-    :ivar __btnViewGraph: The class property for the 'View Flight Path' button.
+    :ivar __btnViewGraphVelocity: The class property for the 'View Flight Path' button.
+    :ivar __btnViewGraphNoVelocity: The class property for the 'View Flight Path with Velocity Changes' button.
     """
 
     # Initialize signals. Use for switching between views.
@@ -19,11 +20,18 @@ class ReportWindow(qtw.QWidget):
     sigStartTracking = qtc.pyqtSignal()
     sigReturnHome = qtc.pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, pilotName: str, instructorName: str, flightInstructions: str):
         """
         Class Constructor
         """
         qtw.QWidget.__init__(self)
+
+        # Save the pilot name, instructor name, and flight instructions
+        self.pilotName = pilotName
+        self.instructorName = instructorName
+        self.flightInstructions = flightInstructions
+
+        # Format window
         self.setFixedSize(550, 550)
         self.initView()
 
@@ -123,23 +131,22 @@ class ReportWindow(qtw.QWidget):
         :return: Grid layout of the flight information
         """
         # Setup all labels with default values for testing and detecting errors in the controls
-        self.__lblPilot = qtw.QLabel('None')
-        self.__lblInstructor = qtw.QLabel('None')
+        self.__lblPilot = qtw.QLabel(self.pilotName)
+        self.__lblInstructor = qtw.QLabel(self.instructorName)
         self.__lblFlDate = qtw.QLabel(dt.date.today().strftime('%m/%d/%Y'))
         self.__lblFlLength = qtw.QLabel('00:00:00')
-        self.__lblFlSmoothness = qtw.QLabel('0')
 
         grid = qtw.QGridLayout()
         flightInfoTitle = self.setSubTitle('Flight Information')
         grid.addWidget(flightInfoTitle, 0, 0)
         grid.addWidget(qtw.QLabel('Pilot: '), 1, 0)
-        grid.addWidget(self.__lblPilot, 1, 1)
+        grid.addWidget(self.LblPilot, 1, 1)
         grid.addWidget(qtw.QLabel('Instructor: '), 2, 0)
-        grid.addWidget(self.__lblInstructor, 2, 1)
+        grid.addWidget(self.LblInstructor, 2, 1)
         grid.addWidget(qtw.QLabel('Flight Date: '), 3, 0)
-        grid.addWidget(self.__lblFlDate, 3, 1)
+        grid.addWidget(self.LblFlightDate, 3, 1)
         grid.addWidget(qtw.QLabel('Flight Length: '), 4, 0)
-        grid.addWidget(self.__lblFlLength, 4, 1)
+        grid.addWidget(self.LblFlightLength, 4, 1)
 
         statisticsInfoTitle = self.setSubTitle("Statistics")
         grid.addWidget(statisticsInfoTitle, 5, 0)
@@ -321,6 +328,34 @@ class ReportWindow(qtw.QWidget):
         :return: None
         """
         del self.__lblFlLength
+
+    # endregion
+
+    # region > Flight Instructions Label Property
+    @property
+    def LblFlightInstructions(self) -> qtw.QLabel:
+        """
+        Getter for the flight instructions label.
+        :return: Reference to the flight length label.
+        """
+        return self.__lblFlInstructions
+
+    @LblFlightInstructions.setter
+    def set_LblFlightInstructions(self, lbl: qtw.QLabel):
+        """
+        Setter for the flight instructions label.
+        :param lbl: The label we want to replace the current one with.
+        :return: None
+        """
+        self.__lblFlLengthInstructions = lbl
+
+    @LblFlightInstructions.deleter
+    def del_LblFlightInstructions(self):
+        """
+        Deleter for the flight length label.
+        :return: None
+        """
+        del self.__lblFlInstructions
 
     # endregion
 
