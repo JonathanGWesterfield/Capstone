@@ -49,6 +49,7 @@ class ServerRPi:
         :return: None
         """
         self.conn, self.addr = self.socket.accept()
+        # self.sendCommand('CONNECTED')
         self.connected = True
 
     def closeConn(self):
@@ -98,6 +99,9 @@ class ServerRPi:
             raise Exception('ERROR! Phone should have said something by now!\n')
 
         message = message.decode('utf-8').strip()
+
+        if message == '':
+            raise Exception('ERROR! Received empty String!')
         print("Received: ", message, "\n")
 
         return message
@@ -118,12 +122,13 @@ def main():
                 """
                 TODO: PUT THE FUNCTION TO FLASH THE LIGHT HERE
                 """
-                server.sendCommand("FLASH_ACKNOWLEDGE")
+                server.sendCommand('FLASH_ACKNOWLEDGE')
             elif message == 'DISCONNECT':
+                server.sendCommand('DISCONNECT_ACKNOWLEDGE')
                 stop = True
 
         # If the inner loop is escaped, it means kill connection and start over
-        print("Killing server to start again")
+        print("Killing server")
         server.closeConn()
     except KeyboardInterrupt:
         print('\n\nQuitting!')
