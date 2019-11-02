@@ -1,6 +1,6 @@
 import json
 
-def export_data(pilotName, instructorName, flightDate, flightLength,
+def export_data(pilotName, instructorName, flightDate, flightLength, flightInstructions,
                 xCoordinates, yCoordinates, zCoordinates, velocityValues, outPath):
     """
     Exports the flight data to a JSON file stored with a ".flight" extension.
@@ -8,6 +8,7 @@ def export_data(pilotName, instructorName, flightDate, flightLength,
     :param instructorName: String containing the instructor name
     :param flightDate: String containing the flight date
     :param flightLength: String containing the flight length
+    :param flightInstructions: String containing the flight instructions
     :param xCoordinates: Array of x coordinates
     :param yCoordinates: Array of y coordinates
     :param zCoordinates: Array of z coordinates
@@ -21,6 +22,7 @@ def export_data(pilotName, instructorName, flightDate, flightLength,
         "Instructor" : instructorName, 
         "Flight Date" : flightDate,
         "Flight Length" : flightLength,
+        "Flight Instructions": flightInstructions,
         "x-Coordinates" : xCoordinates,
         "y-Coordinates" : yCoordinates,
         "z-Coordinates" : zCoordinates,
@@ -54,5 +56,5 @@ with open("../Tests/TestFiles/random_size10_legal80.txt", "r") as infile:
 #     print(zs[line])
 # print('\n')
 # another call to the function to test the arrays of x,y,z coordinates in the random_size10_legal80.txt file
-export_data("Ariana Boroujerdi", "Robin Murphy", "11/1/2019", "00:00:00", xs,ys,zs, "Velocity", "ExportedFiles/Hayley.flight")
+export_data("Ariana Boroujerdi", "Robin Murphy", "11/1/2019", "00:00:00", "Left right left", xs,ys,zs, "Velocity", "ExportedFiles/Hayley.flight")
 '''

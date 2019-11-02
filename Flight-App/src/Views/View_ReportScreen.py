@@ -19,7 +19,7 @@ class ReportWindow(qtw.QWidget):
     sigStartTracking = qtc.pyqtSignal()
     sigReturnHome = qtc.pyqtSignal()
 
-    def __init__(self, pilotName: str, instructorName: str, flightInstructions: str):
+    def __init__(self, pilotName: str, instructorName: str, flightInstructions: str, flightCoordinates: str, timeStep: float):
         """
         Class Constructor
         """
@@ -34,15 +34,15 @@ class ReportWindow(qtw.QWidget):
 
         # Format window
         self.setFixedSize(550, 550)
-        self.initView()
+        self.initView(flightCoordinates, timeStep)
 
-    def initView(self):
+    def initView(self, flightCoordinates: str, timeStep: float):
         """
         Sets up the view and lays out all of the components.
         :return: None
         """
         # Analyze the flight
-        x, y, z, velocityPoints, avgVel, std, maxVel, minVel = self.analyzeFlight('../Tests/TestFiles/coordinates_tiny_centered.rtf', 1)
+        x, y, z, velocityPoints, avgVel, std, maxVel, minVel = self.analyzeFlight(flightCoordinates, timeStep)
 
         # Set up the title, flight information section, and statistics table.
         self.setWindowTitle('Report Screen')
@@ -58,6 +58,7 @@ class ReportWindow(qtw.QWidget):
         # Attach functionality to buttons.
         self.BtnExport.clicked.connect(lambda *args: self.signalExportResults(self.pilotName, self.instructorName,
                                                                               self.flightDate, self.flightLength,
+                                                                              self.flightInstructions,
                                                                               x, y, z, velocityPoints))
         self.BtnFlyAgain.clicked.connect(self.signalStartTracking)
         self.BtnHome.clicked.connect(self.signalReturnHome)
@@ -81,13 +82,13 @@ class ReportWindow(qtw.QWidget):
         self.setLayout(vLayout)
 
     def signalExportResults(self, pilotName: str, instructorName: str, flightDate: str, flightLength: str,
-                            x: [], y: [], z: [], velocityVals: []):
+                            flightInstructions: str, x: [], y: [], z: [], velocityVals: []):
         """
         Sends a signal to the main controller that the Export Results button was pushed.
         :return: none
         """
         outPath = '../Export/ExportedFiles/' + pilotName + '.flight'
-        Export.ExportFile.export_data(pilotName, instructorName, flightDate, flightLength,
+        Export.ExportFile.export_data(pilotName, instructorName, flightDate, flightLength, flightInstructions,
         x, y, z, velocityVals, outPath)
         msgBox = qtw.QMessageBox()
         msgBox.setText(
