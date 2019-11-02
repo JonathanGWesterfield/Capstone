@@ -9,6 +9,8 @@ def readCoordinates(filename, timeStep):
     """
     Reads the input file of drone coordinates, where a 3d coordinate is stored as a row. Also takes in a value timeStep
     denoting the time difference (in seconds) between coordinates.
+    :param filename: File of coordinates to read.
+    :param timeStep: Float containing time difference between points
     :return: An array of x coordinates, an array of y coordinates, an array of z coordinates, an array of time values
     as seconds counting up from 0 with change timeStep between two legal inputs.
     """
@@ -37,8 +39,11 @@ def readCoordinates(filename, timeStep):
 def checkLegalInput(x, y, z):
     """
     Checks if the inputted 3D coordinate is within legal bounds. Legal bounds are:
-    x, y, z > 0 and x < 30 and y < 15 and z < 10
-    return: A boolean denoting if legal or not (true if legal, false if outside bounds).
+    x, y, z > 0 and x < 30 and y < 15 and z < 10.
+    :param x: x value to check.
+    :param y: y value to check.
+    :param z: z value to check.
+    :return: A boolean denoting if legal or not (true if legal, false if outside bounds).
     """
     try:
         x = float(x)
@@ -76,8 +81,10 @@ def computeVelocity(x1, y1, z1, x2, y2, z2, t1, t2):
 def velocityPoints(x, y, z, timearray):
     """
     Calculates the velocity of the drone between consecutive points for the entire flight.
-    Input: array of x coordinates, array of y coordinates, array of z coordinates, array of time values as seconds
-    counting up from 0.
+    :param x: Array of x coordinates
+    :param y: Array of y coordinates
+    :param z: Array of z coordinates
+    :param timearray: Array of time values as seconds counting up from 0
     :return: An array of velocity points for the drone.
     """
     if len(x) != len(y) or len(y) != len(z) or len(y) != len(x):
@@ -90,16 +97,17 @@ def velocityPoints(x, y, z, timearray):
 
     return velocityArray
 
-def velocityColors(vel):
+def velocityColors(velocity):
     """
     Determines the color of the line segment between two points based on velocity values. The line color is determined
     by the change in velocity of the drone between two points. The color of the line should be green if the
     velocity point is greater than the previous velocity point, yellow if within 0.5 m/s, and red if less.
+    :param velocity: Array of velocity values.
     :return: An array of color values to use when plotting line segments between points.
     """
     colors = ['g']
-    for i in range(len(vel) - 1):
-        velDelta = vel[i+1]-vel[i]
+    for i in range(len(velocity) - 1):
+        velDelta = velocity[i+1]-velocity[i]
         if velDelta < 0:
             colors.append('r')
         elif velDelta > 0 and velDelta < 0.5:
@@ -112,6 +120,7 @@ def velocityColors(vel):
 def computeVelocityStatistics(velocity):
     """
     Computes statistics on the velocity points.
+    :param velocity: Array of velocity values
     :return: Average velocity, standard deviation, max velocity, min velocity.
     """
     avgVel = statistics.mean(velocity)

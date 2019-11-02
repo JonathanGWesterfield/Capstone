@@ -158,13 +158,13 @@ class StartupWindow(qtw.QWidget):
 
     def openFileNameDialog(self):
         """
-        Allows user to select a file from a file dialog window.
+        Allows user to select a .flight file from a file dialog window.
         :return: Path to selected file as a string.
         """
         options = qtw.QFileDialog.Options()
         options |= qtw.QFileDialog.DontUseNativeDialog
         fileName, _ = qtw.QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
-                                                  "All Files (*);;Python Files (*.py)", options=options)
+                                                      "JSON Files (*.flight)", options=options)
 
         return fileName
 

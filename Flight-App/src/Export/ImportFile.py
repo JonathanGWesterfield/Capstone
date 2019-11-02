@@ -9,7 +9,6 @@ def importData(inPath):
 
     with open(inPath) as json_file:
         data = json.load(json_file)
-        print("Reading file " + inPath)
         pilotName = data['flight']['Pilot Name']
         instructorName = data['flight']['Instructor']
         flightDate = data['flight']['Flight Date']

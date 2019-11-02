@@ -2,6 +2,7 @@ import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
 import Graph
 import Export.ExportFile
+import Export.ImportFile
 import datetime as dt
 
 class ReportWindow(qtw.QWidget):
@@ -19,30 +20,47 @@ class ReportWindow(qtw.QWidget):
     sigStartTracking = qtc.pyqtSignal()
     sigReturnHome = qtc.pyqtSignal()
 
-    def __init__(self, pilotName: str, instructorName: str, flightInstructions: str, flightCoordinates: str, timeStep: float):
+    def __init__(self, pilotName: str, instructorName: str, flightInstructions: str, flightCoordinates: str,
+                 timeStep: float, usingPreviousFlight: bool):
         """
         Class Constructor
         """
         qtw.QWidget.__init__(self)
 
         # Save the pilot name, instructor name, and flight instructions
-        self.pilotName = pilotName
-        self.instructorName = instructorName
-        self.flightInstructions = flightInstructions
-        self.flightLength = "00:00:00"
-        self.flightDate = dt.date.today().strftime('%m/%d/%Y')
+        if usingPreviousFlight is False:
+            self.pilotName = pilotName
+            self.instructorName = instructorName
+            self.flightInstructions = flightInstructions
+            self.flightLength = "00:00:00"
+            self.flightDate = dt.date.today().strftime('%m/%d/%Y')
+            self.initView(flightCoordinates, timeStep, False)
+        else:
+            self.pilotName = ''
+            self.instructorName = ''
+            self.flightInstructions = ''
+            self.flightLength = ""
+            self.flightDate = ''
+            self.initView(flightCoordinates, timeStep, True)
 
         # Format window
         self.setFixedSize(550, 550)
-        self.initView(flightCoordinates, timeStep)
 
-    def initView(self, flightCoordinates: str, timeStep: float):
+    def initView(self, flightData: str, timeStep: float, usingPreviousFlight: bool):
         """
         Sets up the view and lays out all of the components.
+        :param flightData: String containing path to flight data. Should be .flight file if usingPreviousFlight is
+        true, or coordinates if usingPreviousFlight is false.
+        :param timeStep: Float representing the time between points. Does not matter if usingPreviousFlight is True.
+        :param usingPreviousFlight: Boolean representing if the report view is for an existing .flight file or a
+        new analysis.
         :return: None
         """
         # Analyze the flight
-        x, y, z, velocityPoints, avgVel, std, maxVel, minVel = self.analyzeFlight(flightCoordinates, timeStep)
+        if usingPreviousFlight is False:
+            x, y, z, velocityPoints, avgVel, std, maxVel, minVel = self.analyzeFlight(flightData, timeStep)
+        else:
+            x, y, z, velocityPoints, avgVel, std, maxVel, minVel = self.importFlight(flightData)
 
         # Set up the title, flight information section, and statistics table.
         self.setWindowTitle('Report Screen')
@@ -85,11 +103,23 @@ class ReportWindow(qtw.QWidget):
                             flightInstructions: str, x: [], y: [], z: [], velocityVals: []):
         """
         Sends a signal to the main controller that the Export Results button was pushed.
+        :param pilotName: String containing the pilot name
+        :param instructorName: String containing the instructor name
+        :param flightDate: String containing the flight date
+        :param flightLength: String containing the flight length
+        :param flightInstructions: String containing the flight instructions
+        :param x: Array of x coordinates
+        :param y: Array of y coordinates
+        :param z: Array of z coordinates
+        :param velocityVals: Array of velocity values
         :return: none
         """
+        # Save flight results to .flight file.
         outPath = '../Export/ExportedFiles/' + pilotName + '.flight'
         Export.ExportFile.export_data(pilotName, instructorName, flightDate, flightLength, flightInstructions,
         x, y, z, velocityVals, outPath)
+
+        # Show message box saying that exporting was completed.
         msgBox = qtw.QMessageBox()
         msgBox.setText(
             "Results exported!")
@@ -142,7 +172,7 @@ class ReportWindow(qtw.QWidget):
 
     def setupFlightInfo(self) -> qtw.QGridLayout:
         """
-        Sets up the flight info (pilot, instructor, date, length, and smoothness score) in a grid so it gets laid out nice and pretty.
+        Sets up the flight info (pilot, instructor, date, length, and smoothness score) in a grid.
         :return: Grid layout of the flight information
         """
         # Setup all labels with default values for testing and detecting errors in the controls
@@ -213,7 +243,6 @@ class ReportWindow(qtw.QWidget):
         :return: None
         """
         self.window.show()
-        # self.app.exec_()
 
     def createTable(self, avgVel: float, maxVel: float, minVel: float):
         """
@@ -245,11 +274,11 @@ class ReportWindow(qtw.QWidget):
 
         return self.tableWidget
 
-    def analyzeFlight(self, filePath: str, timeStep: int):
+    def analyzeFlight(self, filePath: str, timeStep: float):
         """
         Analyzes the flight data to extract coordinates, velocity values, and statistics.
         :param filePath: String representing file path where raw coordinates are stored.
-        :param timeStep: Int representing the change in time between each logged point.
+        :param timeStep: Float representing the change in time between each logged point.
         :return: Arrays of x and y and z coordinates, array of velocity values, average velocity, standard deviation,
         maximum velocity, minimum velocity.
         """
@@ -260,6 +289,23 @@ class ReportWindow(qtw.QWidget):
         velocityPoints = Graph.velocityPoints(x, y, z, timearray)
 
         # Compute statistics on velocity points
+        avgVel, std, maxVel, minVel = Graph.computeVelocityStatistics(velocityPoints)
+
+        return x, y, z, velocityPoints, avgVel, std, maxVel, minVel
+
+    def importFlight(self, flightData: str):
+        # Read in points
+        pilotName, instructorName, flightDate, flightLength, flightInstructions, x, y, z, velocityPoints = \
+            Export.ImportFile.importData(flightData)
+
+        # Set values
+        self.pilotName = pilotName
+        self.instructorName = instructorName
+        self.flightDate = flightDate
+        self.flightLength = flightLength
+        self.flightInstructions = flightInstructions
+
+        # Compute statistics
         avgVel, std, maxVel, minVel = Graph.computeVelocityStatistics(velocityPoints)
 
         return x, y, z, velocityPoints, avgVel, std, maxVel, minVel
