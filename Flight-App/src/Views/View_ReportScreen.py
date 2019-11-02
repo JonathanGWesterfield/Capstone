@@ -14,6 +14,7 @@ class ReportWindow(qtw.QWidget):
     ivar __btnHome: The class property for the 'Return to Home' button.
     :ivar __btnViewGraphVelocity: The class property for the 'View Flight Path' button.
     :ivar __btnViewGraphNoVelocity: The class property for the 'View Flight Path with Velocity Changes' button.
+    :var __btnViewInstructions: The class property for the 'View Flight Instructions' button.
     """
 
     # Initialize signals. Use for switching between views.
@@ -62,11 +63,11 @@ class ReportWindow(qtw.QWidget):
         else:
             x, y, z, velocityPoints, avgVel, std, maxVel, minVel = self.importFlight(flightData)
 
-        # Set up the title, flight information section, and statistics table.
+        # Set up the title, flight information table, and statistics table.
         self.setWindowTitle('Report Screen')
         titleLayout = self.setupTitle()
         flInfoLayout = self.setupFlightInfo()
-        statistics = self.createTable(avgVel, maxVel, minVel)
+        statistics = self.createStatisticsTable(avgVel, maxVel, minVel)
 
         # Initialize buttons.
         self.__btnViewGraphNoVelocity = qtw.QPushButton('View Flight Path')
@@ -244,7 +245,7 @@ class ReportWindow(qtw.QWidget):
         """
         self.window.show()
 
-    def createTable(self, avgVel: float, maxVel: float, minVel: float):
+    def createStatisticsTable(self, avgVel: float, maxVel: float, minVel: float):
         """
         Creates a table containing flight statistics.
         :param avgVel: Float value containing the average velocity of flight.
@@ -276,6 +277,43 @@ class ReportWindow(qtw.QWidget):
         self.tableWidget.setEditTriggers(qtw.QTableWidget.NoEditTriggers)
 
         return self.tableWidget
+
+    '''
+    def createFlightInfoTable(self):
+        """
+        TODO: Decide if we want this table view or not.
+        Creates a table containing flight information.
+        :return: QTableWidget containing flight information.
+        """
+        # Create table
+        self.tableWidget = qtw.QTableWidget()
+        self.tableWidget.setRowCount(5)
+        self.tableWidget.setColumnCount(2)
+        self.tableWidget.setHorizontalHeaderLabels(['Property', 'Value'])
+        header = self.tableWidget.horizontalHeader()
+        self.tableWidget.setFixedHeight(144)
+        header.setSectionResizeMode(0, qtw.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, qtw.QHeaderView.Stretch)
+        self.tableWidget.setWordWrap(True)
+
+        self.tableWidget.setItem(0, 0, qtw.QTableWidgetItem("Pilot Name"))
+        self.tableWidget.setItem(0, 1, qtw.QTableWidgetItem(self.pilotName))
+        self.tableWidget.setItem(1, 0, qtw.QTableWidgetItem("Instructor Name"))
+        self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem(self.instructorName))
+        self.tableWidget.setItem(2, 0, qtw.QTableWidgetItem("Flight Date"))
+        self.tableWidget.setItem(2, 1, qtw.QTableWidgetItem(self.flightDate))
+        self.tableWidget.setItem(3, 0, qtw.QTableWidgetItem("Flight Length"))
+        self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem(self.flightLength))
+        self.tableWidget.setItem(4, 0, qtw.QTableWidgetItem("Flight Instructions"))
+        self.tableWidget.setItem(4, 1, qtw.QTableWidgetItem(self.flightInstructions))
+
+        self.tableWidget.resizeRowsToContents()
+
+        # Make non-editable
+        self.tableWidget.setEditTriggers(qtw.QTableWidget.NoEditTriggers)
+
+        return self.tableWidget
+    '''
 
     def analyzeFlight(self, filePath: str, timeStep: float):
         """
@@ -589,6 +627,5 @@ class ReportWindow(qtw.QWidget):
         :return: None
         """
         del self.__btnViewGraphNoVelocity
-    # endregion
 
     # endregion

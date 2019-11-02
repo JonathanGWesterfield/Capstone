@@ -15,12 +15,13 @@ class StartupWindow(qtw.QWidget):
     sigStartTracking = qtc.pyqtSignal()
     sigImportFlight = qtc.pyqtSignal(str)
 
-    def __init__(self):
+    def __init__(self, flightModeEnabled: bool):
         """
         Class Constructor
         """
         qtw.QWidget.__init__(self)
         self.setFixedSize(550, 550)
+        self.flightModeEnabled = flightModeEnabled
         self.initView()
 
     def initView(self):
@@ -43,8 +44,9 @@ class StartupWindow(qtw.QWidget):
         # Initialize buttons and attach functionality
         btnLayout = self.setButtonLayout()
         self.BtnVerifySetup.clicked.connect(self.signalVerifySetup)
-        self.BtnStart.clicked.connect(self.signalStartTracking)
         self.BtnImport.clicked.connect(self.signalImportFlight)
+        if self.flightModeEnabled is True:
+            self.BtnStart.clicked.connect(self.signalStartTracking)
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
@@ -120,6 +122,12 @@ class StartupWindow(qtw.QWidget):
         self.__btnVerifySetup = qtw.QPushButton('Verify Setup')
         self.__btnStart = qtw.QPushButton('Start Tracking')
         self.__btnImport = qtw.QPushButton('Import Previous Flight')
+
+        if self.flightModeEnabled is False:
+            palette = qtg.QPalette()
+            palette.setColor(qtg.QPalette.ButtonText, qtc.Qt.red)
+            self.__btnStart.setPalette(palette)
+            self.__btnStart.update()
 
         buttonBox = qtw.QHBoxLayout()
         buttonBox.addWidget(self.__btnVerifySetup)

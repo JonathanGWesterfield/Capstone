@@ -14,6 +14,12 @@ class VerifySetupWindow(qtw.QWidget):
 
     # Initialize signals. Use for switching between views.
     sigReturnHome = qtc.pyqtSignal()
+    sigGoodToFly = qtc.pyqtSignal()
+
+    # Initalize status checkers
+    phoneSync = False
+    lightSync = False
+    fullSetup = False
 
     def __init__(self):
         """
@@ -37,10 +43,14 @@ class VerifySetupWindow(qtw.QWidget):
         # Initialize check status and home buttons
         self.__btnCheck = qtw.QPushButton('Check Setup Status')
         self.__btnHome = qtw.QPushButton('Return to Home')
+        statusUpdateButtons = self.setButtonLayout()
 
         # Attach functionality to buttons
         self.BtnHome.clicked.connect(self.returnHome)
         self.BtnCheck.clicked.connect(self.checkStatus)
+        self.BtnPhoneSync.clicked.connect(self.syncPhone)
+        self.BtnTestLight.clicked.connect(self.testLight)
+        self.BtnTestFull.clicked.connect(self.testFull)
 
         # Spacer to make the view more pleasing
         verticalSpacer = qtw.QSpacerItem(20, 40, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
@@ -52,12 +62,35 @@ class VerifySetupWindow(qtw.QWidget):
         vLayout.addSpacerItem(verticalSpacer)
         vLayout.addWidget(logo)
         vLayout.addSpacerItem(verticalSpacer2)
-        vLayout.addLayout(self.setButtonLayout())  # layout the buttons
+        vLayout.addLayout(statusUpdateButtons)  # layout the buttons
         vLayout.addWidget(self.__btnCheck)
         vLayout.addWidget(self.__btnHome)
 
         # Attach the layout to the screen
         self.setLayout(vLayout)
+
+    def syncPhone(self):
+        self.phoneSync = True
+
+    def testLight(self):
+        self.lightSync = True
+
+    def testFull(self):
+        self.fullSetup = True
+        if self.fullSetup is True:
+            self.sigGoodToFly.emit()
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(
+                "<center><h1>Setup confirmed!</h1></center>\n<center><br><h2>You are ready to fly!</h2></center>")
+            msgBox.exec()
+        else:
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(
+                "<center><h1>Stop!</h1></center>\n<center><h2>Setup has not been verified!</h2></center>\n"
+                "<center><br>Please go back to the startup screen and click the Verify Status button. "
+                "Go through the setup process and verify that the performance tracker is set up properly.</center>")
+            msgBox.exec()
+
 
     def returnHome(self):
         """
@@ -105,12 +138,26 @@ class VerifySetupWindow(qtw.QWidget):
     def checkStatus(self):
         """
          Shows the status of the system setup.
-         TODO: Replace with bool once test functionality integrated
          :return: None
          """
+        if self.phoneSync is False:
+            phoneStatus = "Phone Status: Not synced\n"
+        else:
+            phoneStatus = "Phone Status: Synced\n"
+
+        if self.lightSync is False:
+            lightStatus = "Light Status: Not synced\n"
+        else:
+            lightStatus = "Light Status: Synced\n"
+
+        if self.fullSetup is False:
+            fullSetupStatus = "Full setup: Not synced\n"
+        else:
+            fullSetupStatus = "Full setup: Synced\n"
+
         msgBox = qtw.QMessageBox()
         msgBox.setText(
-            "Phone Status: \n" + "Working" + "\nLight Status: \n" + "Working" + "\nFull Setup: \n" + "Working")
+            phoneStatus + lightStatus + fullSetupStatus)
         msgBox.exec()
 
     def setupPicture(self):
