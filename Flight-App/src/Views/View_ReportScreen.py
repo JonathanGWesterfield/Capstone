@@ -40,23 +40,26 @@ class ReportWindow(qtw.QWidget):
         Sets up the view and lays out all of the components.
         :return: None
         """
+        # Analyze the flight
+        x, y, z, velocityPoints, avgVel, std, maxVel, minVel = self.analyzeFlight('../Tests/TestFiles/coordinates_tiny_centered.rtf', 1)
+
         # Set up the title, flight information section, and statistics table.
         self.setWindowTitle('Report Screen')
         titleLayout = self.setupTitle()
         flInfoLayout = self.setupFlightInfo()
-        statistics = self.createTable()
+        statistics = self.createTable(avgVel, maxVel, minVel)
 
         # Initialize buttons.
         self.__btnViewGraphNoVelocity = qtw.QPushButton('View Flight Path')
         self.__btnViewGraphVelocity = qtw.QPushButton('View Flight Path with Velocity Changes')
         btnLayout = self.setButtonLayout()
 
-        # Attach funtionality to buttons.
+        # Attach functionality to buttons.
         self.BtnExport.clicked.connect(self.signalExportResults)
         self.BtnFlyAgain.clicked.connect(self.signalStartTracking)
         self.BtnHome.clicked.connect(self.signalReturnHome)
-        self.BtnViewGraphNoVelocity.clicked.connect(lambda *args: self.setupGraph(False))
-        self.BtnViewGraphVelocity.clicked.connect(lambda *args: self.setupGraph(True))
+        self.BtnViewGraphNoVelocity.clicked.connect(lambda *args: self.setupGraph(x, y, z, velocityPoints, False))
+        self.BtnViewGraphVelocity.clicked.connect(lambda *args: self.setupGraph(x, y, z, velocityPoints, True))
 
         # Create a grid layout for all elements except the title.
         gridLayout = qtw.QGridLayout()
@@ -117,7 +120,8 @@ class ReportWindow(qtw.QWidget):
     def setSubTitle(self, text) -> qtw.QLabel:
         """
         Sets up a subtitle label for the window
-        :return: Subtitle of the application taken from the "text" parameter
+        :param text: String as name for label
+        :return: Subtitle label
         """
         lblTitle = qtw.QLabel(text)
         lblTitle.setFont(qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold))
@@ -153,21 +157,26 @@ class ReportWindow(qtw.QWidget):
 
         return grid
 
-    def setupGraph(self, velocity: bool):
+    def setupGraph(self, x: [], y: [], z: [], velocity: [], displayVelocity: bool):
         """
          Sets up the 3d plot for viewing upon click of button. Velocity is a boolean denoting if the graph should
          display colored segments for velocity.
+         :param x: Array of x coordinates
+         :param y: Array of y coordinates
+         :param z: Array of z coordinates
+         :param velocity: Array of velocity values
+         :param displayVelocity: Bool denoting if velocity should be plotted or not.
          :return: None
          """
-        # fig = plt.figure()
-        # Import coordinates
-        x, y, z, timearray = Graph.readCoordinates('../Tests/TestFiles/coordinates_tiny_centered.rtf', 1)
         # Generate and show graph
-        fig = Graph.generateGraph(x, y, z, timearray, velocity)
+        fig = Graph.generateGraph(x, y, z, velocity, displayVelocity)
+
         # Define manager so figure can be viewed upon button click
         new_manager = fig.canvas.manager
         new_manager.canvas.figure = fig
         fig.set_canvas(new_manager.canvas)
+
+        # Show the figure
         fig.show()
 
     def setButtonLayout(self) -> qtw.QHBoxLayout:
@@ -195,7 +204,14 @@ class ReportWindow(qtw.QWidget):
         self.window.show()
         # self.app.exec_()
 
-    def createTable(self):
+    def createTable(self, avgVel: float, maxVel: float, minVel: float):
+        """
+        Creates a table containing flight statistics.
+        :param avgVel: Float value containing the average velocity of flight.
+        :param maxVel: Float value containing the maximum velocity of flight.
+        :param minVel: Float value containing the minimum velocity of flight.
+        :return: QTableWidget containing flight statistics.
+        """
         # Create table
         self.tableWidget = qtw.QTableWidget()
         self.tableWidget.setRowCount(4)
@@ -205,20 +221,41 @@ class ReportWindow(qtw.QWidget):
         self.tableWidget.setFixedHeight(144)
         header.setSectionResizeMode(0, qtw.QHeaderView.Stretch)
         header.setSectionResizeMode(1, qtw.QHeaderView.Stretch)
+
+        # TODO: Add unit (m/s) once we know what it is.
         self.tableWidget.setItem(0, 0, qtw.QTableWidgetItem("Smoothness"))
         self.tableWidget.setItem(0, 1, qtw.QTableWidgetItem("Smoothness Value"))
         self.tableWidget.setItem(1, 0, qtw.QTableWidgetItem("Average Velocity"))
-        self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem("Average Velocity Value"))
+        self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem(str(round(avgVel, 2))))
         self.tableWidget.setItem(2, 0, qtw.QTableWidgetItem("Minimum Velocity"))
-        self.tableWidget.setItem(2, 1, qtw.QTableWidgetItem("Minimum Velocity Value"))
+        self.tableWidget.setItem(2, 1, qtw.QTableWidgetItem(str(round(minVel, 2))))
         self.tableWidget.setItem(3, 0, qtw.QTableWidgetItem("Maximum Velocity"))
-        self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem("Maximum Velocity Value"))
+        self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem(str(round(maxVel, 2))))
 
         return self.tableWidget
 
-        # region > Report View Properties
+    def analyzeFlight(self, filePath: str, timeStep: int):
+        """
+        Analyzes the flight data to extract coordinates, velocity values, and statistics.
+        :param filePath: String representing file path where raw coordinates are stored.
+        :param timeStep: Int representing the change in time between each logged point.
+        :return: Arrays of x and y and z coordinates, array of velocity values, average velocity, standard deviation,
+        maximum velocity, minimum velocity.
+        """
+        # Read in points
+        x, y, z, timearray = Graph.readCoordinates(filePath, timeStep)
 
-        # region > Pilot Label Property
+        # Compute velocity
+        velocityPoints = Graph.velocityPoints(x, y, z, timearray)
+
+        # Compute statistics on velocity points
+        avgVel, std, maxVel, minVel = Graph.computeVelocityStatistics(velocityPoints)
+
+        return x, y, z, velocityPoints, avgVel, std, maxVel, minVel
+
+    # region > Report View Properties
+
+    # region > Pilot Label Property
 
     @property
     def LblPilot(self) -> qtw.QLabel:
@@ -307,7 +344,7 @@ class ReportWindow(qtw.QWidget):
     @property
     def LblFlightLength(self) -> qtw.QLabel:
         """
-        Getter for the flight length label so we can attach functionality to it in the child class.
+        Getter for the flight length label.
         :return: Reference to the flight length label.
         """
         return self.__lblFlLength
@@ -359,41 +396,12 @@ class ReportWindow(qtw.QWidget):
 
     # endregion
 
-    # region > 3D Matplot Plot Property
-    @property
-    def PltFlightPlot(self):
-        """
-        Getter for the flight plot so we can populate it with data and format it further in the child class.
-        :return: Reference to the 3D flight plot.
-        """
-        return self.__line
-
-    @PltFlightPlot.setter
-    def set_PltFlightPlot(self, fig: plt.Figure):
-        """
-        Setter for the 3D flight plot.
-        :param fig: The figure we want to replace the current one with (I might have the wrong type indicated)
-        :return: None
-        """
-        self.__line = fig
-
-    @PltFlightPlot.deleter
-    def del_PltFlightPlot(self):
-        """
-        Deleter for the 3D flight plot.
-        :return: None
-        """
-        del self.__line
-
-    # endregion
-
-    # region > Properties for the buttons so we can attach functionality to them in child classes
+    # region > Properties for the buttons
 
     @property
     def BtnExport(self) -> qtw.QPushButton:
         """
-        The test light button for the view. Need to access this to attach functionality to the button in a
-        child controller class.
+        The export button for the view.
         :return: None
         """
         return self.__btnExport
@@ -401,8 +409,8 @@ class ReportWindow(qtw.QWidget):
     @BtnExport.setter
     def set_BtnExport(self, btn: qtw.QPushButton):
         """
-        The setter for the test light button.
-        :param btn: A Qt QPushButton we want to replace the start button with.
+        The setter for the export button.
+        :param btn: A Qt QPushButton we want to replace the export button with.
         :return: None
         """
         self.__btnExport = btn
@@ -410,7 +418,7 @@ class ReportWindow(qtw.QWidget):
     @BtnExport.deleter
     def del_BtnExport(self):
         """
-        Deleter for the test light button. Never call this.
+        Deleter for the export button. Never call this.
         :return: None
         """
         del self.__btnExport
@@ -418,8 +426,7 @@ class ReportWindow(qtw.QWidget):
     @property
     def BtnFlyAgain(self) -> qtw.QPushButton:
         """
-        The test full setup button for the view. Need to access this to attach functionality to the button in a
-        child controller class. Is used to import past flight files.
+        The fly again button for the view.
         :return: None
         """
         return self.__btnFlyAgain
@@ -427,8 +434,8 @@ class ReportWindow(qtw.QWidget):
     @BtnFlyAgain.setter
     def set_BtnFlyAgain(self, btn: qtw.QPushButton):
         """
-        Setter for the test full setup button.
-        :param btn: A Qt QPushButton we want to replace the import button with.
+        Setter for the fly again button.
+        :param btn: A Qt QPushButton.
         :return: None
         """
         self.__btnFlyAgain = btn
@@ -436,7 +443,7 @@ class ReportWindow(qtw.QWidget):
     @BtnFlyAgain.deleter
     def del_BtnFlyAgain(self):
         """
-        Deleter for the test full setup button. Never call this.
+        Deleter for the fly again button. Never call this.
         :return: None
         """
         del self.__btnFlyAgain
@@ -444,8 +451,7 @@ class ReportWindow(qtw.QWidget):
     @property
     def BtnHome(self) -> qtw.QPushButton:
         """
-        The home for the view. Need to access this to attach functionality to the button in a
-        child controller class. Is used to return to home screen.
+        The home for the view. Is used to return to home screen.
         :return: None
         """
         return self.__btnHome
@@ -454,7 +460,7 @@ class ReportWindow(qtw.QWidget):
     def set_BtnHome(self, btn: qtw.QPushButton):
         """
         Setter for the home button.
-        :param btn: A Qt QPushButton we want to replace the import button with.
+        :param btn: A Qt QPushButton.
         :return: None
         """
         self.__btnHome = btn
@@ -470,7 +476,7 @@ class ReportWindow(qtw.QWidget):
     @property
     def BtnViewGraphVelocity(self) -> qtw.QPushButton:
         """
-        The home for the view graph with velocity button. Is used to return to home screen.
+        The home for the view graph with velocity button.
         :return: None
         """
         return self.__btnViewGraphVelocity
@@ -479,7 +485,7 @@ class ReportWindow(qtw.QWidget):
     def set_BtnViewGraphVelocity(self, btn: qtw.QPushButton):
         """
         Setter for the view graph with velocity button.
-        :param btn: A Qt QPushButton we want to replace the import button with.
+        :param btn: A Qt QPushButton.
         :return: None
         """
         self.__btnViewGraphVelocity = btn
@@ -495,7 +501,7 @@ class ReportWindow(qtw.QWidget):
     @property
     def BtnViewGraphNoVelocity(self) -> qtw.QPushButton:
         """
-        The home for the view graph without velocity button. Is used to return to home screen.
+        The home for the view graph without velocity button.
         :return: None
         """
         return self.__btnViewGraphNoVelocity
@@ -504,7 +510,7 @@ class ReportWindow(qtw.QWidget):
     def set_BtnViewGraphNoVelocity(self, btn: qtw.QPushButton):
         """
         Setter for the view graph without velocity button.
-        :param btn: A Qt QPushButton we want to replace the import button with.
+        :param btn: A Qt QPushButton.
         :return: None
         """
         self.__btnViewGraphNoVelocity = btn

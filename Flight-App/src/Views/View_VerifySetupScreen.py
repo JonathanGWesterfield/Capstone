@@ -149,7 +149,7 @@ class VerifySetupWindow(qtw.QWidget):
     @BtnPhoneSync.deleter
     def del_BtnPhoneSync(self):
         """
-        Deleter for the test config button
+        Deleter for the phone sync button
         :return: None
         """
         del self.__btnPhoneSync

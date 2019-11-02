@@ -1,13 +1,18 @@
 import json
 
-def export_data(pilotName, instructorName, flightDate, 
+def export_data(pilotName, instructorName, flightDate, flightLength,
                 xCoordinates, yCoordinates, zCoordinates,
                 timeValues, velocityValues):
+    """
+    Exports the flight data to a JSON file stored with a ".flight" extension.
+    :return: none
+    """
     flight = {}
     flight['flight'] = {
         "Pilot Name" : pilotName,
         "Instructor" : instructorName, 
-        "Flight Date" : flightDate, 
+        "Flight Date" : flightDate,
+        "Flight Length" : flightLength,
         "x-Coordinates" : xCoordinates,
         "y-Coordinates" : yCoordinates,
         "z-Coordinates" : zCoordinates,
@@ -19,7 +24,7 @@ def export_data(pilotName, instructorName, flightDate,
 
 ## Below is a runnable code to test the formatting 
 # export_data("ariana", "robin", "date", "xcoord", "ycoord", "zcoord", "time", "velocity")
-
+"""
 ## The following segment creates arrays of x,y,z coordinates located in random_size10_legal80.txt files
 ## Thereafter, a call to the "export_file()" function is called with the new arrays. 
 xs = []
@@ -42,4 +47,5 @@ with open("Flight-App/src/Tests/TestFiles/random_size10_legal80.txt", "r") as in
 #     print(zs[line])
 # print('\n')
 # another call to the function to test the arrays of x,y,z coordinates in the random_size10_legal80.txt file
-export_data("Ariana Boroujerdi", "Robin Murphy", "11/1/2019", xs,ys,zs, "Times", "Velocity")
+export_data("Ariana Boroujerdi", "Robin Murphy", "11/1/2019", "00:00:00", xs,ys,zs, "Times", "Velocity")
+"""

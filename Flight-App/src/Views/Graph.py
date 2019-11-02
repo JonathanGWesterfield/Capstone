@@ -2,6 +2,8 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import csv
 import math
+import statistics
+import numpy
 
 def readCoordinates(filename, timeStep):
     """
@@ -107,12 +109,25 @@ def velocityColors(vel):
             colors.append('g')
     return colors
 
-def generateGraph(x, y, z, timearray, velocity):
+def computeVelocityStatistics(velocity):
+    """
+    Computes statistics on the velocity points.
+    :return: Average velocity, standard deviation, max velocity, min velocity.
+    """
+    avgVel = statistics.mean(velocity)
+    std = statistics.stdev(velocity)
+    numArray = numpy.array(velocity)
+    maxVel = numpy.amax(numArray)
+    minVel = numpy.amin(numArray)
+
+    return avgVel, std, maxVel, minVel
+
+def generateGraph(x, y, z, velocity, displayVelocity):
     """
     Driver function for generating the 3d graph of drone coordinates.
     Input: array of x coordinates, array of y coordinates, array of z coordinates, array of time values as seconds
     counting up from 0.
-    Changes in velocity are displayed if "velocity" is true.
+    Changes in velocity are displayed if "displayVelocity" is true.
     :return: The figure to display as the 3d graph.
     """
     # Plot points on the graph
@@ -120,13 +135,12 @@ def generateGraph(x, y, z, timearray, velocity):
     ax = fig.add_subplot(111, projection='3d')
     ax.scatter(x, y, z, s=6, c="k", marker='o')
 
-    if velocity is True:
+    if displayVelocity is True:
         # Get velocities and line segment coloring
-        vel = velocityPoints(x, y, z, timearray)
-        colors = velocityColors(vel)
+        colors = velocityColors(velocity)
 
         # Add line segment coloring
-        for i in range(len(vel)):
+        for i in range(len(velocity)):
             plt.plot([x[i], x[i + 1]], [y[i], y[i + 1]], [z[i], z[i + 1]], colors[i], linewidth = 1)
 
     # Set axis limits
