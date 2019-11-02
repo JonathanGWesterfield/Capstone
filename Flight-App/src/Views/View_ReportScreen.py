@@ -272,6 +272,9 @@ class ReportWindow(qtw.QWidget):
         self.tableWidget.setItem(3, 0, qtw.QTableWidgetItem("Maximum Velocity"))
         self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem(str(round(maxVel, 2))))
 
+        # Make non-editable
+        self.tableWidget.setEditTriggers(qtw.QTableWidget.NoEditTriggers)
+
         return self.tableWidget
 
     def analyzeFlight(self, filePath: str, timeStep: float):
@@ -294,6 +297,13 @@ class ReportWindow(qtw.QWidget):
         return x, y, z, velocityPoints, avgVel, std, maxVel, minVel
 
     def importFlight(self, flightData: str):
+        """
+        Reads in the .flight file and sets up information for report view.
+        :param flightData: String representing file path where .flight file is stored.
+        :param timeStep: Float representing the change in time between each logged point.
+        :return: Array of x coordinates, Array of y coordinates, Array of z coordinates, array of velocity values,
+        average velocity, standard deviation, maximum velocity, minimum velocity.
+        """
         # Read in points
         pilotName, instructorName, flightDate, flightLength, flightInstructions, x, y, z, velocityPoints = \
             Export.ImportFile.importData(flightData)
@@ -345,7 +355,7 @@ class ReportWindow(qtw.QWidget):
     @property
     def LblInstructor(self) -> qtw.QLabel:
         """
-        Getter for the instructor label so we can attach functionality to it in the child class.
+        Getter for the instructor label.
         :return: Reference to the instructor label.
         """
         return self.__lblInstructor
@@ -373,7 +383,7 @@ class ReportWindow(qtw.QWidget):
     @property
     def LblFlightDate(self) -> qtw.QLabel:
         """
-        Getter for the flight date label so we can attach functionality to it in the child class.
+        Getter for the flight date label.
         :return: Reference to the flight date label.
         """
         return self.__lblFlDate
