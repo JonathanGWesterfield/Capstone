@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
 import Graph
-import matplotlib.pyplot as plt
+import Export.ExportFile
 import datetime as dt
 
 class ReportWindow(qtw.QWidget):
@@ -16,7 +16,6 @@ class ReportWindow(qtw.QWidget):
     """
 
     # Initialize signals. Use for switching between views.
-    sigExportResults = qtc.pyqtSignal()
     sigStartTracking = qtc.pyqtSignal()
     sigReturnHome = qtc.pyqtSignal()
 
@@ -30,6 +29,8 @@ class ReportWindow(qtw.QWidget):
         self.pilotName = pilotName
         self.instructorName = instructorName
         self.flightInstructions = flightInstructions
+        self.flightLength = "00:00:00"
+        self.flightDate = dt.date.today().strftime('%m/%d/%Y')
 
         # Format window
         self.setFixedSize(550, 550)
@@ -55,7 +56,9 @@ class ReportWindow(qtw.QWidget):
         btnLayout = self.setButtonLayout()
 
         # Attach functionality to buttons.
-        self.BtnExport.clicked.connect(self.signalExportResults)
+        self.BtnExport.clicked.connect(lambda *args: self.signalExportResults(self.pilotName, self.instructorName,
+                                                                              self.flightDate, self.flightLength,
+                                                                              x, y, z, velocityPoints))
         self.BtnFlyAgain.clicked.connect(self.signalStartTracking)
         self.BtnHome.clicked.connect(self.signalReturnHome)
         self.BtnViewGraphNoVelocity.clicked.connect(lambda *args: self.setupGraph(x, y, z, velocityPoints, False))
@@ -77,12 +80,19 @@ class ReportWindow(qtw.QWidget):
         # Attach the layout to the screen
         self.setLayout(vLayout)
 
-    def signalExportResults(self):
+    def signalExportResults(self, pilotName: str, instructorName: str, flightDate: str, flightLength: str,
+                            x: [], y: [], z: [], velocityVals: []):
         """
         Sends a signal to the main controller that the Export Results button was pushed.
         :return: none
         """
-        self.sigExportResults.emit()
+        outPath = '../Export/ExportedFiles/' + pilotName + '.flight'
+        Export.ExportFile.export_data(pilotName, instructorName, flightDate, flightLength,
+        x, y, z, velocityVals, outPath)
+        msgBox = qtw.QMessageBox()
+        msgBox.setText(
+            "Results exported!")
+        msgBox.exec()
 
     def signalStartTracking(self):
         """
@@ -137,8 +147,8 @@ class ReportWindow(qtw.QWidget):
         # Setup all labels with default values for testing and detecting errors in the controls
         self.__lblPilot = qtw.QLabel(self.pilotName)
         self.__lblInstructor = qtw.QLabel(self.instructorName)
-        self.__lblFlDate = qtw.QLabel(dt.date.today().strftime('%m/%d/%Y'))
-        self.__lblFlLength = qtw.QLabel('00:00:00')
+        self.__lblFlDate = qtw.QLabel(self.flightDate)
+        self.__lblFlLength = qtw.QLabel(self.flightLength)
 
         grid = qtw.QGridLayout()
         flightInfoTitle = self.setSubTitle('Flight Information')
