@@ -241,15 +241,15 @@ public class Camera2VideoFragment extends Fragment
      * @return The video size
      */
     private static Size chooseVideoSize(Size[] choices) {
-//        for (int i = choices.length - 1; i >= 0; --i) {
-//            if (choices[i].getWidth() == choices[i].getHeight() * 16 / 9 && choices[i].getWidth() <= 2160) {
-//                return choices[i];
-//            }
-//        }
+        for (int i = choices.length - 1; i >= 0; --i) {
+            if (choices[i].getWidth() == choices[i].getHeight() * 16 / 9 && choices[i].getWidth() <= 2160) {
+                return choices[i];
+            }
+        }
         // Get rid of this after testing
-        for(Size size : choices)
-            if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 1080)
-                return size;
+//        for(Size size : choices)
+//            if (size.getWidth() == size.getHeight() * 4 / 3 && size.getWidth() <= 1080)
+//                return size;
         Log.e(TAG, "Couldn't find any suitable video size");
         return choices[choices.length - 1];
     }
@@ -608,29 +608,30 @@ public class Camera2VideoFragment extends Fragment
         conn.getFtpConn().setSrcFilePath(mNextVideoAbsolutePath);
 
         // TODO: PUT THIS BACK INTO THE CODE WHEN WE GET A REAL PHONE HERE
-//        // Get highest resolution the camera has (which should be 4K on the real phone)
-//        CamcorderProfile uHDprof = CamcorderProfile.get(Integer.parseInt(mCameraDevice.getId()),
-//                CamcorderProfile.QUALITY_LOW);
-//
-//        // Check to make sure that this 4k video profile is valid for phone its on
-//        for(Size size : map.getOutputSizes(MediaRecorder.class))
-//        {
-//            if (size.getHeight() == uHDprof.videoFrameHeight && size.getWidth() == uHDprof.videoFrameWidth) {
-//                // you may use this profile
-//                mMediaRecorder.setProfile(uHDprof);
-//                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-//                switch (mSensorOrientation) {
-//                    case SENSOR_ORIENTATION_DEFAULT_DEGREES:
-//                        mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
-//                        break;
-//                    case SENSOR_ORIENTATION_INVERSE_DEGREES:
-//                        mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
-//                        break;
-//                }
-//                mMediaRecorder.prepare();
-//                return;
-//            }
-//        }
+        // Get highest resolution the camera has (which should be 4K on the real phone)
+        CamcorderProfile uHDprof = CamcorderProfile.get(Integer.parseInt(mCameraDevice.getId()),
+                CamcorderProfile.QUALITY_HIGH);
+
+        // Check to make sure that this 4k video profile is valid for phone its on
+        for(Size size : map.getOutputSizes(MediaRecorder.class))
+        {
+            if (size.getHeight() == uHDprof.videoFrameHeight && size.getWidth() == uHDprof.videoFrameWidth) {
+                // you may use this profile
+                uHDprof.videoFrameRate = 30;
+                mMediaRecorder.setProfile(uHDprof);
+                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+                switch (mSensorOrientation) {
+                    case SENSOR_ORIENTATION_DEFAULT_DEGREES:
+                        mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
+                        break;
+                    case SENSOR_ORIENTATION_INVERSE_DEGREES:
+                        mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
+                        break;
+                }
+                mMediaRecorder.prepare();
+                return;
+            }
+        }
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mMediaRecorder.setVideoEncodingBitRate(10000000);
         mMediaRecorder.setVideoFrameRate(30);

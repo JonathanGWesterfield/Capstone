@@ -22,6 +22,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 
 public class FTPConn implements Observer
 {
@@ -227,6 +231,9 @@ public class FTPConn implements Observer
             sftp.put(new FileInputStream(src), src.getName(), ChannelSftp.OVERWRITE);
             closeConn();
             NetConn.getInstance().sendMessage(Signal.FTP_COMPLETED.toString());
+
+            deleteVideo(); // delete video off phone so we can save storage
+
             return true;
         }
         catch (FileNotFoundException e)
@@ -241,13 +248,32 @@ public class FTPConn implements Observer
             Log.d(TAG, errMess);
             Log.d(TAG, "Failed to Transfer the file");
         }
-        catch (SftpException  e)
+        catch (SftpException e)
         {
             String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
             Log.d(TAG, errMess);
             Log.d(TAG, "Failed to Transfer the file");
         }
+        catch (Exception e)
+        {
+            String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
+            Log.d(TAG, errMess);
+            Log.d(TAG, "Failed to delete the file after transfer");
+        }
         return false;
+    }
+
+    /**
+     * Deletes the file after it has been transferred to the phone so we can still
+     * have storage on the phone after multiple recordings.
+     */
+    public void deleteVideo() throws Exception
+    {
+        File deleteFile = new File(this.srcFilePath);
+        if(!deleteFile.getCanonicalFile().delete())
+            throw new Exception("ERROR! Failed to delete the video file from the phone storage!");
+
+        Log.d(TAG, "File successfully deleted");
     }
 
     /**
