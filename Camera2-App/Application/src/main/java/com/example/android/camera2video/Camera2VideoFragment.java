@@ -62,6 +62,15 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * I pulled this straight from Google's examples and made modifications of my own in order
+ * to tailor it for our app. It receives controls from the CameraActivity so we know when
+ * to start and stop recording video. Also sets video footage to 4K in order to have as much
+ * data as we can to analyze the drone footage and recognize the drone.
+ *
+ * @author Jonathan Westerfield
+ * @version 1.0.3
+ */
 public class Camera2VideoFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
 
@@ -681,7 +690,7 @@ public class Camera2VideoFragment extends Fragment
 //                + System.currentTimeMillis() + ".mp4";
 
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
-                + currTime + ".mp4";
+                + currTime + NetConn.getInstance().getPhoneID() + ".mp4";
     }
 
     public void startRecordingVideo() {

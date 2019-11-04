@@ -14,6 +14,15 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+/**
+ * This class takes in the connection information such as the IP address, port number, username
+ * and password for the laptop so that it can create a connection to the laptop and transfer
+ * to the camera portion of this application. If the connection to the laptop fails, the exceptions
+ * that caused the failure are displayed on screen.
+ *
+ * @author Jonathan Westerfield
+ * @version 1.0.3
+ */
 public class ConnectActivity extends Activity
 {
     String ipaddr, username, password;
@@ -93,12 +102,22 @@ public class ConnectActivity extends Activity
         }
     }
 
+    /**
+     * Switches to the camera activity.
+     */
     public void switchToCameraActivity()
     {
         Intent cameraIntent = new Intent(this, CameraActivity.class);
         startActivity(cameraIntent);
     }
 
+    /**
+     * An alert view that displays any exceptions that may have been thrown when trying
+     * to connect to the laptop.
+     * @param view The context that this alert will show on.
+     * @param title The title of the alert.
+     * @param message The message of for the cause of the alert.
+     */
     public void showFailedConnectionAlert(View view, String title, String message)
     {
         this.tbIPAddr.setText("");

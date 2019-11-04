@@ -27,6 +27,16 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
+/**
+ * This class provides all of the functions necessary for the application to transfer the
+ * recorded video file back to the laptop over an SFTP connection. All that is needed for
+ * the connection to succeed is for the user's laptop to have openSSH installed and the proper
+ * permissions to open an SFTP connection. While this class implements the Observer pattern, the
+ * Observer pattern functions were cast aside and no longer work.
+ *
+ * @author Jonathan Westerfield
+ * @version 1.0.3
+ */
 public class FTPConn implements Observer
 {
     String host, username, password, srcFilePath, destFilePath;

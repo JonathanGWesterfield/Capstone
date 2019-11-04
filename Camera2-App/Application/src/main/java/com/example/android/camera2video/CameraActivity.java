@@ -24,6 +24,16 @@ import com.jcraft.jsch.JSchException;
 
 import java.io.IOException;
 
+/**
+ * I pulled this code from the Google examples. This activity uses the Camera2VideoFragment
+ * in order to take video from the camera. This implements the observer pattern which listens
+ * to the signals from the Readloop class so we can control the camera and tell it to start and
+ * stop recording. This class also calls the controls needed to transfer the video file to the
+ * laptop once the recording has finished.
+ *
+ * @author Jonathan Westerfield
+ * @version 1.0.3
+ */
 public class CameraActivity extends Activity implements Observer
 {
     private Camera2VideoFragment cameraFrag;
@@ -61,6 +71,7 @@ public class CameraActivity extends Activity implements Observer
             switch(signal)
             {
                 case START:
+                    NetConn.getInstance().setPhoneID(message.trim()); // set the phone ID with the start message
                     cameraFrag.startRecordingVideo();
                     conn.sendMessage(Signal.START_ACKNOWLEDGE.toString());
                     break;

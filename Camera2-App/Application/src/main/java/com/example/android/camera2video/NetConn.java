@@ -12,6 +12,13 @@ import java.net.UnknownHostException;
  * help us because we have 2 activities in use on the app. This class will be a singleton class
  * and will also use the Observer design pattern to notify the rest of the app that a network message
  * has been received.
+ *
+ * @author Jonathan Westerfield
+ * @version 1.0.3
+ *
+ * {@link Observer}
+ * {@link ReadLoop}
+ * {@link Observable}
  */
 class NetConn implements Serializable
 {
@@ -23,6 +30,7 @@ class NetConn implements Serializable
     private String password;
     private String fromFTPPath;
     private String toFTPPath;
+    private String phoneID;
 
     private Socket socket;
     private BufferedWriter writer;
@@ -31,6 +39,10 @@ class NetConn implements Serializable
     private Thread listenerThread;
     private FTPConn ftpConn;
 
+    /**
+     * The way other classes and objects can access this singleton object.
+     * @return The single instance of this class.
+     */
     static NetConn getInstance()
     {
         if(instance == null)
@@ -117,6 +129,19 @@ class NetConn implements Serializable
     }
 
     /**
+     * Allows us to set the phone ID so as to differentiate the video files
+     * that gets sent back to the laptop. Otherwise, both files would be named the same thing
+     * which would cause issues differentiating between the two further along in the process.
+     * @param id The id of the phone passed in from the laptop.
+     * @return The current instance of the class as per the builder pattern.
+     */
+    public NetConn setPhoneID(String id)
+    {
+        this.phoneID = id;
+        return this;
+    }
+
+    /**
      * Getter for the current IP Address.
      * @return The current IP address of the target.
      */
@@ -160,6 +185,16 @@ class NetConn implements Serializable
     public FTPConn getFtpConn()
     {
         return this.ftpConn;
+    }
+
+    /**
+     * Gets the id of the phone that is set by the laptop. This allows us to differentiate
+     * between the video files when they get sent back to the laptop.
+     * @return The ID of the phone (EX: 1 or 2)
+     */
+    public String getPhoneID()
+    {
+        return this.phoneID;
     }
 
     //endregion
@@ -223,6 +258,15 @@ class NetConn implements Serializable
         this.listener = new ReadLoop(this.reader);
     }
 
+    /**
+     * Spawns and starts a new thread for this class instance of the ReadLoop class
+     * so we can listen for network signals from the
+     * laptop. Since this ReadLoop instance is a part of this singleton class, it is also
+     * accessible to all other project objects and there should only be 1 in memory. By being
+     * a object belonging to a singleton object, the ReadLoop is also a singleton object.
+     *
+     * {@link ReadLoop}
+     */
     public void startReadLoop()
     {
         // Start our reader loop thread
@@ -279,21 +323,24 @@ class NetConn implements Serializable
         return true;
     }
 
-    /** Starts the listener thread so that we can read messages from the server while
-     * doing other things.
-     */
-    public void startListener()
-    {
-        this.listenerThread = new Thread(this.listener);
-        this.listenerThread.start();
-        System.out.println("Started listening to the server (laptop)");
-        // TODO: PUT AN ALERT HERE THAT WE ARE NOW LISTENING TO THE LAPTOP
-    }
+//    /** Starts the listener thread so that we can read messages from the server while
+//     * doing other things.
+//     */
+//    public void startListener()
+//    {
+//        this.listenerThread = new Thread(this.listener);
+//        this.listenerThread.start();
+//        System.out.println("Started listening to the server (laptop)");
+//        // TODO: PUT AN ALERT HERE THAT WE ARE NOW LISTENING TO THE LAPTOP
+//    }
 
     /**
      * Allows us to subscribe to the listener so that we can get updates from the laptop
      * while the rest of the app is running.
      * @param observer The object that needs to listen to the server.
+     * {@link Observer}
+     * {@link ReadLoop}
+     * {@link Observable}
      */
     public void suscribeToListener(Observer observer)
     {

@@ -3,6 +3,9 @@ package com.example.android.camera2video;
 /**
  * The interface that is required for any class that want to use this to send network signals
  * to the classes that need it. Uses the Observer design pattern.
+ *
+ * @author Jonathan Westerfield
+ * @version 1.0.0
  */
 public interface Observable
 {

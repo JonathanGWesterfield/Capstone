@@ -6,6 +6,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * This class is a listener loop that is spawned as a separate thread from the NetConn
+ * class. This allows the camera application to continuously listen for network signals
+ * and controls from the laptop even while other camera functions are occurring.
+ *
+ * @author Jonathan Westerfield
+ * @version 1.0.3
+ */
 public class ReadLoop implements Runnable, Observable
 {
 //    private Thread t;
@@ -55,6 +63,11 @@ public class ReadLoop implements Runnable, Observable
     }
     //endregion
 
+    /**
+     * Class constructor. Takes in the BufferedReader instance from the parent NetConn
+     * class in order to fully setup and start listening to the laptop.
+     * @param reader The BufferedReader instance with an open connection to the laptop.
+     */
     public ReadLoop(BufferedReader reader)
     {
         this.reader = reader;

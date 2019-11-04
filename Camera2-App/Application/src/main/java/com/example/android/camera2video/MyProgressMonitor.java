@@ -7,6 +7,16 @@ import com.jcraft.jsch.SftpProgressMonitor;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * This class was created so that we could easily monitor when the SFTP file transfer started
+ * and finished. This also implements the Observer in the Observer Pattern to let any observer
+ * know when the file transfer was completed.
+ *
+ * This has been deprecated as its functions are no longer needed.
+ *
+ * @author Jonathan Westerfield
+ * @version 1.0.3
+ */
 public class MyProgressMonitor implements SftpProgressMonitor, Observable
 {
     private SftpProgressMonitor monitor;
