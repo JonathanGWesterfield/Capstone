@@ -147,11 +147,13 @@ class PhoneControl:
         if not self.connected:
             raise PhonesNotSyncedException("ERROR: Phones not synced up yet!")
 
+        num = 1
         try:
             for conn in self.connections:
                 # Start a new thread and return its identifier
-                timestamp = datetime.datetime.now()
-                x = threading.Thread(target=self.threadSendSignal, args=(conn, "START", str(timestamp), "START_ACKNOWLEDGE"))
+                phoneID = "phone-" + str(num)
+                x = threading.Thread(target=self.threadSendSignal, args=(conn, "START", message, "START_ACKNOWLEDGE"))
+                num += 1
                 threads.append(x)
                 x.start()
 
