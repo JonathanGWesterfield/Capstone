@@ -6,6 +6,7 @@ from View_VerifySetupScreen import VerifySetupWindow
 from View_ReportScreen import ReportWindow
 from View_LoadingScreen import LoadingWindow
 from Controllers.PhoneController import PhoneControl as PhoneControl
+from Controllers.OpenCVController import DroneTracker
 
 class Controller:
     """
