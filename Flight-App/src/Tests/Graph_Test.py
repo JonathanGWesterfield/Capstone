@@ -1,5 +1,5 @@
 import unittest
-import Graph
+import Views.Graph as Graph
 import math
 
 class Graph_Test(unittest.TestCase):
@@ -178,38 +178,55 @@ class Graph_Test(unittest.TestCase):
 
     def test_graphShows_noError(self):
         """
-        Test that graph generates correctly for data set of 200, then 800, then 1200 data points.
+        Test that graph generates correctly with and with velocity changes shown
+        for data set of 100, then 200, then 800, then 1200 data points.
         For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
         Illegal coordinate points in file should not be included in return result.
         :return: None
         """
 
         # Test small data sets
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size100_legal100.txt', 1)
+        velocity = Graph.velocityPoints(x, y, z, timearray)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+
+        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size100_legal80.txt', 1)
+        velocity = Graph.velocityPoints(x, y, z, timearray)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+
         x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
+        velocity = Graph.velocityPoints(x, y, z, timearray)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
 
         x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
+        velocity = Graph.velocityPoints(x, y, z, timearray)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
 
         # Test medium data sets
         x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
+        velocity = Graph.velocityPoints(x, y, z, timearray)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
 
         x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
+        velocity = Graph.velocityPoints(x, y, z, timearray)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
 
         # Test largest data sets
         x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
+        velocity = Graph.velocityPoints(x, y, z, timearray)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
 
         x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, timearray, False))
+        velocity = Graph.velocityPoints(x, y, z, timearray)
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
+        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
 
     def test_velocityPoints(self):
         """
