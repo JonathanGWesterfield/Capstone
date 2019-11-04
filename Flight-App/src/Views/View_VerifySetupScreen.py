@@ -1,5 +1,6 @@
 import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
+from Controllers.PhoneController import PhoneControl
 
 class VerifySetupWindow(qtw.QWidget):
     """
@@ -21,12 +22,13 @@ class VerifySetupWindow(qtw.QWidget):
     lightSync = False
     fullSetup = False
 
-    def __init__(self):
+    def __init__(self, phoneControl: PhoneControl):
         """
         Class Constructor
         """
         qtw.QWidget.__init__(self)
         self.setFixedSize(550, 550)
+        self.phoneControl = phoneControl
         self.initView()
 
     def initView(self):
@@ -34,6 +36,7 @@ class VerifySetupWindow(qtw.QWidget):
         Sets up the view and lays out all of the components.
         :return: None
         """
+        # Set window title
         self.setWindowTitle('Verify Setup Screen')
 
         # Set the title label
@@ -70,6 +73,7 @@ class VerifySetupWindow(qtw.QWidget):
         self.setLayout(vLayout)
 
     def syncPhone(self):
+        self.phoneControl.sync()
         self.phoneSync = True
 
     def testLight(self):

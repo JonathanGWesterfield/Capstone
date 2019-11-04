@@ -1,5 +1,7 @@
 import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
+from Controllers.PhoneController import PhoneControl
+import time
 
 class LoadingWindow(qtw.QWidget):
     """
@@ -54,6 +56,11 @@ class LoadingWindow(qtw.QWidget):
 
         # Attach the layout to the screen
         self.setLayout(vLayout)
+        self.show()
+
+    def fileTransfer(self, phoneControl: PhoneControl):
+        phoneControl.startFileTransfer("/Users/hayleyeckert/Desktop/FTP/")
+        phoneControl.waitForFileTransfer()
 
     def returnHome(self):
         """

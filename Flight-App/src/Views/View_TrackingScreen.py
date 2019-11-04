@@ -2,6 +2,7 @@ import sys
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
+from Controllers.PhoneController import PhoneControl
 
 
 class TrackingWindow(qtw.QWidget):
@@ -19,12 +20,13 @@ class TrackingWindow(qtw.QWidget):
     sigStopTracking = qtc.pyqtSignal()
     sigFlightInfoConfirmed = qtc.pyqtSignal(str, str, str)
 
-    def __init__(self):
+    def __init__(self, phoneControl: PhoneControl):
         """
         Class Constructor
         """
         qtw.QWidget.__init__(self)
         self.setFixedSize(550, 550)
+        self.phoneControl = phoneControl
         self.initView()
 
     def initView(self):
@@ -32,6 +34,7 @@ class TrackingWindow(qtw.QWidget):
          Initializes and lays out all of the controls and elements on the view.
          :return: None
          """
+        # Set up window
         self.setWindowTitle('Tracking Screen')
 
         # Initialize titles
@@ -51,6 +54,7 @@ class TrackingWindow(qtw.QWidget):
 
         # Attach functionality to stop and home buttons
         homeBtn.clicked.connect(self.returnHome)
+        self.BtnStart.clicked.connect(self.startTracking)
         self.BtnStop.clicked.connect(self.stopTracking)
 
         # Initialize and attach functionality to clear, confirm buttons
@@ -85,11 +89,27 @@ class TrackingWindow(qtw.QWidget):
         """
         self.sigReturnHome.emit()
 
+    def startTracking(self):
+        """
+        Sends a signal to the main controller that the Start Tracking button was pushed.
+        :return: none
+        """
+        self.phoneControl.startRecording()
+        msgBox = qtw.QMessageBox()
+        msgBox.setText(
+            "Tracking started!")
+        msgBox.exec()
+
     def stopTracking(self):
         """
         Sends a signal to the main controller that the Stop Tracking button was pushed.
         :return: none
         """
+        self.phoneControl.stopRecording()
+        msgBox = qtw.QMessageBox()
+        msgBox.setText(
+            "Tracking stopped!")
+        msgBox.exec()
         self.sigStopTracking.emit()
 
     def setTitle(self) -> qtw.QVBoxLayout:
