@@ -36,7 +36,7 @@ class Graph_Test(unittest.TestCase):
         self.assertTrue(Graph.checkLegalInput(0, 0, 0))
 
         # Check largest legal bound. Expected output: True.
-        self.assertTrue(Graph.checkLegalInput(30, 15, 10))
+        self.assertTrue(Graph.checkLegalInput(15, 15, 10))
 
         # Check when x is string input. Expected output: False.
         self.assertFalse(Graph.checkLegalInput('hi there', 5, 3))
@@ -49,272 +49,295 @@ class Graph_Test(unittest.TestCase):
 
     def test_readCoordinates_small_legal(self):
         """
-        Test that file containing one x, one y, and one z value in each row is read in correctly. File contains
-        only legal input, so timearray should count from 0 to 8.
+        Test that coordinates from a small data file are read in correctly.
         :return: None
         """
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/coordinates_tiny.rtf', 1)
-        self.assertEqual(x, [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 3.0, 1.0])
-        self.assertEqual(y, [0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 4.0, 6.0, 3.0])
-        self.assertEqual(z, [0.0, 1.0, 3.0, 8.0, 10.0, 10.0, 10.0, 9.0, 8.0])
-        self.assertEqual(timearray, [0, 1, 2, 3, 4, 5, 6, 7, 8])
+        test_dict = Graph.readCoordinates('TestFiles/JSONDUMP.flight')
+        self.assertEqual(test_dict["coords"], [[0, 0, 0, 0], [1, 0, 0, 1], [2, 0, 0, 3], [3, 0, 0, 8]])
 
-    def test_readCoordinates_small_illegal(self):
+    def test_readCoordinates_size100_allLegal(self):
         """
-        Test that file containing one x, one y, and one z value in each row is read in correctly. Illegal coordinate
-        points in file should not be included in return result, and timearray should reflect this.
+        Test that file containing 100 (x,y,z) points is read in correctly.
+        This test contains all legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/coordinates_tiny_illegal.rtf', 1)
-        self.assertEqual(x, [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 3.0, 1.0])
-        self.assertEqual(y, [0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 4.0, 6.0, 3.0])
-        self.assertEqual(z, [0.0, 1.0, 3.0, 8.0, 10.0, 10.0, 10.0, 9.0, 8.0])
-        self.assertEqual(timearray, [0, 1, 2, 3, 5, 6, 7, 9, 11])
+        length = 100
+        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal100.flight')
+        self.assertEqual(len(test_dict["coords"]), length)
+        self.assertEqual(len(test_dict["legalPoints"]), length)
 
-    def test_readCoordinates_size200(self):
+    def test_readCoordinates_size100_someLegal(self):
         """
-        Test that file containing 200 (x,y,z) points is read in correctly.
-        One test contains all legal inputs. Another test contains 80% legal inputs.
-        Illegal coordinate points in file should not be included in return result.
+        Test that file containing 100 (x,y,z) points is read in correctly.
+        This test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+        :return: None
+        """
+        length = 100
+        numLegal = length * 0.8
+        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal80.flight')
+        self.assertEqual(len(test_dict["coords"]), length)
+        self.assertEqual(len(test_dict["legalPoints"]), numLegal)
+
+    def test_readCoordinates_size200_allLegal(self):
+        """
+        Test that file containing 200 (x,y,z) points is read in correctly. This contains all legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
         length = 200
-        numLegal = 200 * 0.8
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
-        self.assertEqual(len(x), length)
-        self.assertEqual(len(y), length)
-        self.assertEqual(len(z), length)
-        self.assertEqual(len(timearray), length)
+        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal100.flight')
+        self.assertEqual(len(test_dict["coords"]), length)
+        self.assertEqual(len(test_dict["legalPoints"]), length)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
-        self.assertEqual(len(x), numLegal)
-        self.assertEqual(len(y), numLegal)
-        self.assertEqual(len(z), numLegal)
-        self.assertEqual(len(timearray), numLegal)
-
-    def test_readCoordinates_size400(self):
+    def test_readCoordinates_size200_someLegal(self):
         """
-        Test that file containing 400 (x,y,z) points is read in correctly.
-        One test contains all legal inputs. Another test contains 80% legal inputs.
-        Illegal coordinate points in file should not be included in return result.
+        Test that file containing 200 (x,y,z) points is read in correctly. This contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
-        length = 400
+        length = 200
         numLegal = length * 0.8
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size400_legal100.txt', 1)
-        self.assertEqual(len(x), length)
-        self.assertEqual(len(y), length)
-        self.assertEqual(len(z), length)
-        self.assertEqual(len(timearray), length)
+        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal80.flight')
+        self.assertEqual(len(test_dict["coords"]), length)
+        self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size400_legal80.txt', 1)
-        self.assertEqual(len(x), numLegal)
-        self.assertEqual(len(y), numLegal)
-        self.assertEqual(len(z), numLegal)
-        self.assertEqual(len(timearray), numLegal)
-
-    def test_readCoordinates_size800(self):
+    def test_readCoordinates_size600_allLegal(self):
         """
-        Test that file containing 800 (x,y,z) points is read in correctly.
-        One test contains all legal inputs. Another test contains 80% legal inputs.
-        Illegal coordinate points in file should not be included in return result.
+        Test that file containing 600 (x,y,z) points is read in correctly. This contains all legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
-        length = 800
-        numLegal = length * 0.8
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
-        self.assertEqual(len(x), length)
-        self.assertEqual(len(y), length)
-        self.assertEqual(len(z), length)
-        self.assertEqual(len(timearray), length)
+        length = 600
+        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal100.flight')
+        self.assertEqual(len(test_dict["coords"]), length)
+        self.assertEqual(len(test_dict["legalPoints"]), length)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
-        self.assertEqual(len(x), numLegal)
-        self.assertEqual(len(y), numLegal)
-        self.assertEqual(len(z), numLegal)
-        self.assertEqual(len(timearray), numLegal)
-
-    def test_readCoordinates_size1000(self):
+    def test_readCoordinates_size600_someLegal(self):
         """
-        Test that file containing 1000 (x,y,z) points is read in correctly.
-        One test contains all legal inputs. Another test contains 80% legal inputs.
-        Illegal coordinate points in file should not be included in return result.
+        Test that file containing 600 (x,y,z) points is read in correctly. This contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
-        length = 1000
+        length = 600
         numLegal = length * 0.8
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1000_legal100.txt', 1)
-        self.assertEqual(len(x), length)
-        self.assertEqual(len(y), length)
-        self.assertEqual(len(z), length)
-        self.assertEqual(len(timearray), length)
+        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal80.flight')
+        self.assertEqual(len(test_dict["coords"]), length)
+        self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1000_legal80.txt', 1)
-        self.assertEqual(len(x), numLegal)
-        self.assertEqual(len(y), numLegal)
-        self.assertEqual(len(z), numLegal)
-        self.assertEqual(len(timearray), numLegal)
-
-    def test_readCoordinates_size1200(self):
+    def test_readCoordinates_size1200_allLegal(self):
         """
-        Test that file containing 1200 (x,y,z) points is read in correctly.
-        One test contains all legal inputs. Another test contains 80% legal inputs.
-        Illegal coordinate points in file should not be included in return result.
+        Test that file containing 1200 (x,y,z) points is read in correctly. This contains all legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
         length = 1200
-        numLegal = length * 0.8
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
-        self.assertEqual(len(x), length)
-        self.assertEqual(len(y), length)
-        self.assertEqual(len(z), length)
-        self.assertEqual(len(timearray), length)
+        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal100.flight')
+        self.assertEqual(len(test_dict["coords"]), length)
+        self.assertEqual(len(test_dict["legalPoints"]), length)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
-        self.assertEqual(len(x), numLegal)
-        self.assertEqual(len(y), numLegal)
-        self.assertEqual(len(z), numLegal)
-        self.assertEqual(len(timearray), numLegal)
+    def test_readCoordinates_size1200_someLegal(self):
+        """
+        Test that file containing 1200 (x,y,z) points is read in correctly. This contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+        :return: None
+        """
+        length = 1200
+        numLegal = 961
+        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal80.flight')
+        self.assertEqual(len(test_dict["coords"]), length)
+        self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
     def test_graphShows_noError(self):
         """
         Test that graph generates correctly with and with velocity changes shown
         for data set of 100, then 200, then 800, then 1200 data points.
         For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
-        Illegal coordinate points in file should not be included in return result.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
-
         # Test small data sets
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size100_legal100.txt', 1)
-        velocity = Graph.velocityPoints(x, y, z, timearray)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size100_legal80.txt', 1)
-        velocity = Graph.velocityPoints(x, y, z, timearray)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
-        velocity = Graph.velocityPoints(x, y, z, timearray)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
-        velocity = Graph.velocityPoints(x, y, z, timearray)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        # Test medium data sets
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
-        velocity = Graph.velocityPoints(x, y, z, timearray)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
-        velocity = Graph.velocityPoints(x, y, z, timearray)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        # Test largest data sets
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
-        velocity = Graph.velocityPoints(x, y, z, timearray)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
-        velocity = Graph.velocityPoints(x, y, z, timearray)
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, True))
-        self.assertIsNotNone(Graph.generateGraph(x, y, z, velocity, False))
+        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
     def test_velocityPoints(self):
         """
         Test that velocity between consecutive points is computed as expected.
         :return: None
         """
-        x = [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 3.0, 1.0]
-        y = [0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 4.0, 6.0, 3.0]
-        z = [0.0, 1.0, 3.0, 8.0, 10.0, 10.0, 10.0, 9.0, 8.0]
-        timearray = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        velocityArray = [1, 2, 5, 2, math.sqrt(5), 2, math.sqrt(9), math.sqrt(14)]
-        self.assertEqual(Graph.velocityPoints(x,y,z,timearray), velocityArray)
+        test_dict = {
+        "pilotName": "Hayley",
+        "instructorName": "Eckert",
+        "flightInstr": "Bob",
+        "flightDate": "11/03/2019",
+        "flightLength": 3,
+        "coords": [(0, 0, 0, 0), (1, 0, 0, 1), (2, 0, 0, 2), (3, 1, 1, 3)],
+        "velocities": [],
+        "avgVel": 0.0,
+        "maxVel": 0.0,
+        "minVel": 0.0,
+        "smoothness": 0.0,
+        "legalPoints": [(0, 0, 0, 0), (1, 0, 0, 1), (2, 0, 0, 2), (3, 1, 1, 3)]
+        }
+        velocityArray = [1, 1, math.sqrt(3)]
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(test_dict["velocities"], velocityArray)
 
     def test_velocityColors(self):
         """
         Test that the correct color is assigned to the graph segment between consecutive velocity values.
         :return: None
         """
-        x = [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 3.0, 1.0]
-        y = [0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 4.0, 6.0, 3.0]
-        z = [0.0, 1.0, 3.0, 8.0, 10.0, 10.0, 10.0, 9.0, 8.0]
-        timearray = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        vel = Graph.velocityPoints(x,y,z, timearray)
-        self.assertEqual(Graph.velocityColors(vel), ['g', 'g', 'g', 'r','y','r','g','g'])
+        test_dict = {
+            "pilotName": "Hayley",
+            "instructorName": "Eckert",
+            "flightInstr": "Bob",
+            "flightDate": "11/03/2019",
+            "flightLength": 3.5,
+            "coords": [(0, 0, 0, 0), (1, 0, 0, 1), (2, 0, 0, 2), (3, 1, 1, 3), (3.5, 1, 1, 2.5)],
+            "velocities": [],
+            "avgVel": 0.0,
+            "maxVel": 0.0,
+            "minVel": 0.0,
+            "smoothness": 0.0,
+            "legalPoints": [(0, 0, 0, 0), (1, 0, 0, 1), (2, 0, 0, 2), (3, 1, 1, 3), (3.5, 1, 1, 2.5)]
+        }
+        test_dict = Graph.velocityPoints(test_dict)
+        colors = Graph.velocityColors(test_dict)
+        self.assertEqual(colors, ['g', 'g', 'g', 'r'])
 
     def test_velocityComputes_correctSize(self):
         """
-        Test that velocityPoints returns array of correct size when inputted data set of 200, then 800, then 1200 data points.
-        For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
-        Illegal coordinate points in file should not be included in return result.
+        Test that velocityPoints returns array of correct size when inputted data set of 100, 200, then 800,
+        then 1200 data points. For each size, two tests are run.
+        One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
-
         # Test small data sets
-        size = 200
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
-        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), size-1)
+        size = 100
+        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(test_dict["velocities"]), size-1)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
-        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), (.8*size - 1))
+        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(test_dict["velocities"]), 0.8*size-1)
+
+        size = 200
+        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(test_dict["velocities"]), size-1)
+
+        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(test_dict["velocities"]), 0.8*size-1)
 
         # Test medium data sets
-        size = 800
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
-        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), size-1)
+        size = 600
+        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(test_dict["velocities"]), size - 1)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
-        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), (.8*size - 1))
+        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(test_dict["velocities"]), 0.8 * size - 1)
 
         # Test largest data sets
         size = 1200
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
-        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), size-1)
+        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(test_dict["velocities"]), size - 1)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
-        self.assertEqual(len(Graph.velocityPoints(x, y, z, timearray)), (.8*size - 1))
+        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(test_dict["velocities"]), 0.8 * size)
 
     def test_velocityColorsComputes_correctSize(self):
         """
-        Test that velocityColors returns array of correct size when inputted data set of 200, then 800, then 1200 data points.
-        For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
-        Illegal coordinate points in file should not be included in return result.
+        Test that velocityColors returns array of correct size when inputted data set of 100, then 200, then 800,
+        then 1200 data points. For each size, two tests are run.
+        One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
         :return: None
         """
 
         # Test small data sets
-        size = 200
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size200_legal100.txt', 1)
-        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), size-1)
+        size = 100
+        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(Graph.velocityColors(test_dict)), size - 1)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size200_legal80.txt', 1)
-        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), (.8*size - 1))
+        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8*size - 1)
+
+        size = 200
+        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(Graph.velocityColors(test_dict)), size - 1)
+
+        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8 * size - 1)
 
         # Test medium data sets
-        size = 800
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size800_legal100.txt', 1)
-        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), size-1)
+        size = 600
+        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(Graph.velocityColors(test_dict)), size - 1)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size800_legal80.txt', 1)
-        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), (.8*size - 1))
+        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8 * size - 1)
 
-        # Test largest data sets
+        # Test large data sets
         size = 1200
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/spiral_size1200_legal100.txt', 1)
-        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), size-1)
+        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal100.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(Graph.velocityColors(test_dict)), size - 1)
 
-        x, y, z, timearray = Graph.readCoordinates('TestFiles/random_size1200_legal80.txt', 1)
-        self.assertEqual(len(Graph.velocityColors(Graph.velocityPoints(x, y, z, timearray))), (.8*size - 1))
+        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal80.flight')
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8 * size)
 
 if __name__ == '__main__':
     unittest.main()
