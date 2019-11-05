@@ -92,23 +92,33 @@ class TrackingWindow(qtw.QWidget):
         Sends a signal to the main controller that the Start Tracking button was pushed.
         :return: none
         """
-        self.phoneControl.startRecording()
-        msgBox = qtw.QMessageBox()
-        msgBox.setText(
-            "Tracking started!")
-        msgBox.exec()
+        try:
+            self.phoneControl.startRecording()
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(
+                "Tracking started!")
+            msgBox.exec()
+        except Exception as e:
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(str(e))
+            msgBox.exec()
 
     def stopTracking(self):
         """
         Sends a signal to the main controller that the Stop Tracking button was pushed.
         :return: none
         """
-        self.phoneControl.stopRecording()
-        msgBox = qtw.QMessageBox()
-        msgBox.setText(
-            "Tracking stopped!")
-        msgBox.exec()
-        self.sigStopTracking.emit()
+        try:
+            self.phoneControl.stopRecording()
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(
+                "Tracking stopped!")
+            msgBox.exec()
+            self.sigStopTracking.emit()
+        except Exception as e:
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(str(e))
+            msgBox.exec()
 
     def setTitle(self) -> qtw.QVBoxLayout:
         """

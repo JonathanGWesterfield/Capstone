@@ -1,6 +1,8 @@
 import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
 from Controllers.PhoneController import PhoneControl
+import signal
+from contextlib import contextmanager
 
 class VerifySetupWindow(qtw.QWidget):
     """
@@ -73,13 +75,35 @@ class VerifySetupWindow(qtw.QWidget):
         self.setLayout(vLayout)
 
     def syncPhone(self):
-        self.phoneControl.sync()
-        self.phoneSync = True
+        """
+        Runs phone sync test.
+        :return: None
+        """
+        try:
+            self.phoneControl.sync()
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(
+                "Phones synced!")
+            msgBox.exec()
+            self.phoneSync = True
+        except Exception as e:
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(str(e))
+            msgBox.exec()
+            self.phoneSync = False
 
     def testLight(self):
+        """
+        Runs light test.
+        :return: None
+        """
         self.lightSync = True
 
     def testFull(self):
+        """
+        Runs full system test.
+        :return: None
+        """
         self.fullSetup = True
         if self.fullSetup is True:
             self.sigGoodToFly.emit()
