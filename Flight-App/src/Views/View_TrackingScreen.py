@@ -27,6 +27,7 @@ class TrackingWindow(qtw.QWidget):
         qtw.QWidget.__init__(self)
         self.setFixedSize(550, 550)
         self.phoneControl = phoneControl
+        self.startedTracking = False
         self.initView()
 
     def initView(self):
@@ -40,6 +41,7 @@ class TrackingWindow(qtw.QWidget):
         # Initialize titles
         title = self.setTitle()
         sectionTitle = self.setSubTitle("Flight Information")
+        self.status = self.setStatusLabel("Flight Status: Not Tracking")
 
         # Initialize textboxes
         pilot = self.setPilot()  # Setup the pilot textbox
@@ -74,6 +76,7 @@ class TrackingWindow(qtw.QWidget):
         vLayout.addLayout(instructions)
         vLayout.addLayout(clrConfirm)
         vLayout.addSpacerItem(verticalSpacer)
+        vLayout.addWidget(self.status)
         vLayout.addLayout(startStop)
         vLayout.addWidget(homeBtn)
 
@@ -92,16 +95,25 @@ class TrackingWindow(qtw.QWidget):
         Sends a signal to the main controller that the Start Tracking button was pushed.
         :return: none
         """
-        try:
-            self.phoneControl.startRecording()
+        if self.startedTracking is False:
+            try:
+                self.phoneControl.startRecording()
+                msgBox = qtw.QMessageBox()
+                msgBox.setText(
+                    "Tracking started!")
+                msgBox.exec()
+                self.startedTracking = True
+                self.status.setText("Flight Status: Tracking in Progress")
+            except Exception as e:
+                msgBox = qtw.QMessageBox()
+                msgBox.setText(str(e))
+                msgBox.exec()
+        else:
             msgBox = qtw.QMessageBox()
             msgBox.setText(
-                "Tracking started!")
+                "Tracking has already been started.")
             msgBox.exec()
-        except Exception as e:
-            msgBox = qtw.QMessageBox()
-            msgBox.setText(str(e))
-            msgBox.exec()
+
 
     def stopTracking(self):
         """
@@ -112,9 +124,10 @@ class TrackingWindow(qtw.QWidget):
             self.phoneControl.stopRecording()
             msgBox = qtw.QMessageBox()
             msgBox.setText(
-                "Tracking stopped!")
+                "Tracking stopped! \nPlease wait while file transfer is initiated.\n You will be redirected shortly.")
             msgBox.exec()
             self.sigStopTracking.emit()
+            self.status.setText("Flight Status: Tracking Completed")
         except Exception as e:
             msgBox = qtw.QMessageBox()
             msgBox.setText(str(e))
@@ -147,6 +160,17 @@ class TrackingWindow(qtw.QWidget):
         lblTitle = qtw.QLabel(text)
         lblTitle.setFont(qtg.QFont("Helvetica Neue", 16, qtg.QFont.Bold))
         lblTitle.setAlignment(qtc.Qt.AlignLeft)
+
+        return lblTitle
+
+    def setStatusLabel(self, text) -> qtw.QLabel:
+        """
+        Sets up a status label for the window
+        :return: Label of the application taken from the "text" parameter
+        """
+        lblTitle = qtw.QLabel(text)
+        lblTitle.setFont(qtg.QFont("Helvetica Neue", 12, qtg.QFont.Bold))
+        lblTitle.setAlignment(qtc.Qt.AlignCenter)
 
         return lblTitle
 
