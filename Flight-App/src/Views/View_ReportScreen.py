@@ -4,6 +4,7 @@ import Graph
 import Export.ExportFile
 import Export.ImportFile
 import datetime as dt
+import json
 
 class ReportWindow(qtw.QWidget):
     """
@@ -92,8 +93,8 @@ class ReportWindow(qtw.QWidget):
         """
         # Save flight results to .flight file.
         outPath = '../Export/ExportedFiles/' + self.flightDict["pilotName"] + '.flight'
-        Export.ExportFile.export_data(self.flightDict, outPath)
-
+        with open(outPath, 'w') as outfile:
+            json.dump(self.flightDict, outfile)
         # Show message box saying that exporting was completed.
         msgBox = qtw.QMessageBox()
         msgBox.setText(

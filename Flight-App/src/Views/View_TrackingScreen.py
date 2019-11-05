@@ -114,7 +114,6 @@ class TrackingWindow(qtw.QWidget):
                 "Tracking has already been started.")
             msgBox.exec()
 
-
     def stopTracking(self):
         """
         Sends a signal to the main controller that the Stop Tracking button was pushed.
@@ -173,14 +172,6 @@ class TrackingWindow(qtw.QWidget):
         lblTitle.setAlignment(qtc.Qt.AlignCenter)
 
         return lblTitle
-
-    def updateLabel(self):
-        # TODO: Either bring in functionality in timer.py, or consider (perhaps better) getting the current time
-        #  at start and getting the current time at stop to compute the difference.
-        #  Another idea is to make a pop up that appears when you press Start Timing button
-        #  and has a button "Stop Timing".
-        self.LblTimer.setText('update')
-        self.LblTimer.show()
 
     def confirmValues(self):
         """
