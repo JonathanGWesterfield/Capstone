@@ -20,7 +20,6 @@ class ReportWindow(qtw.QWidget):
     # Initialize signals. Use for switching between views.
     sigStartTracking = qtc.pyqtSignal()
     sigReturnHome = qtc.pyqtSignal()
-    # TODO: fix arguments being passed in here from Program_Controller
     def __init__(self, pilotName: str, instructorName: str, flightInstructions: str, flightData: str,
                  usingPreviousFlight: bool):
         """
@@ -51,7 +50,7 @@ class ReportWindow(qtw.QWidget):
             self.flightDict["instructorName"] = instructorName
             self.flightDict["flightInstructions"] = flightInstructions
         else:
-            self.flightDict = self.importFlight(flightData)
+            self.flightDict = self.analyzeFlight(flightData)
 
         # Set up the title, flight information table, and statistics table.
         self.setWindowTitle('Report Screen')
@@ -232,15 +231,14 @@ class ReportWindow(qtw.QWidget):
         header.setSectionResizeMode(0, qtw.QHeaderView.Stretch)
         header.setSectionResizeMode(1, qtw.QHeaderView.Stretch)
 
-        # TODO: Add unit (m/s) once we know what it is.
         self.tableWidget.setItem(0, 0, qtw.QTableWidgetItem("Smoothness"))
         self.tableWidget.setItem(0, 1, qtw.QTableWidgetItem(str(self.flightDict["smoothness"])))
-        self.tableWidget.setItem(1, 0, qtw.QTableWidgetItem("Average Velocity"))
-        self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem(str(round(self.flightDict["avgVel"], 2))))
-        self.tableWidget.setItem(2, 0, qtw.QTableWidgetItem("Minimum Velocity"))
-        self.tableWidget.setItem(2, 1, qtw.QTableWidgetItem(str(round(self.flightDict["minVel"], 2))))
-        self.tableWidget.setItem(3, 0, qtw.QTableWidgetItem("Maximum Velocity"))
-        self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem(str(round(self.flightDict["maxVel"], 2))))
+        self.tableWidget.setItem(1, 0, qtw.QTableWidgetItem("Average Velocity Change"))
+        self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem(str(round(self.flightDict["avgVel"], 2)) + ' m/s'))
+        self.tableWidget.setItem(2, 0, qtw.QTableWidgetItem("Minimum Velocity Change"))
+        self.tableWidget.setItem(2, 1, qtw.QTableWidgetItem(str(round(self.flightDict["minVel"], 2)) + ' m/s'))
+        self.tableWidget.setItem(3, 0, qtw.QTableWidgetItem("Maximum Velocity Change"))
+        self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem(str(round(self.flightDict["maxVel"], 2)) + ' m/s'))
 
         # Make non-editable
         self.tableWidget.setEditTriggers(qtw.QTableWidget.NoEditTriggers)
@@ -264,20 +262,6 @@ class ReportWindow(qtw.QWidget):
         flightDict2 = Graph.computeVelocityStatistics(flightDict1)
 
         return flightDict2
-
-    def importFlight(self, flightData: str):
-        """
-        Reads in the .flight file and sets up information for report view.
-        :param flightData: String representing file path where .flight file is stored.
-        :return: Dictionary containing flight information
-        """
-        # Read in points
-        flightDict = Export.ImportFile.importData(flightData)
-
-        # Compute statistics
-        flightDict1 = Graph.computeVelocityStatistics(flightDict)
-
-        return flightDict1
 
     # region > Report View Properties
 

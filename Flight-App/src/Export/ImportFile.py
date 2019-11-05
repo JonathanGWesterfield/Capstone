@@ -4,7 +4,7 @@ def importData(inPath):
     """
     Imports the flight data from a JSON file stored with a ".flight" extension.
     :param inPath: String containing the pilot name
-    :return: pilotName, instructorName, flightDate, flightLength, flightInstructions, x, y, z, velocityPoints
+    :return: Flight dictionary
     """
 
     with open(inPath, 'r') as infile:
@@ -12,5 +12,3 @@ def importData(inPath):
         print(flightDict)
 
     return flightDict
-
-importData('../Tests/TestFiles/JSONDUMP.flight')
