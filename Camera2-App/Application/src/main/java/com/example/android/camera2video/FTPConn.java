@@ -12,9 +12,6 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
 
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +33,9 @@ import java.nio.file.Paths;
  *
  * @author Jonathan Westerfield
  * @version 1.0.3
+ * @since 1.0.0
+ * @see NetConn
+ * @see FTPUpload
  */
 public class FTPConn implements Observer
 {
@@ -223,68 +223,32 @@ public class FTPConn implements Observer
      * @return True if it succeeded, false otherwise.
      * @throws SftpException
      */
-    public boolean upload() throws InstantiationException
+    public boolean upload()
     {
-        if(sftp == null || session == null)
-            throw new InstantiationException("SFTP Connection not established!");
-        if(!sftp.isConnected() || sftp.isClosed())
-            throw new InstantiationException("SFTP Connection not established!");
-
         try
         {
-            File src = new File(this.srcFilePath);
-            sftp.cd(this.destFilePath);
-            int mode = sftp.OVERWRITE;
-            SftpProgressMonitor monitor = new MyProgressMonitor();
+            FTPUpload ftpu = new FTPUpload(this.srcFilePath, this.destFilePath, this.sftp, this.session);
 
-//            sftp.put(this.srcFilePath, this.destFilePath, monitor, mode);
-            sftp.put(new FileInputStream(src), src.getName(), ChannelSftp.OVERWRITE);
+            Thread t = new Thread(ftpu);
+            t.start();
+            t.join();
+
+            //TODO: see if waiting for the thread to join causes the issue.
+            // Otherwise, we need to put this closeConn function into the FTPUpload thread.
             closeConn();
-            NetConn.getInstance().sendMessage(Signal.FTP_COMPLETED.toString());
-
-            deleteVideo(); // delete video off phone so we can save storage
-
             return true;
         }
-        catch (FileNotFoundException e)
-        {
-            String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
-            Log.d(TAG, errMess);
-            Log.d(TAG, "Failed to Transfer the file");
-        }
-        catch (IOException e)
-        {
-            String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
-            Log.d(TAG, errMess);
-            Log.d(TAG, "Failed to Transfer the file");
-        }
-        catch (SftpException e)
-        {
-            String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
-            Log.d(TAG, errMess);
-            Log.d(TAG, "Failed to Transfer the file");
-        }
-        catch (Exception e)
+        catch(InterruptedException e)
         {
             String errMess = "Line: " + Integer.toString(e.getStackTrace()[0].getLineNumber()) + " " + e.getMessage();
             Log.d(TAG, errMess);
             Log.d(TAG, "Failed to delete the file after transfer");
         }
+
         return false;
     }
 
-    /**
-     * Deletes the file after it has been transferred to the phone so we can still
-     * have storage on the phone after multiple recordings.
-     */
-    public void deleteVideo() throws Exception
-    {
-        File deleteFile = new File(this.srcFilePath);
-        if(!deleteFile.getCanonicalFile().delete())
-            throw new Exception("ERROR! Failed to delete the video file from the phone storage!");
 
-        Log.d(TAG, "File successfully deleted");
-    }
 
     /**
      * Gets called when the file transfer is complete so we can send a signal to the laptop

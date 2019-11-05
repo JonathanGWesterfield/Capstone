@@ -56,6 +56,7 @@ public class CameraActivity extends Activity implements Observer
                     .commit();
 
         }
+
     }
 
     /**
@@ -88,11 +89,6 @@ public class CameraActivity extends Activity implements Observer
             }
         }
         catch(JSchException e)
-        {
-            String errMess = Integer.toString(e.getStackTrace()[0].getLineNumber()) + e.getMessage();
-            Log.e(TAG, errMess);
-        }
-        catch(InstantiationException e)
         {
             String errMess = Integer.toString(e.getStackTrace()[0].getLineNumber()) + e.getMessage();
             Log.e(TAG, errMess);
