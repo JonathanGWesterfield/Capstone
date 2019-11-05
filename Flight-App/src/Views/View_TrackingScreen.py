@@ -48,7 +48,6 @@ class TrackingWindow(qtw.QWidget):
 
         # Initialize labels and start/stop, clear/confirm, home buttons
         clrConfirm = self.setClrConfirmBtns()
-        timer = self.setTimerLabel()  # Get the label for the timer
         startStop = self.setStartAndStopBtns()
         homeBtn = qtw.QPushButton('Return to Home')
 
@@ -75,7 +74,6 @@ class TrackingWindow(qtw.QWidget):
         vLayout.addLayout(instructions)
         vLayout.addLayout(clrConfirm)
         vLayout.addSpacerItem(verticalSpacer)
-        vLayout.addLayout(timer)
         vLayout.addLayout(startStop)
         vLayout.addWidget(homeBtn)
 

@@ -7,29 +7,10 @@ def importData(inPath):
     :return: pilotName, instructorName, flightDate, flightLength, flightInstructions, x, y, z, velocityPoints
     """
 
-    with open(inPath) as json_file:
-        data = json.load(json_file)
-        pilotName = data['flight']['Pilot Name']
-        instructorName = data['flight']['Instructor']
-        flightDate = data['flight']['Flight Date']
-        flightLength = data['flight']['Flight Length']
-        flightInstructions = data['flight']['Flight Instructions']
-        xCoord = data['flight']['x-Coordinates']
-        yCoord = data['flight']['y-Coordinates']
-        zCoord = data['flight']['z-Coordinates']
-        velPoints = data['flight']['Velocity Values']
-    '''
-    print(pilotName)
-    print(instructorName)
-    print(flightDate)
-    print(flightLength)
-    print(flightInstructions)
-    print(xCoord)
-    print(yCoord)
-    print(zCoord)
-    print(velPoints)
-    '''
+    with open(inPath, 'r') as infile:
+        flightDict = json.load(infile)
+        print(flightDict)
 
-    return pilotName, instructorName, flightDate, flightLength, flightInstructions, xCoord, yCoord, zCoord, velPoints
+    return flightDict
 
-#importData('ExportedFiles/Claire Eckert.flight')
+importData('../Tests/TestFiles/JSONDUMP.flight')

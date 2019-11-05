@@ -1,40 +1,27 @@
+import json
+
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import csv
 import math
 import statistics
 import numpy
+import re
 
-def readCoordinates(filename, timeStep):
+def readCoordinates(filename):
     """
+    filename = '../Tests/TestFiles/JSONDUMP.flight'
     Reads the input file of drone coordinates, where a 3d coordinate is stored as a row. Also takes in a value timeStep
     denoting the time difference (in seconds) between coordinates.
-    :param filename: File of coordinates to read.
-    :param timeStep: Float containing time difference between points
-    :return: An array of x coordinates, an array of y coordinates, an array of z coordinates, an array of time values
-    as seconds counting up from 0 with change timeStep between two legal inputs.
+    :param filename: File of dictionary to read.
+    :return: Dictionary of flight data.
     """
-    # Initialize time at 0
-    initialTime = 0
-    timeDiff = initialTime
+    flightDict = {}
 
-    # Initialize arrays
-    x, y, z, timearray = [], [], [], []
+    with open(filename, 'r') as infile:
+        flightDict = json.load(infile)
 
-    # Read line by line through the file. Only add the point if legal input. Time value should still increment even if
-    # value is illegal input.
-    with open(filename, 'r') as f:
-        reader = csv.reader(f, delimiter=' ')
-        for row in reader:
-            if (checkLegalInput(row[0],row[1],row[2])):
-                x.append(float(row[0]))
-                y.append(float(row[1]))
-                z.append(float(row[2]))
-                timearray.append(timeDiff)
-            timeDiff = timeDiff + timeStep
-
-    # Return arrays
-    return x, y, z, timearray
+    return flightDict
 
 def checkLegalInput(x, y, z):
     """
@@ -78,36 +65,34 @@ def computeVelocity(x1, y1, z1, x2, y2, z2, t1, t2):
     velocity = distance/timestep
     return velocity
 
-def velocityPoints(x, y, z, timearray):
+def velocityPoints(flightData: dict):
     """
     Calculates the velocity of the drone between consecutive points for the entire flight.
-    :param x: Array of x coordinates
-    :param y: Array of y coordinates
-    :param z: Array of z coordinates
-    :param timearray: Array of time values as seconds counting up from 0
-    :return: An array of velocity points for the drone.
+    :param flightData: Dictionary of flight Data.
+    :return: Modified flightData dictionary.
     """
-    if len(x) != len(y) or len(y) != len(z) or len(y) != len(x):
-        raise Exception('Coordinate arrays are different sizes')
     velocityArray = []
-    i=0
-    for i in range(len(x)-1):
-       vel = computeVelocity(x[i], y[i], z[i],x[i+1],y[i+1],z[i+1],timearray[i],timearray[i+1])
+    for i in range(len(flightData["coords"])-1):
+       vel = computeVelocity(flightData["coords"][i][1], flightData["coords"][i][2], flightData["coords"][i][3],
+                             flightData["coords"][i+1][1], flightData["coords"][i+1][2], flightData["coords"][i+1][3],
+                             flightData["coords"][i][0], flightData["coords"][i+1][0])
        velocityArray.append(vel)
 
-    return velocityArray
+    flightData["velocities"] = velocityArray
 
-def velocityColors(velocity):
+    return flightData
+
+def velocityColors(flightDict: dict):
     """
     Determines the color of the line segment between two points based on velocity values. The line color is determined
     by the change in velocity of the drone between two points. The color of the line should be green if the
     velocity point is greater than the previous velocity point, yellow if within 0.5 m/s, and red if less.
-    :param velocity: Array of velocity values.
+    :param flightDict: Dictionary of flight data.
     :return: An array of color values to use when plotting line segments between points.
     """
     colors = ['g']
-    for i in range(len(velocity) - 1):
-        velDelta = velocity[i+1]-velocity[i]
+    for i in range(len(flightDict["velocities"]) - 1):
+        velDelta = flightDict["velocities"][i+1]-flightDict["velocities"][i]
         if velDelta < 0:
             colors.append('r')
         elif velDelta > 0 and velDelta < 0.5:
@@ -117,40 +102,50 @@ def velocityColors(velocity):
             colors.append('g')
     return colors
 
-def computeVelocityStatistics(velocity):
+def computeVelocityStatistics(flightDict: dict):
     """
     Computes statistics on the velocity points.
-    :param velocity: Array of velocity values
-    :return: Average velocity, standard deviation, max velocity, min velocity.
+    :param flightDict: Dictionary of flight data
+    :return: Updated dictionary.
     """
-    avgVel = statistics.mean(velocity)
-    std = statistics.stdev(velocity)
-    numArray = numpy.array(velocity)
+    avgVel = statistics.mean(flightDict["velocities"])
+    numArray = numpy.array(flightDict["velocities"])
     maxVel = numpy.amax(numArray)
     minVel = numpy.amin(numArray)
 
-    return avgVel, std, maxVel, minVel
+    flightDict["avgVel"] = avgVel
+    flightDict["minVel"] = minVel
+    flightDict["maxVel"] = maxVel
 
-def generateGraph(x, y, z, velocity, displayVelocity):
+    return flightDict
+
+def generateGraph(flightData: dict, displayVelocity: bool):
     """
     Driver function for generating the 3d graph of drone coordinates.
-    Input: array of x coordinates, array of y coordinates, array of z coordinates, array of time values as seconds
-    counting up from 0.
-    Changes in velocity are displayed if "displayVelocity" is true.
+    :param flightData: Dictionary containing flight data
+    :param displayVelocity: Boolean saying if velocity changes should be displayed on the graph.
     :return: The figure to display as the 3d graph.
     """
     # Plot points on the graph
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(x, y, z, s=6, c="k", marker='o')
+    x_data = [x[1] for x in flightData["coords"]]
+    y_data = [y[2] for y in flightData["coords"]]
+    z_data = [z[3] for z in flightData["coords"]]
+    ax.scatter(x_data, y_data, z_data, s=6, c="k", marker='o')
 
     if displayVelocity is True:
         # Get velocities and line segment coloring
-        colors = velocityColors(velocity)
+        colors = velocityColors(flightData)
+        print(colors)
 
         # Add line segment coloring
-        for i in range(len(velocity)):
-            plt.plot([x[i], x[i + 1]], [y[i], y[i + 1]], [z[i], z[i + 1]], colors[i], linewidth = 1)
+        for i in range(len(colors)):
+            print("hi")
+            plt.plot([flightData["coords"][i][1], flightData["coords"][i+1][1]],
+                     [flightData["coords"][i][2], flightData["coords"][i+1][2]],
+                     [flightData["coords"][i][3], flightData["coords"][i+1][3]],
+                     colors[i], linewidth = 1)
 
     # Set axis limits
     ax.set_xlabel('x')
@@ -162,3 +157,22 @@ def generateGraph(x, y, z, velocity, displayVelocity):
     ax.set_title("Flight Path")
 
     return fig
+
+# test_dict = {
+# "pilotName": "Hayley",
+# "instructorName": "Eckert",
+# "flightInstr": "Bob",
+# "flightDate": "11/03/2019",
+# "flightLength": 3,
+# "coords": [(0, 0, 0, 0), (1, 0, 0, 1), (2, 0, 0, 3), (3, 0, 0, 8)],
+# "velocities": [1, 2, 5],
+# "avgVel": 0.0,
+# "maxVel": 0.0,
+# "minVel": 0.0,
+# "smoothness": 0.0
+# }
+# with open('../Tests/TestFiles/JSONDUMP.flight', 'w') as outfile:
+#     json.dump(test_dict, outfile)
+#
+# #with open('../Tests/TestFiles/JSONDUMP.flight', 'r') as infile:
+# #    test_dict = json.load(infile)

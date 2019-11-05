@@ -1,4 +1,4 @@
-import sys
+import sys, os
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
 from Controllers.PhoneController import PhoneControl
 import time
@@ -59,7 +59,8 @@ class LoadingWindow(qtw.QWidget):
         self.show()
 
     def fileTransfer(self, phoneControl: PhoneControl):
-        phoneControl.startFileTransfer("/Users/hayleyeckert/Desktop/FTP/")
+        pathToDesktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/')
+        phoneControl.startFileTransfer(pathToDesktop)
         phoneControl.waitForFileTransfer()
 
     def returnHome(self):
