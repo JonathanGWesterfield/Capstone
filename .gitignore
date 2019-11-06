@@ -668,3 +668,5 @@ MigrationBackup/
 # End of https://www.gitignore.io/api/vim,linux,macos,emacs,pycharm,windows,jetbrains,visualstudio,microsoftoffice,visualstudiocode
 
 /lib/
+
+*node_modules*
