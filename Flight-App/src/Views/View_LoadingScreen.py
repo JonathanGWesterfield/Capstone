@@ -1,6 +1,7 @@
 import sys, os
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
 from Controllers.PhoneController import PhoneControl
+from Controllers.OpenCVController import DroneTracker
 import time
 
 class LoadingWindow(qtw.QWidget):
@@ -13,6 +14,7 @@ class LoadingWindow(qtw.QWidget):
     # Initialize signals. Use for switching between views.
     sigReturnHome = qtc.pyqtSignal()
     sigTestReport = qtc.pyqtSignal()
+    sigTransferFootage = qtc.pyqtSignal()
 
     def __init__(self):
         """
@@ -31,9 +33,13 @@ class LoadingWindow(qtw.QWidget):
 
         # Set the title label
         title = self.setTitle()
+        self.__lblStatus = self.setSubtitle()
 
         # Set up loading icon
         loadingIcon = self.setupLoadingIcon()
+
+        self.__btnTestTransfer = qtw.QPushButton("Transfer Video Footage for Analysis")
+        self.__btnTestTransfer.clicked.connect(self.signalTransferFootage)
 
         # Initialize and attach functionality to view report button
         # TODO: For testing purposes only.
@@ -49,19 +55,16 @@ class LoadingWindow(qtw.QWidget):
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
-        vLayout.addLayout(title)
+        vLayout.addWidget(title)
+        vLayout.addWidget(self.LblStatus)
         vLayout.addWidget(loadingIcon)
         vLayout.addWidget(self.__btnTestReport)
+        vLayout.addWidget(self.__btnTestTransfer)
         vLayout.addWidget(self.__btnHome)
 
         # Attach the layout to the screen
         self.setLayout(vLayout)
         self.show()
-
-    def fileTransfer(self, phoneControl: PhoneControl):
-        pathToDesktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/')
-        phoneControl.startFileTransfer(pathToDesktop)
-        phoneControl.waitForFileTransfer()
 
     def returnHome(self):
         """
@@ -69,6 +72,19 @@ class LoadingWindow(qtw.QWidget):
         :return: none
         """
         self.sigReturnHome.emit()
+
+    def signalTransferFootage(self):
+        """
+        Sends a signal to the main controller that the button to transfer footage was pressed.
+        :return: none
+        """
+        self.__lblStatus.setText("File is downloading...")
+        qtg.QGuiApplication.processEvents()
+        msgBox = qtw.QMessageBox()
+        msgBox.setText(
+            "Please wait while the footage is transferred.")
+        msgBox.exec()
+        self.sigTransferFootage.emit()
 
     def signalTestReport(self):
         """
@@ -78,7 +94,7 @@ class LoadingWindow(qtw.QWidget):
         """
         self.sigTestReport.emit()
 
-    def setTitle(self) -> qtw.QVBoxLayout:
+    def setTitle(self) -> qtw.QLabel:
         """
         Sets up the title with the application title on top and the name of the screen just below it.
         :return: Layout with the application title and screen title labels
@@ -87,17 +103,16 @@ class LoadingWindow(qtw.QWidget):
         lblTitle.setFont(qtg.QFont("Helvetica Neue", 36, qtg.QFont.Bold))
         lblTitle.setAlignment(qtc.Qt.AlignCenter)
 
-        lblLoading = qtw.QLabel("Please wait while the flight is analyzed...")
-        lblLoading.setFont(qtg.QFont("Helvetica Neue", 16))
-        lblLoading.setAlignment(qtc.Qt.AlignCenter)
+        return lblTitle
 
-        vbox = qtw.QVBoxLayout()
-        vbox.addWidget(lblTitle)
-        vbox.addWidget(lblLoading)
+    def setSubtitle(self) -> qtw.QLabel:
+        lblStatus = qtw.QLabel("Click button below to initiate transferring of footage.")
+        lblStatus.setFont(qtg.QFont("Helvetica Neue", 16))
+        lblStatus.setAlignment(qtc.Qt.AlignCenter)
 
-        return vbox
+        return lblStatus
 
-    def setupLoadingIcon(self):
+    def setupLoadingIcon(self) -> qtw.QLabel:
         """
         Used for configuring the loading icon on the loading screen.
         Loading icon is a gif, so QMovie is used to animate the icon.
@@ -111,6 +126,34 @@ class LoadingWindow(qtw.QWidget):
         movie.start()
 
         return label
+
+    # region to make label
+    @property
+    def LblStatus(self) -> qtw.QLabel:
+        """
+        Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
+        application has been tracking the drone.
+        :return: The timer label
+        """
+        return self.__lblStatus
+
+    @LblStatus.setter
+    def set_LblStatus(self, lbl: qtw.QLabel):
+        """
+        Setter for the LblTimer property.
+        :param lbl: The label we want to replace the current one with.
+        :return: None
+        """
+        self.__lblStatus = lbl
+
+    @LblStatus.deleter
+    def del_LblStatus(self):
+        """
+        Deleter for the timer label.
+        :return: None
+        """
+        del self.__lblStatus
+    # end region
 
     # region > Properties for the buttons so we can attach functionality to them in child classes
     @property
