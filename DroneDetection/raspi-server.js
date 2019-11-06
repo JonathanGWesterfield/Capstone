@@ -11,6 +11,11 @@ console.log('started');
 app.route('/flash').get((req, res) => {
     console.log('endpoint hit');
 
-    res.send("FLASH_ACKNOWLEDGE");
+    res.status(200).send("FLASH_ACKNOWLEDGE").end();
 
 });
+
+app.route('/disconnect').get((req, res) => {
+    res.send("DISCONNECT_ACKNOWLEDGE");
+
+})
