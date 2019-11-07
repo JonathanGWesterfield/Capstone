@@ -11,7 +11,7 @@ console.log('started');
 app.route('/flash').get((req, res) => {
     console.log('flashing light for 500 milliseconds');
 
-    let light_process = spawn('python', ['./flash.py']);
+    let light_process = spawn('python3', ['./flash.py']);
 
     light_process.stdout.on('data', (data) => {
         res.status(200).send(data).end();
