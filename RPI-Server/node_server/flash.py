@@ -1,7 +1,7 @@
 import gpiozero as gpio
 import time
 
-lights = gpio.LED(17, initial_value=False)
+lights = gpio.LED(12, initial_value=False)
 
 lights.on()
 
