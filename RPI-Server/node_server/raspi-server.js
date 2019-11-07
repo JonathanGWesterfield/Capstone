@@ -15,6 +15,8 @@ app.route('/flash').get((req, res) => {
 
     light_process.stdout.on('data', (data) => {
         res.status(200).send(data).end();
+        console.log('data: ' + data);
+        console.log('response sent');
     });
 
 });
