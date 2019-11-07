@@ -7,6 +7,11 @@ class DroneTracker:
     major_ver, minor_ver, subminor_ver = (cv2.__version__).split('.')
 
     def __init__(self, videoFile):
+        """
+        Initializes the tracker with the video file path
+
+        :param videoFile: the path to the video to analyze
+        """
         self.current_frame = 0
         self.data_points = []
         self.videoFile = videoFile
@@ -37,20 +42,31 @@ class DroneTracker:
     # def place_image_text(self, frame, fps):
 
 
-    # Resizes a frame as a percentage of the original frame size
-    def rescale_frame(self, frame, percent=50):
+    def rescale_frame(self, frame, percent=50: int) -> frame:
+        """
+        Resizes a frame as a percentage of the original frame size
+
+        :param frame: the frame to be resized
+        :param percent: the percent value the frame needs to be rescaled to
+        """
         width = int(frame.shape[1] * percent / 100)
         height = int(frame.shape[0] * percent / 100)
         dim = (width, height)
         return cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
 
-    # Resizes the bounding box for translating it to the full size video
-    # In order to be able to see enough of the footage on screen to draw the box around the drone,
-    # the video frame must be resized, so the drawn bounding box must be translated back into the proper
-    # coordinate system the full size video uses
-    # For example, if the 4k footage is shrunk by 50% (to 1080p), the scale factor here must be 2 so the coordinates
-    # chosen in the 1080p frame will match up with the actual drone coordinates in the 4k frame
-    def resize_bbox(self, bbox, factor=2):
+
+    def resize_bbox(self, bbox: tuple, factor=2: int) -> tuple:
+        """
+        Resizes the bounding box for translating it to the full size video
+        
+        In order to be able to see enough of the footage on screen to draw the box around the drone, the video frame must be resized, so the drawn bounding box must be translated back into the coordinate system the full size video uses
+        
+        For example, if the 4k footage is shrunk by 50% (to 1080p), the scale factor here must be 2 so the coordinates chosen in the 1080p frame will match up with the actual drone coordinates in the 4k frame
+
+        :param bbox: bounding box of selected drone, which is (x, y, box_width, box_height)
+        :param factor: the factor by which to scale the bounding box
+        :return: tuple
+        """
         x1 = bbox[0] * factor
         y1 = bbox[1] * factor
         width = bbox[2] * factor
@@ -58,8 +74,11 @@ class DroneTracker:
         return (x1, y1, width, height);
 
 
-    #Takes in video and return the frame at which the light turns on
     def is_light_on(self, frame):
+        """
+        Takes in a video frame and returns the frame at which the light turns on
+
+        """
         # HSV range for white light
         white_lower = np.array([0, 0, 20])
         white_upper = np.array([5, 2, 255])
