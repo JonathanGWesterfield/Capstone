@@ -1,11 +1,12 @@
 import sys
-from PyQt5 import QtWidgets as qtw
+from PyQt5 import QtWidgets as qtw, QtCore as qtc
 from View_TrackingScreen import TrackingWindow
 from View_StartupScreen import StartupWindow
 from View_VerifySetupScreen import VerifySetupWindow
 from View_ReportScreen import ReportWindow
 from View_LoadingScreen import LoadingWindow
 from Controllers.PhoneController import PhoneControl as PhoneControl
+import time, os
 
 class Controller:
     """
@@ -13,6 +14,8 @@ class Controller:
     Run this file in order to begin the application.
     :return: None
     """
+    #fileTransferComplete = qtc.pyqtSignal()
+
     def __init__(self, phoneControl: PhoneControl):
         self.pilotName = ''
         self.instructorName = ''
@@ -182,6 +185,8 @@ class Controller:
         # Show report view on flight coordinates.
         flightData = '../Tests/TestFiles/JSONDUMP.flight'
         self.loading_window.sigTestReport.connect(lambda *args: self.show_report_window(flightData, False))
+        self.loading_window.sigTransferFootage.connect(lambda *args: self.transfer_footage(self.phoneControl))
+        #self.fileTransferComplete.connect(self.transfer_complete)
 
         # Close the previous screen.
         try:
@@ -194,16 +199,26 @@ class Controller:
 
         print("Window shown")
 
-        # Transfer file
-        self.loading_window.fileTransfer(self.phoneControl)
+    def transfer_footage(self, phoneControl: PhoneControl):
+        print("here")
+        pathToDesktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/')
+        phoneControl.startFileTransfer(pathToDesktop)
+        phoneControl.waitForFileTransfer()
+        #self.fileTransferComplete.emit()
+
+    def transfer_complete(self):
+        print("I did it!")
 
 def createPhoneConnection(portNo):
     phoneControl = PhoneControl(portNo)
     return phoneControl
 
 def close_conn(phoneControl: PhoneControl):
-    print("Connection closed")
-    phoneControl.closeConn()
+    try:
+        print("Connection closed")
+        phoneControl.closeConn()
+    except Exception as e:
+        print(str(e))
 
 def main():
     """
