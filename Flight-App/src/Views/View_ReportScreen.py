@@ -49,7 +49,7 @@ class ReportWindow(qtw.QWidget):
             self.flightDict = self.analyzeFlight(flightData)
             self.flightDict["pilotName"] = pilotName
             self.flightDict["instructorName"] = instructorName
-            self.flightDict["flightInstructions"] = flightInstructions
+            self.flightDict["flightInstr"] = flightInstructions
         else:
             self.flightDict = self.analyzeFlight(flightData)
 

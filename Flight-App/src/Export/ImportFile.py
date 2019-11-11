@@ -9,6 +9,5 @@ def importData(inPath):
 
     with open(inPath, 'r') as infile:
         flightDict = json.load(infile)
-        print(flightDict)
 
     return flightDict
