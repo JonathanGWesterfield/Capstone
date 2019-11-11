@@ -58,6 +58,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -669,7 +670,12 @@ public class Camera2VideoFragment extends Fragment
 //        final String storageDirectory = "/sdcard/drone-tracker";
 
         //File name is the time stamp the recording started
-        String currTime = Calendar.getInstance().getTime().toString().replaceAll(" ", "-");
+        Date date = new Date();
+        long time = date.getTime();
+        Timestamp ts = new Timestamp(time);
+        String timestamp = ts.toString();
+        timestamp = timestamp.replace(" ", "_");
+//        String currTime = Calendar.getInstance().getTime().toString().replaceAll(" ", "_");
 //        File storageDir = new File(storageDirectory);
 //
 //        // If the storage directory does not exist on the sd card, we must create it then save the file there
@@ -690,7 +696,7 @@ public class Camera2VideoFragment extends Fragment
 //                + System.currentTimeMillis() + ".mp4";
 
         return (dir == null ? "" : (dir.getAbsolutePath() + "/"))
-                + currTime + NetConn.getInstance().getPhoneID() + ".mp4";
+                + timestamp + "_" + NetConn.getInstance().getPhoneID() + ".mp4";
     }
 
     public void startRecordingVideo() {

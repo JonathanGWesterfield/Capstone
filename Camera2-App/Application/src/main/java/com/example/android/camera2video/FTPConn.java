@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -37,7 +38,7 @@ import java.nio.file.Paths;
  * @see NetConn
  * @see FTPUpload
  */
-public class FTPConn implements Observer
+public class FTPConn implements Serializable, Observer
 {
     String host, username, password, srcFilePath, destFilePath;
     int port = 22;

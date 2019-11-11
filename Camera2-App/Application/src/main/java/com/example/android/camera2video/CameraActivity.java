@@ -59,6 +59,35 @@ public class CameraActivity extends Activity implements Observer
 
     }
 
+//    /**
+//     * This is for when the phone gets rotated. When the phone rotates or changes orientation,
+//     * application state is lost. This means that the network connectivity in the NetConn Singleton
+//     * also gets lost. This function should save that NetConn instance and hopefully keep the
+//     * connection open. This gets called when the application state is deleted.
+//     * @param savedInstanceState The bundle that contains the application state.
+//     */
+//    @Override
+//    protected void onSaveInstanceState(Bundle savedInstanceState)
+//    {
+//        super.onSaveInstanceState(savedInstanceState);
+//        savedInstanceState.putSerializable("netconn", NetConn.getInstance());
+//    }
+//
+//    /**
+//     * This is for when the phone changes orientation. When the phone changes orientation,
+//     * the application state is deleted. This leads to the NetConn class getting deleted. This
+//     * function is called when the application is looking to reload the application state.
+//     * @param savedInstanceState The bundle that contains the application state.
+//     */
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        // Restore UI state from the savedInstanceState.
+//        // This bundle has also been passed to onCreate.
+//        // TODO: figure out how to do a deep copy on this and set the Singleton to what was saved
+////        NetConn.getInstance() = (NetConn) savedInstanceState.getSerializable("netconn");
+//    }
+
     /**
      * The update function for this application. We need to listen for network signals so
      * we can start/stop recording and file transferring.
