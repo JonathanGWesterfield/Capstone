@@ -4,6 +4,7 @@ import android.widget.MultiAutoCompleteTextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * @author Jonathan Westerfield
  * @version 1.0.3
  */
-public class ReadLoop implements Runnable, Observable
+public class ReadLoop implements Serializable, Runnable, Observable
 {
 //    private Thread t;
     private BufferedReader reader;

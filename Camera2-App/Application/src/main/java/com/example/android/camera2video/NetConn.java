@@ -28,8 +28,6 @@ class NetConn implements Serializable
     private int port;
     private String username;
     private String password;
-    private String fromFTPPath;
-    private String toFTPPath;
     private String phoneID;
 
     private Socket socket;
@@ -57,7 +55,7 @@ class NetConn implements Serializable
     { /* Empty Default Constructor */ }
 
     /**
-     * Class constructor.
+     * Class constructor. Isn't needed because this class is a singleton class.
      * @param ipAddr The IP address we are trying to connect to (the laptop).
      * @param port The port number that we must go through.
      */
@@ -68,7 +66,7 @@ class NetConn implements Serializable
     }
 
     /**
-     * Class constructor
+     * Class constructor. Isn't needed because this class is a singleton class.
      * @param ipAddr The IP address we are trying to connect to (the laptop).
      * @param port The port number that we must go through.
      * @param username The username of the user on the laptop.
@@ -270,8 +268,8 @@ class NetConn implements Serializable
     public void startReadLoop()
     {
         // Start our reader loop thread
-        Thread t = new Thread(this.listener);
-        t.start();
+        this.listenerThread = new Thread(this.listener);
+        listenerThread.start();
     }
 
     /**

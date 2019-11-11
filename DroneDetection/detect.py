@@ -1,6 +1,7 @@
 import cv2
 import sys
 import numpy as np
+from threading import Thread
 
 class DroneTracker:
 
@@ -41,8 +42,10 @@ class DroneTracker:
 
     # def place_image_text(self, frame, fps):
 
+    # def get_next_frame(self):
 
-    def rescale_frame(self, frame, percent=50: int) -> frame:
+
+    def rescale_frame(self, frame, percent=50):
         """
         Resizes a frame as a percentage of the original frame size
 
@@ -55,7 +58,7 @@ class DroneTracker:
         return cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
 
 
-    def resize_bbox(self, bbox: tuple, factor=2: int) -> tuple:
+    def resize_bbox(self, bbox: tuple, factor=2) -> tuple:
         """
         Resizes the bounding box for translating it to the full size video
         
@@ -111,9 +114,9 @@ class DroneTracker:
             sys.exit()
 
         # Loop until OpenCV detects that the light has been turned on
-        while not self.is_light_on(frame):
-            ok, frame = video.read()
-            self.current_frame += 1
+        # while not self.is_light_on(frame):
+        #     ok, frame = video.read()
+        #     self.current_frame += 1
         
         print("frame when light is on: " + str(self.current_frame))
 
@@ -198,7 +201,7 @@ class DroneTracker:
 
 if __name__ == '__main__' :
 
-    tracker = DroneTracker("D:/Projects/Capstone/Drone-Detection/video/floodlight_outside.mp4")
+    tracker = DroneTracker("D:/Projects/Capstone/DroneDetection/video/trimmed_1_drone.mp4")
 
     tracker.trackDrone()
 

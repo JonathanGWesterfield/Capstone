@@ -151,7 +151,7 @@ class PhoneControl:
         try:
             for conn in self.connections:
                 # Start a new thread and return its identifier
-                phoneID = "-phone-" + str(num)
+                phoneID = "phone-" + str(num)
                 x = threading.Thread(target=self.threadSendSignal, args=(conn, "START", phoneID, "START_ACKNOWLEDGE"))
                 num += 1
                 threads.append(x)
