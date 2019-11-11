@@ -55,6 +55,18 @@ class Graph_Test(unittest.TestCase):
         test_dict = Graph.readCoordinates('TestFiles/JSONDUMP.flight')
         self.assertEqual(test_dict["coords"], [[0, 0, 0, 0], [1, 0, 0, 1], [2, 0, 0, 3], [3, 0, 0, 8]])
 
+    def test_readCoordinates_small_illegal(self):
+        """
+        Test that coordinates from a small data file are read in correctly.
+        :return: None
+        """
+        test_dict = Graph.readCoordinates('TestFiles/JSONDUMP_with_illegal.flight')
+        self.assertEqual(test_dict["coords"], [[0, 0, 0, 0], [1, -10, 15, 5], [2, 0, 0, 1], [3, 0, 0, 3], [4, 0, 0, 8]])
+        self.assertEqual(test_dict["legalPoints"], [[0, 0, 0, 0], [2, 0, 0, 1], [3, 0, 0, 3], [4, 0, 0, 8]])
+
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+
     def test_readCoordinates_size100_allLegal(self):
         """
         Test that file containing 100 (x,y,z) points is read in correctly.
