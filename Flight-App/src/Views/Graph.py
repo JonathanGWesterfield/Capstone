@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import csv
 import math
 import statistics
-import numpy
+import numpy as np
 import re
 
 def checkCoordinates(flightDict: dict):
@@ -108,15 +108,49 @@ def computeVelocityStatistics(flightDict: dict):
     :return: Updated dictionary.
     """
     avgVel = statistics.mean(flightDict["velocities"])
-    numArray = numpy.array(flightDict["velocities"])
-    maxVel = numpy.amax(numArray)
-    minVel = numpy.amin(numArray)
+    numArray = np.array(flightDict["velocities"])
+    maxVel = np.amax(numArray)
+    minVel = np.amin(numArray)
 
     flightDict["avgVel"] = avgVel
     flightDict["minVel"] = minVel
     flightDict["maxVel"] = maxVel
 
     return flightDict
+
+def dimensionless_jerk(movement: list, fs: int) -> float:
+    """i
+    Calculates the dimensionless jerk for a 1 dimensional array of points.
+    :param movement: The numpy array of points to calculate the jerk for. The array
+        containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be
+        a 1 dimensional list.
+    :param fs: The sampling frequency of the data points.
+    :return: The dimensionless jerk estimate of the given movement's smoothness.
+    """
+    # first enforce data into an numpy array.
+    movement = np.array(movement)
+
+    # calculate the scale factor and jerk.
+    movement_peak = max(abs(movement))
+    dt = 1. / fs
+    movement_dur = len(movement) * dt
+    jerk = np.diff(movement, 2) / pow(dt, 2)
+    scale = pow(movement_dur, 3) / pow(movement_peak, 2)
+
+    # estimate dj
+    return - scale * sum(pow(jerk, 2)) * dt
+
+def log_dimensionless_jerk(movement: list, fs: int) -> float:
+    """
+    Calculates the smoothness metric for the given speed profile using the log dimensionless jerk
+    metric.
+    :param movement: The numpy array of points to calculate the jerk for. The array
+        containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be
+        a 1 dimensional list.
+    :param fs: The sampling frequency of the data points.
+    :return: The dimensionless jerk estimate of the given movement's smoothness.
+    """
+    return -np.log(abs(dimensionless_jerk(movement, fs)))
 
 def generateGraph(flightData: dict, displayVelocity: bool):
     """
@@ -158,12 +192,15 @@ def generateGraph(flightData: dict, displayVelocity: bool):
 # size = 600
 # flightLength = 0.5*size
 #
-# with open('../Tests/TestFiles/new_size100_legal80.flight', 'r') as infile:
-#     flightDict = json.load(infile)
-#
-# flightDict = checkCoordinates(flightDict)
-# flightDict = velocityPoints(flightDict)
-# flightDict = computeVelocityStatistics(flightDict)
+with open('../Tests/TestFiles/new_size100_legal80.flight', 'r') as infile:
+    flightDict = json.load(infile)
+
+print(flightDict["smoothness"])
+flightDict = checkCoordinates(flightDict)
+flightDict = velocityPoints(flightDict)
+flightDict = computeVelocityStatistics(flightDict)
+flightDict["smoothness"] = log_dimensionless_jerk(flightDict["velocities"], 0.5)
+print(flightDict["smoothness"])
 #
 # with open('../Tests/TestFiles/new_size100_legal80.flight', 'w') as outfile:
 #     json.dump(flightDict, outfile)

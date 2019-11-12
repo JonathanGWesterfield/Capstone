@@ -239,7 +239,7 @@ class ReportWindow(qtw.QWidget):
         header.setSectionResizeMode(1, qtw.QHeaderView.Stretch)
 
         self.tableWidget.setItem(0, 0, qtw.QTableWidgetItem("Smoothness"))
-        self.tableWidget.setItem(0, 1, qtw.QTableWidgetItem(str(self.flightDict["smoothness"])))
+        self.tableWidget.setItem(0, 1, qtw.QTableWidgetItem(str(round(self.flightDict["smoothness"], 2))))
         self.tableWidget.setItem(1, 0, qtw.QTableWidgetItem("Average Velocity Change"))
         self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem(str(round(self.flightDict["avgVel"], 2)) + ' m/s'))
         self.tableWidget.setItem(2, 0, qtw.QTableWidgetItem("Minimum Velocity Change"))
@@ -267,8 +267,8 @@ class ReportWindow(qtw.QWidget):
         # Update flightDict to contain statistics on velocity points
         flightDict2 = Graph.computeVelocityStatistics(flightDict1)
 
-        # TODO: Add Ariana's flight code here.
-        # Smoothness code here
+        # Compute smoothness value
+        flightDict2["smoothness"] = Graph.log_dimensionless_jerk(flightDict2["velocities"], 0.5)
 
         return flightDict2
 
