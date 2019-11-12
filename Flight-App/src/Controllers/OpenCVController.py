@@ -123,6 +123,7 @@ class DroneTracker:
             ok, frame = video.read()
             if not ok:
                 cv2.destroyWindow("Tracking")
+                cv2.waitKey(1)
                 break
 
             # Start timer
@@ -162,7 +163,7 @@ class DroneTracker:
             # Display FPS on frame
             cv2.putText(frame, "FPS : " + str(int(fps)), (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50, 170, 50), 2);
 
-            resizedFrame = self.rescale_frame(frame, 40)
+            resizedFrame = self.rescale_frame(frame, 30)
 
             # Display result
             cv2.imshow("Tracking", resizedFrame)
