@@ -238,14 +238,14 @@ class ReportWindow(qtw.QWidget):
         header.setSectionResizeMode(0, qtw.QHeaderView.Stretch)
         header.setSectionResizeMode(1, qtw.QHeaderView.Stretch)
 
-        self.tableWidget.setItem(0, 0, qtw.QTableWidgetItem("Smoothness"))
+        self.tableWidget.setItem(0, 0, qtw.QTableWidgetItem("Smoothness Metric as Jerk (m/s^3)"))
         self.tableWidget.setItem(0, 1, qtw.QTableWidgetItem(str(round(self.flightDict["smoothness"], 2))))
-        self.tableWidget.setItem(1, 0, qtw.QTableWidgetItem("Average Velocity Change"))
-        self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem(str(round(self.flightDict["avgVel"], 2)) + ' m/s'))
-        self.tableWidget.setItem(2, 0, qtw.QTableWidgetItem("Minimum Velocity Change"))
-        self.tableWidget.setItem(2, 1, qtw.QTableWidgetItem(str(round(self.flightDict["minVel"], 2)) + ' m/s'))
-        self.tableWidget.setItem(3, 0, qtw.QTableWidgetItem("Maximum Velocity Change"))
-        self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem(str(round(self.flightDict["maxVel"], 2)) + ' m/s'))
+        self.tableWidget.setItem(1, 0, qtw.QTableWidgetItem("Average Velocity Change (m/s)"))
+        self.tableWidget.setItem(1, 1, qtw.QTableWidgetItem(str(round(2*self.flightDict["avgVel"], 2))))
+        self.tableWidget.setItem(2, 0, qtw.QTableWidgetItem("Minimum Velocity Change (m/s)"))
+        self.tableWidget.setItem(2, 1, qtw.QTableWidgetItem(str(round(2*self.flightDict["minVel"], 2))))
+        self.tableWidget.setItem(3, 0, qtw.QTableWidgetItem("Maximum Velocity Change (m/s)"))
+        self.tableWidget.setItem(3, 1, qtw.QTableWidgetItem(str(round(2*self.flightDict["maxVel"], 2))))
 
         # Make non-editable
         self.tableWidget.setEditTriggers(qtw.QTableWidget.NoEditTriggers)
