@@ -385,5 +385,89 @@ class Graph_Test(unittest.TestCase):
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8 * size)
 
+    def test_smoothnessValues(self):
+        """
+        Test that smoothness function returns expected number.
+        :return: None
+        """
+        size = 100
+        test_dict = importData('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        smoothness = Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5)
+        self.assertEqual(round(smoothness, 2), -17)
+
+        test_dict = importData('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        smoothness = Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5)
+        self.assertEqual(round(smoothness, 2), -16.24)
+
+    def test_smoothnessComputes(self):
+        """
+        Test that smoothness function returns a number when inputted data set of 100, then 200, then 800,
+        then 1200 data points. For each size, two tests are run.
+        One test contains all legal inputs. Another test contains 80% legal inputs.
+        Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+        :return: None
+        """
+        size = 100
+        test_dict = importData('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        test_dict = importData('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        # Test small data sets
+        size = 100
+        test_dict = importData('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        test_dict = importData('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        size = 200
+        test_dict = importData('TestFiles/new_size200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        test_dict = importData('TestFiles/new_size200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        # Test medium data sets
+        size = 600
+        test_dict = importData('TestFiles/new_size600_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        test_dict = importData('TestFiles/new_size600_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        # Test large data sets
+        size = 1200
+        test_dict = importData('TestFiles/new_size1200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
+        test_dict = importData('TestFiles/new_size1200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
+        test_dict = Graph.velocityPoints(test_dict)
+        self.assertIsNotNone(Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5))
+
 if __name__ == '__main__':
     unittest.main()
