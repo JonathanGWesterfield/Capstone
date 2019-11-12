@@ -54,6 +54,7 @@ class ReportWindow(qtw.QWidget):
             self.flightDict["pilotName"] = pilotName
             self.flightDict["instructorName"] = instructorName
             self.flightDict["flightInstr"] = flightInstructions
+            self.flightDict["flightDate"] = dt.datetime.now().strftime('%m-%d-%Y')
         else:
             self.flightDict = Export.ImportFile.importData(previousFlight)
 
@@ -97,7 +98,7 @@ class ReportWindow(qtw.QWidget):
         :return: none
         """
         # Save flight results to .flight file.
-        outPath = '../Export/ExportedFiles/' + self.flightDict["pilotName"] + '.flight'
+        outPath = '../Export/ExportedFiles/' + self.flightDict["pilotName"] + '_' + self.flightDict["flightDate"] + '.flight'
         with open(outPath, 'w') as outfile:
             json.dump(self.flightDict, outfile)
         # Show message box saying that exporting was completed.
