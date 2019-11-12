@@ -109,9 +109,10 @@ class DroneTracker:
         # The 4k footage is too large for my laptop screen, so this scales it down
         resizedFrame = self.rescale_frame(frame, 30)
         # Ask the user to draw a box around the drone
-        bbox = cv2.selectROI(resizedFrame, False)
+        bbox = cv2.selectROI("select drone", resizedFrame, False)
         # Reposition the bounding box from 40% resolution to 100% resolution
         bbox = self.resize_bbox(bbox, 3.33)
+        cv2.destroyWindow("select drone")
 
         # Initialize tracker with first frame and bounding box
         ok = self.tracker.init(frame, bbox)
@@ -121,6 +122,7 @@ class DroneTracker:
             # Read a new frame
             ok, frame = video.read()
             if not ok:
+                cv2.destroyWindow("Tracking")
                 break
 
             # Start timer
@@ -171,12 +173,11 @@ class DroneTracker:
             k = cv2.waitKey(1) & 0xff
             if k == 27: break
 
-'''
 if __name__ == '__main__':
-    tracker = DroneTracker("trimmed_1_drone.mp4")
+    tracker = DroneTracker("test_trimmed_1_drone.mp4")
 
     tracker.trackDrone()
-'''
+
     # Set up tracker.
 
     # tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']

@@ -21,37 +21,41 @@ class ReportWindow(qtw.QWidget):
     # Initialize signals. Use for switching between views.
     sigStartTracking = qtc.pyqtSignal()
     sigReturnHome = qtc.pyqtSignal()
-    def __init__(self, pilotName: str, instructorName: str, flightInstructions: str, flightData: str,
-                 usingPreviousFlight: bool):
+    def __init__(self, pilotName: str, instructorName: str, flightInstructions: str, previousFlight: str,
+                 usingPreviousFlight: bool, flightData: dict):
         """
         Class Constructor
         """
         qtw.QWidget.__init__(self)
 
         # Initiate the view
-        self.initView(pilotName, instructorName, flightInstructions, flightData, usingPreviousFlight)
+        self.initView(pilotName, instructorName, flightInstructions, previousFlight, usingPreviousFlight, flightData)
 
         # Format window
         self.setFixedSize(550, 550)
 
-    def initView(self, pilotName: str, instructorName: str, flightInstructions: str, flightData: str,
-                 usingPreviousFlight: bool):
+    def initView(self, pilotName: str, instructorName: str, flightInstructions: str, previousFlight: str,
+                 usingPreviousFlight: bool, flightData: dict):
         """
         Sets up the view and lays out all of the components.
-        :param flightData: String containing path to flight data. Should be .flight file if usingPreviousFlight is
-        true, or coordinates if usingPreviousFlight is false.
+        :param pilotName: String containing pilot name
+        :param instructorName: String containing instructor name
+        :param flightInstructions: String containing flight instructions.
+        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is
+        true, or blank if usingPreviousFlight is false.
+        :param usingPreviousFlight: Boolean denoting if the report should be populated from the same file or a different one.
+        :param flightDict: Dictionary containing flight data. Should be empty if usingPreviousFlight is true.
         :return: None
         """
         # Analyze the flight
         self.flightDict = {}
-
         if usingPreviousFlight is False:
             self.flightDict = self.analyzeFlight(flightData)
             self.flightDict["pilotName"] = pilotName
             self.flightDict["instructorName"] = instructorName
             self.flightDict["flightInstr"] = flightInstructions
         else:
-            self.flightDict = self.analyzeFlight(flightData)
+            self.flightDict = Export.ImportFile.importData(previousFlight)
 
         # Set up the title, flight information table, and statistics table.
         self.setWindowTitle('Report Screen')
@@ -90,6 +94,7 @@ class ReportWindow(qtw.QWidget):
     def signalExportResults(self):
         """
         Sends a signal to the main controller that the Export Results button was pushed.
+        :return: none
         """
         # Save flight results to .flight file.
         outPath = '../Export/ExportedFiles/' + self.flightDict["pilotName"] + '.flight'
@@ -178,7 +183,7 @@ class ReportWindow(qtw.QWidget):
         """
          Sets up the 3d plot for viewing upon click of button. displayVelocity is a boolean denoting if the graph should
          display colored segments for velocity.
-         :param flightData: dictionary of flight data
+         :param flightData: Dictionary of flight data
          :param displayVelocity: Bool denoting if velocity should be plotted or not.
          :return: None
          """
@@ -217,7 +222,7 @@ class ReportWindow(qtw.QWidget):
         """
         self.window.show()
 
-    def createStatisticsTable(self):
+    def createStatisticsTable(self) -> qtw.QTableWidget:
         """
         Creates a table containing flight statistics.
         :return: QTableWidget containing flight statistics.
@@ -246,21 +251,23 @@ class ReportWindow(qtw.QWidget):
 
         return self.tableWidget
 
-    def analyzeFlight(self, filePath: str):
+    def analyzeFlight(self, flightDict: dict) -> dict:
         """
         Analyzes the flight data to extract coordinates, velocity values, and statistics.
-        :param filePath: String representing file path where dictionary is stored.
-        :return: Arrays of x and y and z coordinates, array of velocity values, average velocity, standard deviation,
-        maximum velocity, minimum velocity.
+        :param flightDict: Dictionary of flight data, with only coordinates populated.
+        :return: Updated dictionary, with legal points and flight statistics included.
         """
-        # Read in dictionary
-        flightDict = Graph.readCoordinates(filePath)
+        # Check legality of coordinates.
+        flightDict = Graph.checkCoordinates(flightDict)
 
-        # Update flight dict to contain velocity
+        # Update flightDict to contain velocity
         flightDict1 = Graph.velocityPoints(flightDict)
 
-        # Update flight dict to contain statistics on velocity points
+        # Update flightDict to contain statistics on velocity points
         flightDict2 = Graph.computeVelocityStatistics(flightDict1)
+
+        # TODO: Add Ariana's flight code here.
+        # Smoothness code here
 
         return flightDict2
 

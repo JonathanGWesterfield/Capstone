@@ -1,6 +1,7 @@
 import unittest
 import Views.Graph as Graph
 import math
+from Export.ImportFile import importData
 
 class Graph_Test(unittest.TestCase):
 
@@ -52,7 +53,7 @@ class Graph_Test(unittest.TestCase):
         Test that coordinates from a small data file are read in correctly.
         :return: None
         """
-        test_dict = Graph.readCoordinates('TestFiles/JSONDUMP.flight')
+        test_dict = importData('TestFiles/JSONDUMP.flight')
         self.assertEqual(test_dict["coords"], [[0, 0, 0, 0], [1, 0, 0, 1], [2, 0, 0, 3], [3, 0, 0, 8]])
 
     def test_readCoordinates_small_illegal(self):
@@ -60,7 +61,8 @@ class Graph_Test(unittest.TestCase):
         Test that coordinates from a small data file are read in correctly.
         :return: None
         """
-        test_dict = Graph.readCoordinates('TestFiles/JSONDUMP_with_illegal.flight')
+        test_dict = importData('TestFiles/JSONDUMP_with_illegal.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(test_dict["coords"], [[0, 0, 0, 0], [1, -10, 15, 5], [2, 0, 0, 1], [3, 0, 0, 3], [4, 0, 0, 8]])
         self.assertEqual(test_dict["legalPoints"], [[0, 0, 0, 0], [2, 0, 0, 1], [3, 0, 0, 3], [4, 0, 0, 8]])
 
@@ -75,7 +77,8 @@ class Graph_Test(unittest.TestCase):
         :return: None
         """
         length = 100
-        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal100.flight')
+        test_dict = importData('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), length)
 
@@ -88,7 +91,8 @@ class Graph_Test(unittest.TestCase):
         """
         length = 100
         numLegal = length * 0.8
-        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal80.flight')
+        test_dict = importData('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
@@ -99,7 +103,8 @@ class Graph_Test(unittest.TestCase):
         :return: None
         """
         length = 200
-        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal100.flight')
+        test_dict = importData('TestFiles/new_size200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), length)
 
@@ -111,7 +116,8 @@ class Graph_Test(unittest.TestCase):
         """
         length = 200
         numLegal = length * 0.8
-        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal80.flight')
+        test_dict = importData('TestFiles/new_size200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
@@ -122,7 +128,8 @@ class Graph_Test(unittest.TestCase):
         :return: None
         """
         length = 600
-        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal100.flight')
+        test_dict = importData('TestFiles/new_size600_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), length)
 
@@ -134,7 +141,8 @@ class Graph_Test(unittest.TestCase):
         """
         length = 600
         numLegal = length * 0.8
-        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal80.flight')
+        test_dict = importData('TestFiles/new_size600_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
@@ -145,7 +153,8 @@ class Graph_Test(unittest.TestCase):
         :return: None
         """
         length = 1200
-        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal100.flight')
+        test_dict = importData('TestFiles/new_size1200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), length)
 
@@ -157,7 +166,8 @@ class Graph_Test(unittest.TestCase):
         """
         length = 1200
         numLegal = 961
-        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal80.flight')
+        test_dict = importData('TestFiles/new_size1200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
@@ -170,42 +180,50 @@ class Graph_Test(unittest.TestCase):
         :return: None
         """
         # Test small data sets
-        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal100.flight')
+        test_dict = importData('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal80.flight')
+        test_dict = importData('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal100.flight')
+        test_dict = importData('TestFiles/new_size200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal80.flight')
+        test_dict = importData('TestFiles/new_size200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal100.flight')
+        test_dict = importData('TestFiles/new_size600_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal80.flight')
+        test_dict = importData('TestFiles/new_size600_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal100.flight')
+        test_dict = importData('TestFiles/new_size1200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False))
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal80.flight')
+        test_dict = importData('TestFiles/new_size1200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False))
@@ -266,40 +284,48 @@ class Graph_Test(unittest.TestCase):
         """
         # Test small data sets
         size = 100
-        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal100.flight')
+        test_dict = importData('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), size-1)
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal80.flight')
+        test_dict = importData('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), 0.8*size-1)
 
         size = 200
-        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal100.flight')
+        test_dict = importData('TestFiles/new_size200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), size-1)
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal80.flight')
+        test_dict = importData('TestFiles/new_size200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), 0.8*size-1)
 
         # Test medium data sets
         size = 600
-        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal100.flight')
+        test_dict = importData('TestFiles/new_size600_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), size - 1)
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal80.flight')
+        test_dict = importData('TestFiles/new_size600_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), 0.8 * size - 1)
 
         # Test largest data sets
         size = 1200
-        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal100.flight')
+        test_dict = importData('TestFiles/new_size1200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), size - 1)
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal80.flight')
+        test_dict = importData('TestFiles/new_size1200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), 0.8 * size)
 
@@ -314,40 +340,48 @@ class Graph_Test(unittest.TestCase):
 
         # Test small data sets
         size = 100
-        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal100.flight')
+        test_dict = importData('TestFiles/new_size100_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), size - 1)
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size100_legal80.flight')
+        test_dict = importData('TestFiles/new_size100_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8*size - 1)
 
         size = 200
-        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal100.flight')
+        test_dict = importData('TestFiles/new_size200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), size - 1)
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size200_legal80.flight')
+        test_dict = importData('TestFiles/new_size200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8 * size - 1)
 
         # Test medium data sets
         size = 600
-        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal100.flight')
+        test_dict = importData('TestFiles/new_size600_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), size - 1)
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size600_legal80.flight')
+        test_dict = importData('TestFiles/new_size600_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8 * size - 1)
 
         # Test large data sets
         size = 1200
-        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal100.flight')
+        test_dict = importData('TestFiles/new_size1200_legal100.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), size - 1)
 
-        test_dict = Graph.readCoordinates('TestFiles/new_size1200_legal80.flight')
+        test_dict = importData('TestFiles/new_size1200_legal80.flight')
+        test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8 * size)
 

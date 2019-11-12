@@ -8,18 +8,12 @@ import statistics
 import numpy
 import re
 
-def readCoordinates(filename):
+def checkCoordinates(flightDict: dict):
     """
-    filename = '../Tests/TestFiles/JSONDUMP.flight'
     Reads the input dictionary of flight data from a .flight file.
-    :param filename: File containing dictionary dictionary to read.
+    :param flightDict: Dictionary containing flight data.
     :return: Dictionary of flight data.
     """
-    flightDict = {}
-
-    with open(filename, 'r') as infile:
-        flightDict = json.load(infile)
-
     legalPoints = []
     for coord in flightDict["coords"]:
         if checkLegalInput(coord[1], coord[2], coord[3]):
@@ -163,33 +157,17 @@ def generateGraph(flightData: dict, displayVelocity: bool):
 
 # size = 600
 # flightLength = 0.5*size
-
-# test_dict = {
-# "pilotName": "Hayley",
-# "instructorName": "Eckert",
-# "flightInstr": "Bob",
-# "flightDate": "11/03/2019",
-# "flightLength": 8,
-# "coords": [(0, 7.5, 7.5, 0), (1, 7.5, 7.5, 1), (2, 7.5, 7.5, 3), (3, 7.5, 7.5, 8), (4, 7.5, 7.5, 10), (5, 8.5, 9.5, 10), (6, 8.5, 11.5, 10), (7, 9.5, 13.5, 9), (8, 7.5, 11.5, 8)],
-# "velocities": [1, 2, 5, 5],
-# "avgVel": 0.0,
-# "maxVel": 0.0,
-# "minVel": 0.0,
-# "smoothness": 0.0,
-# "legalPoints": [(0, 7.5, 7.5, 0),
-#                 (1, 7.5, 7.5, 1),
-#                 (2, 7.5, 7.5, 3),
-#                 (3, 7.5, 7.5, 8),
-#                 (4, 7.5, 7.5, 10),
-#                 (5, 8.5, 9.5, 10),
-#                 (6, 8.5, 11.5, 10),
-#                 (7, 9.5, 13.5, 9),
-#                 (8, 7.5, 11.5, 8)]
-# }
-# #
-# # with open('../Tests/TestFiles/new_size1200_legal100.flight', 'w') as outfile:
-# #     json.dump(test_dict, outfile)
-# #
+#
+# with open('../Tests/TestFiles/new_size100_legal80.flight', 'r') as infile:
+#     flightDict = json.load(infile)
+#
+# flightDict = checkCoordinates(flightDict)
+# flightDict = velocityPoints(flightDict)
+# flightDict = computeVelocityStatistics(flightDict)
+#
+# with open('../Tests/TestFiles/new_size100_legal80.flight', 'w') as outfile:
+#     json.dump(flightDict, outfile)
+#
 # # test_dict = readCoordinates('../Tests/TestFiles/new_size1200_legal100.flight')
 # test_dict = velocityPoints(test_dict)
 # test_dict = computeVelocityStatistics(test_dict)
