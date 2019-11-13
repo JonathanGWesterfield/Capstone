@@ -113,7 +113,11 @@ class VerifySetupWindow(qtw.QWidget):
         Runs full system test.
         :return: None
         """
+        #if self.lightSync is True and self.phoneControl is True:
         self.fullSetup = True
+        #else:
+        #    self.fullSetup = False
+
         if self.fullSetup is True:
             self.sigGoodToFly.emit()
             msgBox = qtw.QMessageBox()
@@ -127,7 +131,6 @@ class VerifySetupWindow(qtw.QWidget):
                 "<center><br>Please go back to the startup screen and click the Verify Status button. "
                 "Go through the setup process and verify that the performance tracker is set up properly.</center>")
             msgBox.exec()
-
 
     def returnHome(self):
         """

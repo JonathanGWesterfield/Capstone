@@ -152,19 +152,27 @@ def log_dimensionless_jerk(movement: list, fs: int) -> float:
     """
     return -np.log(abs(dimensionless_jerk(movement, fs)))
 
-def generateGraph(flightData: dict, displayVelocity: bool):
+def generateGraph(flightData: dict, displayVelocity: bool, t1: float, t2: float):
     """
     Driver function for generating the 3d graph of drone coordinates.
-    :param flightData: Dictionary containing flight data
+    :param flightData: Dictionary containing flight data.
     :param displayVelocity: Boolean saying if velocity changes should be displayed on the graph.
+    :param t1: Minimum time bound for plotting coordinates.
+    :param t2: Maximum time bound for plotting coordinates.
     :return: The figure to display as the 3d graph.
     """
     # Plot points on the graph
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    x_data = [x[1] for x in flightData["legalPoints"]]
-    y_data = [y[2] for y in flightData["legalPoints"]]
-    z_data = [z[3] for z in flightData["legalPoints"]]
+    x_data = []
+    y_data = []
+    z_data = []
+    for coord in flightData["legalPoints"]:
+        if coord[0] >= t1 and coord[0] <= t2:
+            x_data.append(coord[1])
+            y_data.append(coord[2])
+            z_data.append(coord[3])
+
     ax.scatter(x_data, y_data, z_data, s=6, c="k", marker='o')
 
     if displayVelocity is True:
@@ -173,10 +181,12 @@ def generateGraph(flightData: dict, displayVelocity: bool):
 
         # Add line segment coloring
         for i in range(len(flightData["legalPoints"])-1):
-            plt.plot([flightData["legalPoints"][i][1], flightData["legalPoints"][i+1][1]],
-                     [flightData["legalPoints"][i][2], flightData["legalPoints"][i+1][2]],
-                     [flightData["legalPoints"][i][3], flightData["legalPoints"][i+1][3]],
-                     colors[i], linewidth = 1)
+            if flightData["legalPoints"][i][0] >= t1 and flightData["legalPoints"][i][0] <= t2 \
+                    and flightData["legalPoints"][i+1][0] <= t2:
+                plt.plot([flightData["legalPoints"][i][1], flightData["legalPoints"][i+1][1]],
+                         [flightData["legalPoints"][i][2], flightData["legalPoints"][i+1][2]],
+                         [flightData["legalPoints"][i][3], flightData["legalPoints"][i+1][3]],
+                         colors[i], linewidth=1)
 
     # Set axis limits
     ax.set_xlabel('x')

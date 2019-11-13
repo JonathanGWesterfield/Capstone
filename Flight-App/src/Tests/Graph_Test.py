@@ -67,7 +67,7 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(test_dict["legalPoints"], [[0, 0, 0, 0], [2, 0, 0, 1], [3, 0, 0, 3], [4, 0, 0, 8]])
 
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
 
     def test_readCoordinates_size100_allLegal(self):
         """
@@ -183,50 +183,50 @@ class Graph_Test(unittest.TestCase):
         test_dict = importData('TestFiles/new_size100_legal100.flight')
         test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
-        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
         test_dict = importData('TestFiles/new_size100_legal80.flight')
         test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
-        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
         test_dict = importData('TestFiles/new_size200_legal100.flight')
         test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
-        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
         test_dict = importData('TestFiles/new_size200_legal80.flight')
         test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
-        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
         test_dict = importData('TestFiles/new_size600_legal100.flight')
         test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
-        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
         test_dict = importData('TestFiles/new_size600_legal80.flight')
         test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
-        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
         test_dict = importData('TestFiles/new_size1200_legal100.flight')
         test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
-        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
         test_dict = importData('TestFiles/new_size1200_legal80.flight')
         test_dict = Graph.checkCoordinates(test_dict)
         test_dict = Graph.velocityPoints(test_dict)
-        self.assertIsNotNone(Graph.generateGraph(test_dict, True))
-        self.assertIsNotNone(Graph.generateGraph(test_dict, False))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
+        self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
     def test_velocityPoints(self):
         """

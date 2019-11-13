@@ -465,7 +465,7 @@ def main():
     phoneControl = createPhoneConnection(8000)
 
     # Create the RPI controller
-    control = RPIController('localhost', '9876')
+    control = RPIController('192.168.1.2', '9876')
 
     # Create a controller for the application.
     controller = Controller(phoneControl=phoneControl, rpiControl=control)
