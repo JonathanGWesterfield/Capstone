@@ -29,8 +29,8 @@ class DroneTracker:
         self.data_points_2 = []
         self.video_file_1 = video_file_1
         self.video_file_2 = video_file_2
-        self.frame_queue_1 = queue.Queue()
-        self.frame_queue_2 = queue.Queue()
+        self.frame_queue_1 = queue.Queue(maxsize=90)
+        self.frame_queue_2 = queue.Queue(maxsize=90)
         self.done_reading_1 = False
         self.done_reading_2 = False
         # This is an internal toggle to look for the light before prompting the user
@@ -202,7 +202,7 @@ class DroneTracker:
             if not ok:
                 break
             # Add the frame to the respective frame queue
-            frame_queue.put(frame)
+            frame_queue.put(frame, block=True)
             total_frames += 1
         # Signal that the thread is done reading the video file
         if video_num == 1:

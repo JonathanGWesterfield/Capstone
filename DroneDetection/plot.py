@@ -7,42 +7,46 @@ import json
 
 from detect import DroneTracker
 
+import sys
+
 if __name__ == "__main__":
 
-    tracker = DroneTracker("D:/Projects/Capstone/DroneDetection/video/pixel_synced_Trim_Trim.mp4",
-                            "D:/Projects/Capstone/DroneDetection/video/s10_synced_Trim_Trim.mp4")
+    # print(str(sys.argv[1]))
+    # print(str(sys.argv[2]))
+
+    tracker = DroneTracker(str(sys.argv[1]), str(sys.argv[2]))
 
     data = tracker.process_video() # y/z plane
 
-    x_coords = []
-    y_coords = []
-    z_coords = []
-    t_vals =[]
+    # x_coords = []
+    # y_coords = []
+    # z_coords = []
+    # t_vals =[]
 
-    for tup in data:
-        t_vals.append(tup[0])
-        x_coords.append(tup[1])
-        y_coords.append(tup[2])
-        z_coords.append(tup[3])
+    # for tup in data:
+    #     t_vals.append(tup[0])
+    #     x_coords.append(tup[1])
+    #     y_coords.append(tup[2])
+    #     z_coords.append(tup[3])
 
-    fig = plt.figure()
+    # fig = plt.figure()
 
-    plot = fig.add_subplot(111, projection="3d")
+    # plot = fig.add_subplot(111, projection="3d")
 
-    plot.scatter(x_coords, y_coords, z_coords, s=6, c="k", marker="o")
+    # plot.scatter(x_coords, y_coords, z_coords, s=6, c="b", marker="o")
 
-    plot.set_xlabel("x")
-    plot.set_ylabel("y")
-    plot.set_zlabel("z")
-    plot.set_title("flight path")
+    # plot.set_xlabel("x")
+    # plot.set_ylabel("y")
+    # plot.set_zlabel("z")
+    # plot.set_title("flight path")
 
-    plot.set_xlim3d(0, 15)
-    plot.set_ylim3d(0, 15)
-    plot.set_zlim3d(0, 10)
+    # plot.set_xlim3d(0, 15)
+    # plot.set_ylim3d(0, 15)
+    # plot.set_zlim3d(0, 10)
 
-    plt.show()
+    # plt.show()
 
     output = {"coords": data}
-    formatted = json.dumps(output, sort_keys=True, indent=4)
+    formatted = json.dumps(output)
 
     print(formatted)
