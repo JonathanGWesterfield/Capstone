@@ -56,7 +56,7 @@ class VerifySetupWindow(qtw.QWidget):
         self.BtnHome.clicked.connect(self.returnHome)
         self.BtnCheck.clicked.connect(self.checkStatus)
         self.BtnPhoneSync.clicked.connect(self.syncPhone)
-        self.BtnTestLight.clicked.connect(self.testLight)
+        #self.BtnTestLight.clicked.connect(self.testLight)
         self.BtnTestFull.clicked.connect(self.testFull)
 
         # Spacer to make the view more pleasing
@@ -113,7 +113,11 @@ class VerifySetupWindow(qtw.QWidget):
         Runs full system test.
         :return: None
         """
+        #if self.lightSync is True and self.phoneControl is True:
         self.fullSetup = True
+        #else:
+        #    self.fullSetup = False
+
         if self.fullSetup is True:
             self.sigGoodToFly.emit()
             msgBox = qtw.QMessageBox()
@@ -127,7 +131,6 @@ class VerifySetupWindow(qtw.QWidget):
                 "<center><br>Please go back to the startup screen and click the Verify Status button. "
                 "Go through the setup process and verify that the performance tracker is set up properly.</center>")
             msgBox.exec()
-
 
     def returnHome(self):
         """
@@ -162,12 +165,12 @@ class VerifySetupWindow(qtw.QWidget):
         :return: The horizontal layout containing the 3 buttons
         """
         self.__btnPhoneSync = qtw.QPushButton('Phone Sync')
-        self.__btnTestLight = qtw.QPushButton('Test Light')
+        #self.__btnTestLight = qtw.QPushButton('Test Light')
         self.__btnTestFull = qtw.QPushButton('Test Full Setup')
 
         buttonBox = qtw.QHBoxLayout()
         buttonBox.addWidget(self.__btnPhoneSync)
-        buttonBox.addWidget(self.__btnTestLight)
+        #buttonBox.addWidget(self.__btnTestLight)
         buttonBox.addWidget(self.__btnTestFull)
 
         return buttonBox
@@ -181,12 +184,12 @@ class VerifySetupWindow(qtw.QWidget):
             phoneStatus = "Phone Status: Not synced\n"
         else:
             phoneStatus = "Phone Status: Synced\n"
-
+        '''
         if self.lightSync is False:
             lightStatus = "Light Status: Not synced\n"
         else:
             lightStatus = "Light Status: Synced\n"
-
+        '''
         if self.fullSetup is False:
             fullSetupStatus = "Full setup: Not synced\n"
         else:
@@ -194,7 +197,7 @@ class VerifySetupWindow(qtw.QWidget):
 
         msgBox = qtw.QMessageBox()
         msgBox.setText(
-            phoneStatus + lightStatus + fullSetupStatus)
+            phoneStatus + fullSetupStatus)
         msgBox.exec()
 
     def setupPicture(self):

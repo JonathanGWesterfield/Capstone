@@ -28,12 +28,21 @@ class ReportWindow(qtw.QWidget):
         Class Constructor
         """
         qtw.QWidget.__init__(self)
+        self.minTime = 0
+        self.maxTime = 0
+        self.minRangeTime = 0
+        self.maxRangeTime = 0
+
+        self.MAXVAL = flightData["flightLength"]
+
+        self.sliderMin = 0
+        self.sliderMax = self.MAXVAL
 
         # Initiate the view
         self.initView(pilotName, instructorName, flightInstructions, previousFlight, usingPreviousFlight, flightData)
 
         # Format window
-        self.setFixedSize(550, 550)
+        self.setFixedSize(550, 700)
 
     def initView(self, pilotName: str, instructorName: str, flightInstructions: str, previousFlight: str,
                  usingPreviousFlight: bool, flightData: dict):
@@ -65,6 +74,11 @@ class ReportWindow(qtw.QWidget):
         flInfoLayout = self.setupFlightInfo()
         statistics = self.createStatisticsTable()
 
+        # Set up more labels
+        graph_label = self.setSubTitle("Flight Graph")
+        slider_label = qtw.QLabel("Select time range to view: ")
+        slider_label.setAlignment(qtc.Qt.AlignLeft)
+
         # Initialize buttons.
         self.__btnViewGraphNoVelocity = qtw.QPushButton('View Flight Path')
         self.__btnViewGraphVelocity = qtw.QPushButton('View Flight Path with Velocity Changes')
@@ -77,13 +91,19 @@ class ReportWindow(qtw.QWidget):
         self.BtnViewGraphNoVelocity.clicked.connect(lambda *args: self.setupGraph(self.flightDict, False))
         self.BtnViewGraphVelocity.clicked.connect(lambda *args: self.setupGraph(self.flightDict, True))
 
+        # Add a slider
+        slider = self.setupSlider()
+
         # Create a grid layout for all elements except the title.
         gridLayout = qtw.QGridLayout()
         gridLayout.addLayout(flInfoLayout, 0, 0)
         gridLayout.addWidget(statistics, 1, 0)
-        gridLayout.addWidget(self.BtnViewGraphNoVelocity, 2, 0)
-        gridLayout.addWidget(self.BtnViewGraphVelocity, 3, 0)
-        gridLayout.addLayout(btnLayout, 4, 0)  # layout the buttons
+        gridLayout.addWidget(graph_label, 2, 0)
+        gridLayout.addWidget(slider_label, 3, 0)
+        gridLayout.addLayout(slider, 4, 0)
+        gridLayout.addWidget(self.BtnViewGraphNoVelocity, 5, 0)
+        gridLayout.addWidget(self.BtnViewGraphVelocity, 6, 0)
+        gridLayout.addLayout(btnLayout, 7, 0)  # layout the buttons
 
         # Layout all of the above elements on a vertical layout
         vLayout = qtw.QVBoxLayout()
@@ -191,15 +211,26 @@ class ReportWindow(qtw.QWidget):
          :return: None
          """
         # Generate and show graph
-        fig = Graph.generateGraph(flightData, displayVelocity)
+        minTime = self.MAXVAL - (self.startSlider.value() / 100)
+        maxTime = self.endSlider.value() / 100
+        print("Min slider value:" + str(minTime))
+        print("Max slider value:" + str(maxTime))
 
-        # Define manager so figure can be viewed upon button click
-        new_manager = fig.canvas.manager
-        new_manager.canvas.figure = fig
-        fig.set_canvas(new_manager.canvas)
+        if maxTime <= minTime:
+            msgBox = qtw.QMessageBox()
+            msgBox.setText(
+                "Start time must be less than end time!\n Please reselect a time range using the sliders.")
+            msgBox.exec()
+        else:
+            fig = Graph.generateGraph(flightData, displayVelocity, minTime, maxTime)
 
-        # Show the figure
-        fig.show()
+            # Define manager so figure can be viewed upon button click
+            new_manager = fig.canvas.manager
+            new_manager.canvas.figure = fig
+            fig.set_canvas(new_manager.canvas)
+
+            # Show the figure
+            fig.show()
 
     def setButtonLayout(self) -> qtw.QHBoxLayout:
         """
@@ -273,6 +304,102 @@ class ReportWindow(qtw.QWidget):
         flightDict2["smoothness"] = Graph.log_dimensionless_jerk(flightDict2["velocities"], 0.5)
 
         return flightDict2
+
+    def setupSlider(self):
+        horizontalLayout0 = qtw.QHBoxLayout()
+        horizontalLayout0.setSizeConstraint(qtw.QLayout.SetMinimumSize)
+        horizontalLayout0.setContentsMargins(5, 2, 5, 2)
+        horizontalLayout0.setSpacing(0)
+        horizontalLayout0.setObjectName("horizontalLayout")
+
+        ## Start Slider Widget
+        self.startSlider = qtw.QSlider()
+        self.startSlider.setMaximum(100 * self.MAXVAL)
+
+        self.startSlider.setMinimumSize(qtc.QSize(100, 5))
+        self.startSlider.setMaximumSize(qtc.QSize(16777215, 10))
+
+        font = qtg.QFont()
+        font.setKerning(True)
+
+        self.startSlider.setFont(font)
+        self.startSlider.setAcceptDrops(False)
+        self.startSlider.setAutoFillBackground(False)
+        self.startSlider.setInvertedAppearance(True)
+        self.startSlider.setOrientation(qtc.Qt.Horizontal)
+        self.startSlider.setObjectName("startSlider")
+        self.startSlider.setValue(100*self.MAXVAL)
+        self.startSlider.valueChanged.connect(self.handleStartSliderValueChange)
+        horizontalLayout0.addWidget(self.startSlider)
+
+        horizontalLayout1 = qtw.QHBoxLayout()
+        horizontalLayout1.setSizeConstraint(qtw.QLayout.SetMinimumSize)
+        horizontalLayout1.setContentsMargins(5, 2, 5, 2)
+        horizontalLayout1.setSpacing(0)
+        horizontalLayout1.setObjectName("horizontalLayout")
+
+        ## End Slider Widget
+        self.endSlider = qtw.QSlider()
+        #self.endSlider.setMaximum(100 * self.MAXVAL/2)
+        self.endSlider.setMaximum(100 * self.MAXVAL)
+        self.endSlider.setMinimumSize(qtc.QSize(100, 5))
+        self.endSlider.setMaximumSize(qtc.QSize(16777215, 10))
+        self.endSlider.setTracking(True)
+        self.endSlider.setOrientation(qtc.Qt.Horizontal)
+        self.endSlider.setObjectName("endSlider")
+        self.endSlider.setValue(100*self.MAXVAL)
+        self.endSlider.valueChanged.connect(self.handleEndSliderValueChange)
+        horizontalLayout1.addWidget(self.endSlider)
+
+        # Add minimum and maximum values
+        horizontalLayout2 = qtw.QHBoxLayout()
+        self.label_minimum = qtw.QLabel("0 s")
+        self.label_minimum.setAlignment(qtc.Qt.AlignLeft)
+        self.label_maximum = qtw.QLabel(str(self.MAXVAL) + " s")
+        self.label_maximum.setAlignment(qtc.Qt.AlignRight)
+        horizontalLayout2.addWidget(self.label_minimum)
+        horizontalLayout2.addWidget(self.label_maximum)
+
+        # Add current value
+        horizontalLayout3 = qtw.QHBoxLayout()
+        self.label_current_min_title = qtw.QLabel("Start Time: ")
+        self.label_current_min_title.setAlignment(qtc.Qt.AlignLeft)
+        self.label_current_min = qtw.QLabel("0")
+        self.label_current_min.setAlignment(qtc.Qt.AlignLeft)
+        horizontalLayout3.addWidget(self.label_current_min_title)
+        horizontalLayout3.addWidget(self.label_current_min)
+        horizSpacer = qtw.QSpacerItem(150, 20, qtw.QSizePolicy.Minimum, qtw.QSizePolicy.Expanding)
+        self.label_current_max_title = qtw.QLabel("End Time: ")
+        self.label_current_max_title.setAlignment(qtc.Qt.AlignRight)
+        self.label_current_max = qtw.QLabel(str(self.MAXVAL))
+        self.label_current_max.setAlignment(qtc.Qt.AlignRight)
+        horizontalLayout3.addSpacerItem(horizSpacer)
+        horizontalLayout3.addWidget(self.label_current_max_title)
+        horizontalLayout3.addWidget(self.label_current_max)
+
+        vbox = qtw.QVBoxLayout()
+        vbox.addLayout(horizontalLayout2)
+        vbox.addLayout(horizontalLayout0)
+        vbox.addLayout(horizontalLayout1)
+        vbox.addLayout(horizontalLayout3)
+
+        qtc.QMetaObject.connectSlotsByName(self)
+
+        return vbox
+
+    @qtc.pyqtSlot(int)
+    def handleStartSliderValueChange(self, value):
+        self.startSlider.setValue(value)
+        minTime = self.MAXVAL - (self.startSlider.value() / 100)
+        self.label_current_min.setText(str(round(minTime, 2)))
+        print("start " + str(value))
+
+    @qtc.pyqtSlot(int)
+    def handleEndSliderValueChange(self, value):
+        self.endSlider.setValue(value)
+        maxTime = self.endSlider.value() / 100
+        self.label_current_max.setText(str(round(maxTime, 2)))
+        print("stop " + str(value))
 
     # region > Report View Properties
 

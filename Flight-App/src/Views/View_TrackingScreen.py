@@ -4,7 +4,6 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from Controllers.PhoneController import PhoneControl
 
-
 class TrackingWindow(qtw.QWidget):
     """
     The view for the tracking view page that is shown when the user presses the "Start Tracking" button on the home page.
