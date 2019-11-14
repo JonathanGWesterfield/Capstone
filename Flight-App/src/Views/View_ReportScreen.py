@@ -5,6 +5,7 @@ import Export.ExportFile
 import Export.ImportFile
 import datetime as dt
 import json
+import os
 
 class ReportWindow(qtw.QWidget):
     """
@@ -119,7 +120,8 @@ class ReportWindow(qtw.QWidget):
         :return: none
         """
         # Save flight results to .flight file.
-        outPath = '../Export/ExportedFiles/' + self.flightDict["pilotName"] + '_' + self.flightDict["flightDate"] + '.flight'
+        outFolder = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/drone-tracker/Flights/')
+        outPath = outFolder + self.flightDict["pilotName"] + '_' + self.flightDict["flightDate"] + '.flight'
         with open(outPath, 'w') as outfile:
             json.dump(self.flightDict, outfile)
         # Show message box saying that exporting was completed.
