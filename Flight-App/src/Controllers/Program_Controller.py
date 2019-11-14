@@ -368,18 +368,6 @@ class Controller:
         to have the files before hand so we can pass them into each OpenCVController process.
         :return: None
         """
-        # tracker_1 = DroneTracker(
-        #     "pixel_synced_Trim_Trim.mp4")
-        # data_points_1 = tracker_1.trackDrone()
-        # tracker_2 = DroneTracker(
-        #     "s10_synced_Trim_Trim.mp4")
-        # data_points_2 = tracker_2.trackDrone()
-        # coords = tracker_2.get_data_points(data_points_1, data_points_2)
-
-        # self.flightDict["coords"] = coords
-
-        # self.wait_for_analysis()
-
         # Get the files deposited into the FTP directory from the phone
         files = self.get_all_files(self.pathToFTPDir)
         files = self.get_in_order(files) # order the files

@@ -55,7 +55,7 @@ class ReportWindow(qtw.QWidget):
             self.flightDict["pilotName"] = pilotName
             self.flightDict["instructorName"] = instructorName
             self.flightDict["flightInstr"] = flightInstructions
-            self.flightDict["flightDate"] = dt.datetime.now().strftime('%m-%d-%Y')
+            self.flightDict["flightDate"] = dt.datetime.now().strftime('%m-%d-%Y-%H:%M:%S')
         else:
             self.flightDict = Export.ImportFile.importData(previousFlight)
 
@@ -64,7 +64,7 @@ class ReportWindow(qtw.QWidget):
         self.maxTime = 0
         self.minRangeTime = 0
         self.maxRangeTime = 0
-        self.MAXVAL = flightData["flightLength"]
+        self.MAXVAL = self.flightDict["flightLength"]
 
         self.sliderMin = 0
         self.sliderMax = self.MAXVAL
@@ -393,14 +393,14 @@ class ReportWindow(qtw.QWidget):
         self.startSlider.setValue(value)
         minTime = self.MAXVAL - (self.startSlider.value() / 100)
         self.label_current_min.setText(str(round(minTime, 2)))
-        print("start " + str(value))
+        # print("start " + str(value))
 
     @qtc.pyqtSlot(int)
     def handleEndSliderValueChange(self, value):
         self.endSlider.setValue(value)
         maxTime = self.endSlider.value() / 100
         self.label_current_max.setText(str(round(maxTime, 2)))
-        print("stop " + str(value))
+        # print("stop " + str(value))
 
     # region > Report View Properties
 

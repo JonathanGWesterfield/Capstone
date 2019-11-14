@@ -25,7 +25,7 @@ class VerifySetupWindow(qtw.QWidget):
     lightSync = False
     fullSetup = False
 
-    def __init__(self, phoneControl: PhoneControl): #, rpiControl: RPIController):
+    def __init__(self, phoneControl: PhoneControl):
         """
         Class Constructor
         """
