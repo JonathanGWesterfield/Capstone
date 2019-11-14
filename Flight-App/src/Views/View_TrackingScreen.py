@@ -96,7 +96,7 @@ class TrackingWindow(qtw.QWidget):
         """
         if self.startedTracking is False:
             try:
-                # self.phoneControl.startRecording()
+                self.phoneControl.startRecording()
                 msgBox = qtw.QMessageBox()
                 msgBox.setText(
                     "Tracking started!")
@@ -119,7 +119,7 @@ class TrackingWindow(qtw.QWidget):
         :return: none
         """
         try:
-            # self.phoneControl.stopRecording()
+            self.phoneControl.stopRecording()
             msgBox = qtw.QMessageBox()
             msgBox.setText(
                 "Tracking stopped! \nPlease wait while file transfer is initiated.\n You will be redirected shortly.")

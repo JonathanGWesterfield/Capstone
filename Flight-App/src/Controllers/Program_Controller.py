@@ -8,7 +8,7 @@ from View_ReportScreen import ReportWindow
 from View_LoadingScreen import LoadingWindow
 from Controllers.PhoneController import PhoneControl as PhoneControl
 # from Controllers.RPIController import RPIController as RPIController
-from Controllers.OpenCVController import merge_data_points, DroneTracker
+from Controllers.OpenCVThreadedController import merge_data_points, DroneTracker
 from Export.ImportFile import importData
 
 class Controller:
@@ -352,8 +352,8 @@ class Controller:
 
         try:
             # Call the functions to transfer the files
-            # phoneControl.startFileTransfer(self.pathToFTPDir)
-            # phoneControl.waitForFileTransfer()
+            phoneControl.startFileTransfer(self.pathToFTPDir)
+            phoneControl.waitForFileTransfer()
 
             self.start_analysis()
 
@@ -375,8 +375,10 @@ class Controller:
         file1 = self.pathToFTPDir + files[0]
         file2 = self.pathToFTPDir + files[1]
 
-        subprocess.Popen(['python3', 'OpenCVController.py', file1])
-        subprocess.Popen(['python3', 'OpenCVController.py', file2])
+        print("Files to analyze: ", file1, ", ", file2)
+
+        subprocess.Popen(['python3', 'OpenCVThreadedController.py', file1])
+        subprocess.Popen(['python3', 'OpenCVThreadedController.py', file2])
 
         self.wait_for_analysis() # wait for the analysis of the files to complete
 
