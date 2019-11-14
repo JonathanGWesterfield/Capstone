@@ -22,7 +22,7 @@ class PhoneControl:
         """
         self.portNum = portNum
         self.host = ""
-        self.maxClients = 1 # We will have 2 phones therefore 2 network connections on this port
+        self.maxClients = 2 # We will have 2 phones therefore 2 network connections on this port
         self.connections = [] # list of our connections
         self.connected = False
         self.transferring = False
