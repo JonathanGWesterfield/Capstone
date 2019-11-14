@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
 from Controllers.PhoneController import PhoneControl
-from Controllers.RPIController import RPIController
+# from Controllers.RPIController import RPIController
 import signal
 from contextlib import contextmanager
 
@@ -25,14 +25,14 @@ class VerifySetupWindow(qtw.QWidget):
     lightSync = False
     fullSetup = False
 
-    def __init__(self, phoneControl: PhoneControl, rpiControl: RPIController):
+    def __init__(self, phoneControl: PhoneControl): #, rpiControl: RPIController):
         """
         Class Constructor
         """
         qtw.QWidget.__init__(self)
         self.setFixedSize(550, 550)
         self.phoneControl = phoneControl
-        self.rpiControl = rpiControl
+        # self.rpiControl = rpiControl
         self.initView()
 
     def initView(self):
@@ -100,7 +100,7 @@ class VerifySetupWindow(qtw.QWidget):
         :return: None
         """
         try:
-            self.rpiControl.flash()
+            # self.rpiControl.flash()
             self.lightSync = True
         except Exception as e:
             msgBox = qtw.QMessageBox()
