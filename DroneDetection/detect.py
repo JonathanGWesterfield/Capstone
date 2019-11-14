@@ -150,10 +150,14 @@ class DroneTracker:
         # Cycle through all of the data points that can be represented with the extracted coordinates
         # from both videos
         for i in range(0, shortest_len-1):
-            tup = (self.data_points_1[i][2], # time value
-                   (self.data_points_1[i][0]/3840)*15, # x coordinate scaled to 15 meters
-                   (self.data_points_2[i][0]/3840)*15, # y coordinate scaled to 15 meters
-                   (((self.data_points_1[i][1] + self.data_points_2[i][1])/2)/2160)*10 ) # z coordinate,
+            if self.data_points_1[i][0] == None or self.data_points_2[i][0] == None or 
+                self.data_points_1[i][1] == None or self.data_points_2[i][1] == None:
+                tup = (self.data_points_1[i][2], None, None, None)
+            else:
+                tup = (self.data_points_1[i][2], # time value
+                        (self.data_points_1[i][0]/3840)*15, # x coordinate scaled to 15 meters
+                        (self.data_points_2[i][0]/3840)*15, # y coordinate scaled to 15 meters
+                        (((self.data_points_1[i][1] + self.data_points_2[i][1])/2)/2160)*10 ) # z coordinate,
                                                                                          # scaled to 10 meters
             points.append(tup)
 
@@ -365,6 +369,8 @@ class DroneTracker:
                 # Tracking failure
                 cv2.putText(frame, "Tracking failure detected", (100,80), cv2.FONT_HERSHEY_SIMPLEX, 0.75,(0,0,255),2)
 
+                skip = 5
+
                 # This will loop until the drone is reselected, and creates a new tracker that will
                 # continue to track the drone
                 while True:
@@ -379,11 +385,21 @@ class DroneTracker:
                     # This will skip 1 second of video if the drone is out of frame,
                     # which is detected if the user presses escape on the selectROI function
                     if bbox[0] == 0.0 and bbox[1] == 0.0 and bbox[2] == 0.0 and bbox[3] == 0.0:
-                        for i in range(1, 30):
+                        print("skipping " + str(skip) + " frames")
+                        for i in range(1, skip):
                             if current_frame % 15 == 0:
+                                tm = current_frame / 30
                                 data_points.append((None, None, tm))
-                            frame_queue.get()
+                            frame = frame_queue.get()
                             current_frame += 1
+                            
+                        if skip == 5:
+                            skip = 15
+                        elif skip == 15:
+                            skip = 30
+                        else:
+                            skip += 30
+                        
                     # If the user selected a bounding box, create a new tracker
                     # and continue to track the drone
                     else:
@@ -414,3 +430,20 @@ class DroneTracker:
             k = cv2.waitKey(1) & 0xff
             if k == 27:
                 break
+            elif "r" == chr(k):
+                # Rescale the frame so the user can see the entire frame to reselect the drone
+                resizedFrame = self.rescale_frame(frame, 40)
+                # Ask the user to draw a box around the drone
+                bbox = cv2.selectROI(select_str, resizedFrame, False)
+                # Reposition the bounding box from 40% resolution to 100% resolution
+                bbox = self.resize_bbox(bbox, 2.5)
+                # Close the ROI selection window
+                cv2.destroyWindow(select_str)
+
+                # Creates a new KCF tracker (this is due to the update function not working
+                # the same in python as it does in C++: in C++, we could simply update the
+                # tracker with the new bounding box instead of creating a new one, but this
+                # is a known limitation in python's implementation of OpenCV and this is my workaround)
+                tracker = cv2.TrackerKCF_create()
+                # Initialize the tracker with the newly selected bounding box
+                ok = tracker.init(frame, bbox)

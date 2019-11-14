@@ -50,3 +50,8 @@ if __name__ == "__main__":
     formatted = json.dumps(output)
 
     print(formatted)
+
+    with open("coords.dat", "w") as filehandle:
+        filehandle.write(formatted)
+
+
