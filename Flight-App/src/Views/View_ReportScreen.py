@@ -27,15 +27,6 @@ class ReportWindow(qtw.QWidget):
         Class Constructor
         """
         qtw.QWidget.__init__(self)
-        self.minTime = 0
-        self.maxTime = 0
-        self.minRangeTime = 0
-        self.maxRangeTime = 0
-
-        self.MAXVAL = flightData["flightLength"]
-
-        self.sliderMin = 0
-        self.sliderMax = self.MAXVAL
 
         # Initiate the view
         self.initView(pilotName, instructorName, flightInstructions, previousFlight, usingPreviousFlight, flightData)
@@ -66,6 +57,16 @@ class ReportWindow(qtw.QWidget):
             self.flightDict["flightDate"] = dt.datetime.now().strftime('%m-%d-%Y')
         else:
             self.flightDict = Export.ImportFile.importData(previousFlight)
+
+        # Load in information for sliders
+        self.minTime = 0
+        self.maxTime = 0
+        self.minRangeTime = 0
+        self.maxRangeTime = 0
+        self.MAXVAL = flightData["flightLength"]
+
+        self.sliderMin = 0
+        self.sliderMax = self.MAXVAL
 
         # Set up the title, flight information table, and statistics table.
         self.setWindowTitle('Report Screen')
