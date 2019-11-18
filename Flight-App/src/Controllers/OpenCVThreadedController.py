@@ -233,6 +233,12 @@ class DroneTracker:
                             if self.current_frame % 15 == 0:
                                 tm = self.current_frame / 30
                                 self.data_points.append((None, None, tm))
+                            # If the video has totally been processed, exit the function
+                            # Kind of a hacky way to do it, but I need to break out of 3 loops here
+                            # so returning is easier than functionalizing the small parts of this giant function
+                            if self.frame_queue.empty() and self.done_reading:
+                                self.read_video_thread.join()
+                                return self.data_points
                             frame = self.frame_queue.get(block=True)
                             self.current_frame += 1
 
@@ -240,6 +246,8 @@ class DroneTracker:
                             skip = 15
                         elif skip == 15:
                             skip = 30
+                        elif skip == 30:
+                            skip = 60
                         # else:
                         #     skip += 30
                         
