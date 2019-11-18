@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
-import Graph
+import Views.Graph
 import Export.ExportFile
 import Export.ImportFile
 import datetime as dt

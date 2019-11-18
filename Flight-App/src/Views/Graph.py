@@ -170,9 +170,9 @@ def generateGraph(flightData: dict, displayVelocity: bool, t1: float, t2: float)
     if displayVelocity is False:
         for coord in flightData["legalPoints"]:
             if coord[0] >= t1 and coord[0] <= t2:
-                x_data.append(coord[1])
+                x_data.append(15 - coord[1])
                 y_data.append(coord[2])
-                z_data.append(coord[3])
+                z_data.append(10 - coord[3])
 
         ax.scatter(x_data, y_data, z_data, s=6, c="k", marker='o')
 
