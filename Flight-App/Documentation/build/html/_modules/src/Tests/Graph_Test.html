@@ -1,0 +1,681 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.Tests.Graph_Test &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.Tests.Graph_Test</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.Tests.Graph_Test</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">Views.Graph</span> <span class="k">as</span> <span class="nn">Graph</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">Export.ImportFile</span> <span class="k">import</span> <span class="n">importData</span>
+
+<div class="viewcode-block" id="Graph_Test"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test">[docs]</a><span class="k">class</span> <span class="nc">Graph_Test</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is for testing the graphing functions that we are using to display the flight path</span>
+<span class="sd">    onto the UI. We want to make sure that what is being displayed is correct.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Graph_Test.test_computeVelocity"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_computeVelocity">[docs]</a>    <span class="k">def</span> <span class="nf">test_computeVelocity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that the velocity is computed as expected between two points (1,1,1) and (3,3,1) with timeDiff = 1.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">velocity</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">computeVelocity</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_checkLegalInput"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_checkLegalInput">[docs]</a>    <span class="k">def</span> <span class="nf">test_checkLegalInput</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that legal and illegal coordinate points can be detected.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check normal point. Expected output: True.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="mf">10.5</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">))</span>
+
+        <span class="c1"># Check when coordinate values are same. Expected output: True.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Check when x is negative. Expected output: False.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+        <span class="c1"># Check when y is negative. Expected output: False.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
+
+        <span class="c1"># Check when z is negative. Expected output: False.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">))</span>
+
+        <span class="c1"># Check smallest legal bound. Expected output: True.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># Check largest legal bound. Expected output: True.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+        <span class="c1"># Check when x is string input. Expected output: False.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="s1">&#39;hi there&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="c1"># Check when y is string input. Expected output: False.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="c1"># Check when z is string input. Expected output: False.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">checkLegalInput</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;howdy&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_small_legal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_small_legal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_small_legal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that coordinates from a small data file are read in correctly.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/JSONDUMP.flight&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_small_illegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_small_illegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_small_illegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that coordinates from a small data file are read in correctly.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/JSONDUMP_with_illegal.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_size100_allLegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size100_allLegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_size100_allLegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that file containing 100 (x,y,z) points is read in correctly.</span>
+<span class="sd">        This test contains all legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_size100_someLegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size100_someLegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_size100_someLegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that file containing 100 (x,y,z) points is read in correctly.</span>
+<span class="sd">        This test contains 80% legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">numLegal</span> <span class="o">=</span> <span class="n">length</span> <span class="o">*</span> <span class="mf">0.8</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]),</span> <span class="n">numLegal</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_size200_allLegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size200_allLegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_size200_allLegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that file containing 200 (x,y,z) points is read in correctly. This contains all legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_size200_someLegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size200_someLegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_size200_someLegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that file containing 200 (x,y,z) points is read in correctly. This contains 80% legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">numLegal</span> <span class="o">=</span> <span class="n">length</span> <span class="o">*</span> <span class="mf">0.8</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]),</span> <span class="n">numLegal</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_size600_allLegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size600_allLegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_size600_allLegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that file containing 600 (x,y,z) points is read in correctly. This contains all legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">600</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_size600_someLegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size600_someLegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_size600_someLegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that file containing 600 (x,y,z) points is read in correctly. This contains 80% legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">600</span>
+        <span class="n">numLegal</span> <span class="o">=</span> <span class="n">length</span> <span class="o">*</span> <span class="mf">0.8</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]),</span> <span class="n">numLegal</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_size1200_allLegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size1200_allLegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_size1200_allLegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that file containing 1200 (x,y,z) points is read in correctly. This contains all legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_readCoordinates_size1200_someLegal"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size1200_someLegal">[docs]</a>    <span class="k">def</span> <span class="nf">test_readCoordinates_size1200_someLegal</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that file containing 1200 (x,y,z) points is read in correctly. This contains 80% legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="n">numLegal</span> <span class="o">=</span> <span class="mi">961</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]),</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]),</span> <span class="n">numLegal</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_graphShows_noError"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_graphShows_noError">[docs]</a>    <span class="k">def</span> <span class="nf">test_graphShows_noError</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that graph generates correctly with and with velocity changes shown</span>
+<span class="sd">        for data set of 100, then 200, then 800, then 1200 data points.</span>
+<span class="sd">        For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Test small data sets</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">test_dict</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_velocityPoints"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_velocityPoints">[docs]</a>    <span class="k">def</span> <span class="nf">test_velocityPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that velocity between consecutive points is computed as expected.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;pilotName&quot;</span><span class="p">:</span> <span class="s2">&quot;Hayley&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;instructorName&quot;</span><span class="p">:</span> <span class="s2">&quot;Eckert&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flightInstr&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flightDate&quot;</span><span class="p">:</span> <span class="s2">&quot;11/03/2019&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flightLength&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span>
+        <span class="s2">&quot;velocities&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;avgVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s2">&quot;maxVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s2">&quot;minVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s2">&quot;smoothness&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s2">&quot;legalPoints&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+        <span class="p">}</span>
+        <span class="n">velocityArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="n">velocityArray</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_velocityColors"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_velocityColors">[docs]</a>    <span class="k">def</span> <span class="nf">test_velocityColors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that the correct color is assigned to the graph segment between consecutive velocity values.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;pilotName&quot;</span><span class="p">:</span> <span class="s2">&quot;Hayley&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;instructorName&quot;</span><span class="p">:</span> <span class="s2">&quot;Eckert&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;flightInstr&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;flightDate&quot;</span><span class="p">:</span> <span class="s2">&quot;11/03/2019&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;flightLength&quot;</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">,</span>
+            <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)],</span>
+            <span class="s2">&quot;velocities&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;avgVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;maxVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;minVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;smoothness&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;legalPoints&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)]</span>
+        <span class="p">}</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_velocityComputes_correctSize"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_velocityComputes_correctSize">[docs]</a>    <span class="k">def</span> <span class="nf">test_velocityComputes_correctSize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that velocityPoints returns array of correct size when inputted data set of 100, 200, then 800,</span>
+<span class="sd">        then 1200 data points. For each size, two tests are run.</span>
+<span class="sd">        One test contains all legal inputs. Another test contains 80% legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Test small data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]),</span> <span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]),</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]),</span> <span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]),</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Test medium data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">600</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]),</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]),</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Test largest data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]),</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]),</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_velocityColorsComputes_correctSize"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_velocityColorsComputes_correctSize">[docs]</a>    <span class="k">def</span> <span class="nf">test_velocityColorsComputes_correctSize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that velocityColors returns array of correct size when inputted data set of 100, then 200, then 800,</span>
+<span class="sd">        then 1200 data points. For each size, two tests are run.</span>
+<span class="sd">        One test contains all legal inputs. Another test contains 80% legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Test small data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)),</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)),</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)),</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)),</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Test medium data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">600</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)),</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)),</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Test large data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)),</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">velocityColors</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)),</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_smoothnessValues"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_smoothnessValues">[docs]</a>    <span class="k">def</span> <span class="nf">test_smoothnessValues</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that smoothness function returns expected number.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">smoothness</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">smoothness</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="mi">17</span><span class="p">)</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">smoothness</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">smoothness</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="mf">16.24</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Graph_Test.test_smoothnessComputes"><a class="viewcode-back" href="../../../index.html#src.Tests.Graph_Test.Graph_Test.test_smoothnessComputes">[docs]</a>    <span class="k">def</span> <span class="nf">test_smoothnessComputes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that smoothness function returns a number when inputted data set of 100, then 200, then 800,</span>
+<span class="sd">        then 1200 data points. For each size, two tests are run.</span>
+<span class="sd">        One test contains all legal inputs. Another test contains 80% legal inputs.</span>
+<span class="sd">        Illegal coordinate points in file should not be included in &quot;legalPoints&quot; list in dictionary.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="c1"># Test small data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size100_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="c1"># Test medium data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">600</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size600_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="c1"># Test large data sets</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal100.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;TestFiles/new_size1200_legal80.flight&#39;</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="n">test_dict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">test_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">test_dict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span></div></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

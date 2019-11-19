@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.Views.Graph &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.Views.Graph</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.Views.Graph</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="checkCoordinates"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.checkCoordinates">[docs]</a><span class="k">def</span> <span class="nf">checkCoordinates</span><span class="p">(</span><span class="n">flightDict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads the input dictionary of flight data from a .flight file.</span>
+
+<span class="sd">    :param flightDict: Dictionary containing flight data.</span>
+<span class="sd">    :return: Dictionary of flight data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">legalPoints</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">checkLegalInput</span><span class="p">(</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">coord</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">coord</span><span class="p">[</span><span class="mi">3</span><span class="p">]):</span>
+            <span class="n">legalPoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+
+    <span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">legalPoints</span>
+    <span class="k">return</span> <span class="n">flightDict</span></div>
+
+<div class="viewcode-block" id="checkLegalInput"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.checkLegalInput">[docs]</a><span class="k">def</span> <span class="nf">checkLegalInput</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the inputted 3D coordinate is within legal bounds. Legal bounds are:</span>
+<span class="sd">    x, y, z &gt; 0 and x &lt; 15 and y &lt; 15 and z &lt; 10.</span>
+
+<span class="sd">    :param x: x value to check.</span>
+<span class="sd">    :param y: y value to check.</span>
+<span class="sd">    :param z: z value to check.</span>
+<span class="sd">    :return: A boolean denoting if legal or not (true if legal, false if outside bounds).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">or</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="computeVelocity"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.computeVelocity">[docs]</a><span class="k">def</span> <span class="nf">computeVelocity</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the velocity of the drone between two points (x1,y1,z1) and (x2,y2,z2) at respective times t1 and t2.</span>
+
+<span class="sd">    :return: A float value representing the velocity of the drone.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
+                  <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
+                  <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">z2</span> <span class="o">-</span> <span class="n">z1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">timestep</span> <span class="o">=</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span>
+    <span class="n">velocity</span> <span class="o">=</span> <span class="n">distance</span><span class="o">/</span><span class="n">timestep</span>
+    <span class="k">return</span> <span class="n">velocity</span></div>
+
+<div class="viewcode-block" id="velocityPoints"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.velocityPoints">[docs]</a><span class="k">def</span> <span class="nf">velocityPoints</span><span class="p">(</span><span class="n">flightData</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the velocity of the drone between consecutive points for the entire flight.</span>
+
+<span class="sd">    :param flightData: Dictionary of flight Data.</span>
+<span class="sd">    :return: Modified flightData dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">velocityArray</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+       <span class="n">vel</span> <span class="o">=</span> <span class="n">computeVelocity</span><span class="p">(</span><span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span>
+                             <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span>
+                             <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+       <span class="n">velocityArray</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vel</span><span class="p">)</span>
+
+    <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">velocityArray</span>
+
+    <span class="k">return</span> <span class="n">flightData</span></div>
+
+<div class="viewcode-block" id="velocityColors"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.velocityColors">[docs]</a><span class="k">def</span> <span class="nf">velocityColors</span><span class="p">(</span><span class="n">flightDict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines the color of the line segment between two points based on velocity values. The line color is determined</span>
+<span class="sd">    by the change in velocity of the drone between two points. The color of the line should be green if the</span>
+<span class="sd">    velocity point is greater than the previous velocity point, yellow if within 0.5 m/s, and red if less.</span>
+
+<span class="sd">    :param flightDict: Dictionary of flight data.</span>
+<span class="sd">    :return: An array of color values to use when plotting line segments between points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">velDelta</span> <span class="o">=</span> <span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">velDelta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">velDelta</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">velDelta</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="c1"># TODO: tune this range (if the velocities are within x of each other, consider it &quot;constant&quot;)</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">colors</span></div>
+
+<div class="viewcode-block" id="computeVelocityStatistics"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.computeVelocityStatistics">[docs]</a><span class="k">def</span> <span class="nf">computeVelocityStatistics</span><span class="p">(</span><span class="n">flightDict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes statistics on the velocity points.</span>
+
+<span class="sd">    :param flightDict: Dictionary of flight data</span>
+<span class="sd">    :return: Updated dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">avgVel</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">])</span>
+    <span class="n">numArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">])</span>
+    <span class="n">maxVel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">numArray</span><span class="p">)</span>
+    <span class="n">minVel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">numArray</span><span class="p">)</span>
+
+    <span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;avgVel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">avgVel</span>
+    <span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;minVel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">minVel</span>
+    <span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;maxVel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">maxVel</span>
+
+    <span class="k">return</span> <span class="n">flightDict</span></div>
+
+<div class="viewcode-block" id="dimensionless_jerk"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.dimensionless_jerk">[docs]</a><span class="k">def</span> <span class="nf">dimensionless_jerk</span><span class="p">(</span><span class="n">movement</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the dimensionless jerk for a 1 dimensional array of points.</span>
+
+<span class="sd">    :param movement: The numpy array of points to calculate the jerk for. The array containing the movement speed profile. Doesn&#39;t need to be numpy array but it MUST at least be a 1 dimensional list.</span>
+<span class="sd">    :param fs: The sampling frequency of the data points.</span>
+<span class="sd">    :return: The dimensionless jerk estimate of the given movement&#39;s smoothness.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># first enforce data into an numpy array.</span>
+    <span class="n">movement</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">movement</span><span class="p">)</span>
+
+    <span class="c1"># calculate the scale factor and jerk.</span>
+    <span class="n">movement_peak</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">movement</span><span class="p">))</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">fs</span>
+    <span class="n">movement_dur</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">movement</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+    <span class="n">jerk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">movement</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">movement_dur</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="n">movement_peak</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># estimate dj</span>
+    <span class="k">return</span> <span class="o">-</span> <span class="n">scale</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">jerk</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">dt</span></div>
+
+<div class="viewcode-block" id="log_dimensionless_jerk"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.log_dimensionless_jerk">[docs]</a><span class="k">def</span> <span class="nf">log_dimensionless_jerk</span><span class="p">(</span><span class="n">movement</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the smoothness metric for the given speed profile using the log dimensionless jerk</span>
+<span class="sd">    metric.</span>
+
+<span class="sd">    :param movement: The numpy array of points to calculate the jerk for. The array containing the movement speed profile. Doesn&#39;t need to be numpy array but it MUST at least be a 1 dimensional list.</span>
+<span class="sd">    :param fs: The sampling frequency of the data points.</span>
+<span class="sd">    :return: The dimensionless jerk estimate of the given movement&#39;s smoothness.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">dimensionless_jerk</span><span class="p">(</span><span class="n">movement</span><span class="p">,</span> <span class="n">fs</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="generateGraph"><a class="viewcode-back" href="../../../index.html#src.Views.Graph.generateGraph">[docs]</a><span class="k">def</span> <span class="nf">generateGraph</span><span class="p">(</span><span class="n">flightData</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">displayVelocity</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">t1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">t2</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Driver function for generating the 3d graph of drone coordinates.</span>
+
+<span class="sd">    :param flightData: Dictionary containing flight data.</span>
+<span class="sd">    :param displayVelocity: Boolean saying if velocity changes should be displayed on the graph.</span>
+<span class="sd">    :param t1: Minimum time bound for plotting coordinates.</span>
+<span class="sd">    :param t2: Maximum time bound for plotting coordinates.</span>
+<span class="sd">    :return: The figure to display as the 3d graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Plot points on the graph</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">x_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">y_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">z_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">displayVelocity</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">t1</span> <span class="ow">and</span> <span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">t2</span><span class="p">:</span>
+                <span class="n">x_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">15</span> <span class="o">-</span> <span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">y_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coord</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">z_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="n">coord</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">z_data</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">displayVelocity</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># Get velocities and line segment coloring</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">velocityColors</span><span class="p">(</span><span class="n">flightData</span><span class="p">)</span>
+
+        <span class="c1"># Add line segment coloring</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">t1</span> <span class="ow">and</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">t2</span> \
+                    <span class="ow">and</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">t2</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
+                         <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+                         <span class="p">[</span><span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]],</span>
+                         <span class="p">[</span><span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">flightData</span><span class="p">[</span><span class="s2">&quot;legalPoints&quot;</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]],</span>
+                         <span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Set axis limits</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim3d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim3d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim3d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Flight Path&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+<span class="c1"># size = 600</span>
+<span class="c1"># flightLength = 0.5*size</span>
+<span class="c1">#</span>
+<span class="c1"># with open(&#39;../Tests/TestFiles/new_size100_legal80.flight&#39;, &#39;r&#39;) as infile:</span>
+<span class="c1">#     flightDict = json.load(infile)</span>
+<span class="c1"># flightDict = {}</span>
+<span class="c1">#</span>
+<span class="c1"># flightDict[&quot;coords&quot;] = [</span>
+<span class="c1">#     [</span>
+<span class="c1">#         0.0,</span>
+<span class="c1">#         12.1171875,</span>
+<span class="c1">#         12.6328125,</span>
+<span class="c1">#         6.699074074074074</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         0.5,</span>
+<span class="c1">#         12.12109375,</span>
+<span class="c1">#         12.640625,</span>
+<span class="c1">#         6.6967592592592595</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         1.0,</span>
+<span class="c1">#         12.13671875,</span>
+<span class="c1">#         12.65625,</span>
+<span class="c1">#         6.694444444444444</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         1.5,</span>
+<span class="c1">#         12.1328125,</span>
+<span class="c1">#         12.65625,</span>
+<span class="c1">#         6.69212962962963</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         2.0,</span>
+<span class="c1">#         12.12109375,</span>
+<span class="c1">#         12.640625,</span>
+<span class="c1">#         6.68287037037037</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         2.5,</span>
+<span class="c1">#         12.109375,</span>
+<span class="c1">#         12.609375,</span>
+<span class="c1">#         6.657407407407407</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         3.0,</span>
+<span class="c1">#         12.10546875,</span>
+<span class="c1">#         12.5859375,</span>
+<span class="c1">#         6.62962962962963</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         3.5,</span>
+<span class="c1">#         12.1015625,</span>
+<span class="c1">#         12.5546875,</span>
+<span class="c1">#         6.601851851851852</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         4.0,</span>
+<span class="c1">#         12.1015625,</span>
+<span class="c1">#         12.515625,</span>
+<span class="c1">#         6.576388888888889</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         4.5,</span>
+<span class="c1">#         12.1015625,</span>
+<span class="c1">#         12.46875,</span>
+<span class="c1">#         6.546296296296297</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         5.0,</span>
+<span class="c1">#         12.1015625,</span>
+<span class="c1">#         12.37890625,</span>
+<span class="c1">#         6.504629629629629</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         5.5,</span>
+<span class="c1">#         12.10546875,</span>
+<span class="c1">#         12.203125,</span>
+<span class="c1">#         6.458333333333334</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         6.0,</span>
+<span class="c1">#         12.125,</span>
+<span class="c1">#         11.92578125,</span>
+<span class="c1">#         6.400462962962963</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         6.5,</span>
+<span class="c1">#         12.16015625,</span>
+<span class="c1">#         11.5390625,</span>
+<span class="c1">#         6.351851851851852</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         7.0,</span>
+<span class="c1">#         12.19921875,</span>
+<span class="c1">#         11.08203125,</span>
+<span class="c1">#         6.298611111111111</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         7.5,</span>
+<span class="c1">#         12.24609375,</span>
+<span class="c1">#         10.55859375,</span>
+<span class="c1">#         6.256944444444445</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         8.0,</span>
+<span class="c1">#         12.29296875,</span>
+<span class="c1">#         9.98046875,</span>
+<span class="c1">#         6.212962962962964</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         8.5,</span>
+<span class="c1">#         12.33984375,</span>
+<span class="c1">#         9.4140625,</span>
+<span class="c1">#         6.141203703703704</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         9.0,</span>
+<span class="c1">#         12.40625,</span>
+<span class="c1">#         8.82421875,</span>
+<span class="c1">#         6.05787037037037</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         9.5,</span>
+<span class="c1">#         12.4921875,</span>
+<span class="c1">#         8.25390625,</span>
+<span class="c1">#         5.995370370370371</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         10.0,</span>
+<span class="c1">#         12.56640625,</span>
+<span class="c1">#         7.750000000000001,</span>
+<span class="c1">#         5.9375</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         10.5,</span>
+<span class="c1">#         12.61328125,</span>
+<span class="c1">#         7.25,</span>
+<span class="c1">#         5.900462962962964</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         11.0,</span>
+<span class="c1">#         12.6484375,</span>
+<span class="c1">#         6.71484375,</span>
+<span class="c1">#         5.868055555555555</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         11.5,</span>
+<span class="c1">#         12.67578125,</span>
+<span class="c1">#         6.25390625,</span>
+<span class="c1">#         5.837962962962963</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         12.0,</span>
+<span class="c1">#         12.6953125,</span>
+<span class="c1">#         5.87109375,</span>
+<span class="c1">#         5.805555555555556</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         12.5,</span>
+<span class="c1">#         12.703125,</span>
+<span class="c1">#         5.5546875,</span>
+<span class="c1">#         5.770833333333333</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         13.0,</span>
+<span class="c1">#         12.7421875,</span>
+<span class="c1">#         5.2734375,</span>
+<span class="c1">#         5.712962962962963</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         13.5,</span>
+<span class="c1">#         12.859375,</span>
+<span class="c1">#         5.01953125,</span>
+<span class="c1">#         5.625</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         14.0,</span>
+<span class="c1">#         13.0625,</span>
+<span class="c1">#         4.80859375,</span>
+<span class="c1">#         5.541666666666667</span>
+<span class="c1">#     ],</span>
+<span class="c1">#     [</span>
+<span class="c1">#         14.5,</span>
+<span class="c1">#         13.3046875,</span>
+<span class="c1">#         4.5859375,</span>
+<span class="c1">#         5.467592592592593</span>
+<span class="c1">#     ]</span>
+<span class="c1"># ]</span>
+<span class="c1"># flightDict = checkCoordinates(flightDict)</span>
+<span class="c1"># flightDict = velocityPoints(flightDict)</span>
+<span class="c1"># flightDict = computeVelocityStatistics(flightDict)</span>
+<span class="c1">#</span>
+<span class="c1"># flightDict[&quot;smoothness&quot;] = log_dimensionless_jerk(flightDict[&quot;velocities&quot;], 0.5)</span>
+<span class="c1"># print(flightDict[&quot;smoothness&quot;])</span>
+<span class="c1">#</span>
+<span class="c1"># with open(&#39;../Tests/TestFiles/new_size100_legal80.flight&#39;, &#39;w&#39;) as outfile:</span>
+<span class="c1">#     json.dump(flightDict, outfile)</span>
+<span class="c1">#</span>
+<span class="c1"># # test_dict = readCoordinates(&#39;../Tests/TestFiles/new_size1200_legal100.flight&#39;)</span>
+<span class="c1"># test_dict = velocityPoints(test_dict)</span>
+<span class="c1"># test_dict = computeVelocityStatistics(test_dict)</span>
+<span class="c1"># # print(len(test_dict[&quot;coords&quot;]))</span>
+<span class="c1"># # print(len(test_dict[&quot;legalPoints&quot;]))</span>
+<span class="c1"># generateGraph(test_dict, True)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

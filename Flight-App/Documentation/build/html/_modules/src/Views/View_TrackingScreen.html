@@ -1,0 +1,827 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.Views.View_TrackingScreen &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.Views.View_TrackingScreen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.Views.View_TrackingScreen</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span> <span class="k">as</span> <span class="n">qtc</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtWidgets</span> <span class="k">as</span> <span class="n">qtw</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtGui</span> <span class="k">as</span> <span class="n">qtg</span>
+<span class="kn">from</span> <span class="nn">Controllers.PhoneController</span> <span class="k">import</span> <span class="n">PhoneControl</span>
+
+<div class="viewcode-block" id="TrackingWindow"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow">[docs]</a><span class="k">class</span> <span class="nc">TrackingWindow</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The view for the tracking view page that is shown when the user presses the &quot;Start Tracking&quot; button on the home page.</span>
+<span class="sd">    Allows the user to enter in flight information and begin tracking the drone.</span>
+
+<span class="sd">    :ivar __btnConfirm: The class property for the &#39;Confirm&#39; button.</span>
+<span class="sd">    :ivar __btnClear: The class property for the &#39;Clear&#39; button.</span>
+<span class="sd">    :ivar __btnStart: The class property for the &#39;Start Tracking&#39; button.</span>
+<span class="sd">    :ivar __btnStop: The class property for the &#39;Stop Tracking&#39; button.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize signals. Use for switching between views.</span>
+    <span class="n">sigReturnHome</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">sigStopTracking</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">sigFlightInfoConfirmed</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phoneControl</span><span class="p">:</span> <span class="n">PhoneControl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class Constructor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qtw</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">550</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phoneControl</span> <span class="o">=</span> <span class="n">phoneControl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startedTracking</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initView</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TrackingWindow.initView"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.initView">[docs]</a>    <span class="k">def</span> <span class="nf">initView</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Initializes and lays out all of the controls and elements on the view.</span>
+
+<span class="sd">         :return: None</span>
+<span class="sd">         &quot;&quot;&quot;</span>
+        <span class="c1"># Set up window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Tracking Screen&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize titles</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setTitle</span><span class="p">()</span>
+        <span class="n">sectionTitle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setSubTitle</span><span class="p">(</span><span class="s2">&quot;Flight Information&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setStatusLabel</span><span class="p">(</span><span class="s2">&quot;Flight Status: Not Tracking&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize textboxes</span>
+        <span class="n">pilot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setPilot</span><span class="p">()</span>  <span class="c1"># Setup the pilot textbox</span>
+        <span class="n">instructor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setInstructor</span><span class="p">()</span>  <span class="c1"># Setup the instructor textbox</span>
+        <span class="n">instructions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setFlightInstructions</span><span class="p">()</span>  <span class="c1"># Setup the flight Instructions text editor</span>
+
+        <span class="c1"># Initialize labels and start/stop, clear/confirm, home buttons</span>
+        <span class="n">clrConfirm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setClrConfirmBtns</span><span class="p">()</span>
+        <span class="n">startStop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setStartAndStopBtns</span><span class="p">()</span>
+        <span class="n">homeBtn</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Return to Home&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Attach functionality to stop and home buttons</span>
+        <span class="n">homeBtn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returnHome</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnStart</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startTracking</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnStop</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stopTracking</span><span class="p">)</span>
+
+        <span class="c1"># Initialize and attach functionality to clear, confirm buttons</span>
+        <span class="n">confirmBtn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BtnConfirm</span>
+        <span class="n">confirmBtn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">confirmValues</span><span class="p">)</span>
+        <span class="n">clearBtn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BtnClear</span>
+        <span class="n">clearBtn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clearValues</span><span class="p">)</span>
+
+        <span class="c1"># Spacer to make the view more pleasing and less squished</span>
+        <span class="n">verticalSpacer</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+
+        <span class="c1"># Layout the elements</span>
+        <span class="n">vLayout</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">sectionTitle</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">pilot</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">instructor</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">clrConfirm</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">verticalSpacer</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">startStop</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">homeBtn</span><span class="p">)</span>
+
+        <span class="c1"># Attach the layout to the screen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vLayout</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.returnHome"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.returnHome">[docs]</a>    <span class="k">def</span> <span class="nf">returnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Return Home button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigReturnHome</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.startTracking"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.startTracking">[docs]</a>    <span class="k">def</span> <span class="nf">startTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Start Tracking button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startedTracking</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># self.phoneControl.startRecording()</span>
+                <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+                <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                    <span class="s2">&quot;Tracking started!&quot;</span><span class="p">)</span>
+                <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">startedTracking</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Flight Status: Tracking in Progress&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+                <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="s2">&quot;Tracking has already been started.&quot;</span><span class="p">)</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.stopTracking"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.stopTracking">[docs]</a>    <span class="k">def</span> <span class="nf">stopTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Stop Tracking button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># self.phoneControl.stopRecording()</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="s2">&quot;Tracking stopped! </span><span class="se">\n</span><span class="s2">Please wait while file transfer is initiated.</span><span class="se">\n</span><span class="s2"> You will be redirected shortly.&quot;</span><span class="p">)</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigStopTracking</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Flight Status: Tracking Completed&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setTitle"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setTitle">[docs]</a>    <span class="k">def</span> <span class="nf">setTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the title with the application title on top and the name of the screen just below it.</span>
+
+<span class="sd">        :return: Layout with the application title and screen title labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;UAS Performance Tracker&quot;</span><span class="p">)</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">lblTitle2</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Tracking View&#39;</span><span class="p">)</span>
+        <span class="n">lblTitle2</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle2</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTitle</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTitle2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setSubTitle"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setSubTitle">[docs]</a>    <span class="k">def</span> <span class="nf">setSubTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up a subtitle label for the window</span>
+
+<span class="sd">        :return: Subtitle of the application taken from the &quot;text&quot; parameter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">lblTitle</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setStatusLabel"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setStatusLabel">[docs]</a>    <span class="k">def</span> <span class="nf">setStatusLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up a status label for the window</span>
+
+<span class="sd">        :return: Label of the application taken from the &quot;text&quot; parameter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">lblTitle</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.confirmValues"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.confirmValues">[docs]</a>    <span class="k">def</span> <span class="nf">confirmValues</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Confirms the values in the textboxes by displaying a pop up message of the values.</span>
+
+<span class="sd">         :return: None</span>
+<span class="sd">         &quot;&quot;&quot;</span>
+        <span class="n">pilotName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TBPilot</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">instructorName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TBInstructor</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">instructions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TEInstructions</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigFlightInfoConfirmed</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">pilotName</span><span class="p">,</span> <span class="n">instructorName</span><span class="p">,</span> <span class="n">instructions</span><span class="p">)</span>
+
+        <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="s2">&quot;Pilot Name: </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">pilotName</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Instructor Name: </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">instructorName</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Instructions: </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">instructions</span><span class="p">)</span>
+        <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.clearValues"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.clearValues">[docs]</a>    <span class="k">def</span> <span class="nf">clearValues</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Clears the values in the text boxes.</span>
+
+<span class="sd">         :return: None</span>
+<span class="sd">         &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Change cursor location out of text box so all boxes can clear at the same time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TBPilot</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">qtw</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TBInstructor</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">qtw</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TEInstructions</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">qtw</span><span class="o">.</span><span class="n">QApplication</span><span class="o">.</span><span class="n">processEvents</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setPilot"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setPilot">[docs]</a>    <span class="k">def</span> <span class="nf">setPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the Pilot label and the textbox that will be used to set the pilot flying during this</span>
+<span class="sd">        session.</span>
+
+<span class="sd">        :return: Returns a vertical layout with the pilot label over the pilot textbox</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Pilot: &#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbPilot</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbPilot</span><span class="o">.</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s1">&#39;Pilot Name Here&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbPilot</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">280</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbPilot</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tbPilot</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setInstructor"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setInstructor">[docs]</a>    <span class="k">def</span> <span class="nf">setInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the instructor label and the textbox that will be used to set the instructor flying during this</span>
+<span class="sd">        session.</span>
+
+<span class="sd">        :return: Returns a vertical layout with the instructor label over the instructor textbox</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstr</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Instructor: &#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstr</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbInstr</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbInstr</span><span class="o">.</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s1">&#39;Instructor Name Here&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbInstr</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">280</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbInstr</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lblInstr</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tbInstr</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setFlightInstructions"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setFlightInstructions">[docs]</a>    <span class="k">def</span> <span class="nf">setFlightInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the textbox that will allow the instructor to type in the flight instructions for the pilot</span>
+<span class="sd">        to try to match.</span>
+
+<span class="sd">        :return: A vertical layout with the Instructions label on top of the text box</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblInstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setSubTitle</span><span class="p">(</span><span class="s1">&#39;Flight Instructions&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__teInstr</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__teInstr</span><span class="o">.</span><span class="n">setPlaceholderText</span><span class="p">(</span><span class="s1">&#39;Add Flight Instructions Here&#39;</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblInstr</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__teInstr</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setClrConfirmBtns"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setClrConfirmBtns">[docs]</a>    <span class="k">def</span> <span class="nf">setClrConfirmBtns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the buttons for clearing and confirming the pilot, instructor, and flight instruction information.</span>
+
+<span class="sd">        :return: The confirmation button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnClear</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Clear&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnConfirm</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Confirm&#39;</span><span class="p">)</span>
+        <span class="n">space1</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="n">space2</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+
+        <span class="n">hbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">space1</span><span class="p">)</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnClear</span><span class="p">)</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnConfirm</span><span class="p">)</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">space2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">hbox</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setTimerLabel"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setTimerLabel">[docs]</a>    <span class="k">def</span> <span class="nf">setTimerLabel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the label that will continuously update and display the time that the application has been</span>
+<span class="sd">        actively tracking. Need to attach a QTimer() to it.</span>
+
+<span class="sd">        :return: The label that will contain the timer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTimerTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Time Spent Tracking Drone:&#39;</span><span class="p">)</span>
+        <span class="n">lblTimerTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblTimer</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;00:00:00&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblTimer</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTimerTitle</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lblTimer</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="TrackingWindow.setStartAndStopBtns"><a class="viewcode-back" href="../../../index.html#src.Views.View_TrackingScreen.TrackingWindow.setStartAndStopBtns">[docs]</a>    <span class="k">def</span> <span class="nf">setStartAndStopBtns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the start and stop buttons for tracking the drones.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Start Tracking&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnStop</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Stop Tracking&#39;</span><span class="p">)</span>
+        <span class="n">space1</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="n">space2</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+
+        <span class="n">buttonBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">space1</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnStop</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">space2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">buttonBox</span></div>
+
+    <span class="c1"># region &gt; Class Properties to attach functionality to in child classes</span>
+
+    <span class="c1"># region &gt; Pilot Textbox Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">TBPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Pilot Textbox so we can attach functionality to it</span>
+
+<span class="sd">        :return: The pilot textbox</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tbPilot</span>
+
+    <span class="nd">@TBPilot</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_TBPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tb</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the Pilot Textbox</span>
+
+<span class="sd">        :param tb: Textbox we want to replace the current one with</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbPilot</span> <span class="o">=</span> <span class="n">tb</span>
+
+    <span class="nd">@TBPilot</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_TBPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the pilot textbox</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tbPilot</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Pilot Label Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">LblPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Pilot label so we can attach functionality to it</span>
+
+<span class="sd">        :return: The pilot label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span>
+
+    <span class="nd">@LblPilot</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_LblPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the pilot label</span>
+
+<span class="sd">        :param lbl:  Label we want to replace the current one with</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span> <span class="o">=</span> <span class="n">lbl</span>
+
+    <span class="nd">@LblPilot</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_LblPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the pilot label</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Instructor TextBox Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">TBInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Instructor textbox so we can attach functionality to it later.</span>
+
+<span class="sd">        :return: The instructor textbox</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tbInstr</span>
+
+    <span class="nd">@TBInstructor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_TBInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tb</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the instructor textbox</span>
+
+<span class="sd">        :param tb: The textbox we want to replace the current one with</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tbInstr</span> <span class="o">=</span> <span class="n">tb</span>
+
+    <span class="nd">@TBInstructor</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_TBInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the instructor textbox</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tbInstr</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Instructor Label Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">LblInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Instructor label so we can attach functionality to it later.</span>
+
+<span class="sd">        :return: The instructor label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstr</span>
+
+    <span class="nd">@LblInstructor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_LblInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the instructor label</span>
+
+<span class="sd">        :param lbl: The label we want to replace the current one with</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstr</span> <span class="o">=</span> <span class="n">lbl</span>
+
+    <span class="nd">@LblInstructor</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_LblInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the instructor label</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstr</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Instructions TextEditBox Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">TEInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the instructions text edit box</span>
+
+<span class="sd">        :return: Reference to the instructions text edit box</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__teInstr</span>
+
+    <span class="nd">@TEInstructions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_TEInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">te</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPlainTextEdit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the instructions text edit box</span>
+
+<span class="sd">        :param te: The Text edit box we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__teInstr</span> <span class="o">=</span> <span class="n">te</span>
+
+    <span class="nd">@TEInstructions</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_TEInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the Instructions Text edit box</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__teInstr</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Clear Button Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnClear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Clear button so we can attach functionality to it later.</span>
+
+<span class="sd">        :return: Reference to the clear button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnClear</span>
+
+    <span class="nd">@BtnClear</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnClear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the clear button.</span>
+
+<span class="sd">        :param btn: The button we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnClear</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnClear</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnClear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the clear button.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnClear</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Confirmation Button Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnConfirm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Confirm button so we can attach functionality to it later.</span>
+
+<span class="sd">        :return: Reference to the confirm button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnConfirm</span>
+
+    <span class="nd">@BtnConfirm</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnConfirm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the confirm button.</span>
+
+<span class="sd">        :param btn: The button we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnConfirm</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnConfirm</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnConfirm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the confirm button.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnConfirm</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Timer Label Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">LblTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter property for the timer label. We need to attach a QTimer to it so it can count the time the</span>
+<span class="sd">        application has been tracking the drone.</span>
+
+<span class="sd">        :return: The timer label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblTimer</span>
+
+    <span class="nd">@LblTimer</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_LblTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the LblTimer property.</span>
+
+<span class="sd">        :param lbl: The label we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblTimer</span> <span class="o">=</span> <span class="n">lbl</span>
+
+    <span class="nd">@LblTimer</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_LblTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the timer label.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblTimer</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Start Button Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnStart</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Start button</span>
+
+<span class="sd">        :return: Reference to the start button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span>
+
+    <span class="nd">@BtnStart</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnStart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the start button.</span>
+
+<span class="sd">        :param btn: Button we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnStart</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnStart</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the start button.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Stop Button Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnStop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Stop button</span>
+
+<span class="sd">        :return: Reference to the stop button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnStop</span>
+
+    <span class="nd">@BtnStop</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnStop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the stop button.</span>
+
+<span class="sd">        :param btn: Button we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnStop</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnStop</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnStop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the stop button.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnStop</span></div>
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># endregion</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

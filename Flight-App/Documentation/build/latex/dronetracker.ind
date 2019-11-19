@@ -1,0 +1,521 @@
+\begin{sphinxtheindex}
+\let\bigletter\sphinxstyleindexlettergroup
+\let\spxpagem \sphinxstyleindexpagemain
+\let\spxentry \sphinxstyleindexentry
+\let\spxextra \sphinxstyleindexextra
+
+  \bigletter A
+  \item \spxentry{analyzeFlight()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{18}
+
+  \indexspace
+  \bigletter B
+  \item \spxentry{BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{29}
+  \item \spxentry{BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{25}
+  \item \spxentry{BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{25}
+  \item \spxentry{BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{17}
+  \item \spxentry{BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{17}
+  \item \spxentry{BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{15}
+  \item \spxentry{BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{17}
+  \item \spxentry{BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{29}
+  \item \spxentry{BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{23}
+  \item \spxentry{BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{29}
+  \item \spxentry{BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{23}
+  \item \spxentry{BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{25}
+  \item \spxentry{BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{25}
+  \item \spxentry{BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{29}
+  \item \spxentry{BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{29}
+  \item \spxentry{BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{15}
+  \item \spxentry{BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{23}
+  \item \spxentry{BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{17}
+  \item \spxentry{BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{17}
+
+  \indexspace
+  \bigletter C
+  \item \spxentry{checkCoordinates()}\spxextra{in module src.Views.Graph}, \hyperpage{33}
+  \item \spxentry{checkLegalInput()}\spxextra{in module src.Views.Graph}, \hyperpage{33}
+  \item \spxentry{checkStatus()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{29}
+  \item \spxentry{cleanup()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{1}
+  \item \spxentry{clearValues()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{26}
+  \item \spxentry{close\_conn()}\spxextra{in module src.Controllers.Program\_Controller}, 
+		\hyperpage{3}
+  \item \spxentry{closeConn()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+  \item \spxentry{computeVelocity()}\spxextra{in module src.Views.Graph}, \hyperpage{33}
+  \item \spxentry{computeVelocityStatistics()}\spxextra{in module src.Views.Graph}, \hyperpage{33}
+  \item \spxentry{confirmValues()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{26}
+  \item \spxentry{Controller}\spxextra{class in src.Controllers.Program\_Controller}, \hyperpage{1}
+  \item \spxentry{createPhoneConnection()}\spxextra{in module src.Controllers.Program\_Controller}, 
+		\hyperpage{3}
+  \item \spxentry{createStatisticsTable()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{18}
+
+  \indexspace
+  \bigletter D
+  \item \spxentry{del\_BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{29}
+  \item \spxentry{del\_BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{del\_BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{del\_BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{15}
+  \item \spxentry{del\_BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{del\_BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{30}
+  \item \spxentry{del\_BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{23}
+  \item \spxentry{del\_BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{30}
+  \item \spxentry{del\_BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{23}
+  \item \spxentry{del\_BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{30}
+  \item \spxentry{del\_BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{30}
+  \item \spxentry{del\_BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{15}
+  \item \spxentry{del\_BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{23}
+  \item \spxentry{del\_BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{del\_BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{del\_LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{del\_LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{del\_LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{del\_LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{19}
+  \item \spxentry{del\_LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{19}
+  \item \spxentry{del\_LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{15}
+  \item \spxentry{del\_LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{del\_TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{27}
+  \item \spxentry{dimensionless\_jerk()}\spxextra{in module src.Views.Graph}, \hyperpage{33}
+  \item \spxentry{DroneTracker}\spxextra{class in src.Controllers.OpenCVThreadedController}, 
+		\hyperpage{5}
+
+  \indexspace
+  \bigletter E
+  \item \spxentry{export\_data()}\spxextra{in module src.Export.ExportFile}, \hyperpage{11}
+
+  \indexspace
+  \bigletter F
+  \item \spxentry{FailedDisconnectException}, \hyperpage{7}
+  \item \spxentry{FailedRPIFlashException}, \hyperpage{7}
+
+  \indexspace
+  \bigletter G
+  \item \spxentry{generateGraph()}\spxextra{in module src.Views.Graph}, \hyperpage{33}
+  \item \spxentry{get\_all\_files()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{1}
+  \item \spxentry{get\_flight\_info()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{1}
+  \item \spxentry{get\_in\_order()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{1}
+  \item \spxentry{get\_phone\_id()}\spxextra{in module src.Controllers.OpenCVThreadedController}, 
+		\hyperpage{6}
+  \item \spxentry{Graph\_Test}\spxextra{class in src.Tests.Graph\_Test}, \hyperpage{35}
+
+  \indexspace
+  \bigletter H
+  \item \spxentry{handleEndSliderValueChange()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{19}
+  \item \spxentry{handleStartSliderValueChange()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{19}
+
+  \indexspace
+  \bigletter I
+  \item \spxentry{import\_flight()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{1}
+  \item \spxentry{importData()}\spxextra{in module src.Export.ImportFile}, \hyperpage{13}
+  \item \spxentry{ImportFileTests}\spxextra{class in src.Tests.ImportFile\_Test}, \hyperpage{39}
+  \item \spxentry{initView()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}, 
+		\hyperpage{15}
+  \item \spxentry{initView()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{19}
+  \item \spxentry{initView()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{23}
+  \item \spxentry{initView()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{initView()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{30}
+  \item \spxentry{is\_light\_on()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}, 
+		\hyperpage{5}
+  \item \spxentry{isTransferring()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+
+  \indexspace
+  \bigletter L
+  \item \spxentry{LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{17}
+  \item \spxentry{LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{17}
+  \item \spxentry{LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{25}
+  \item \spxentry{LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{18}
+  \item \spxentry{LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{25}
+  \item \spxentry{LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{15}
+  \item \spxentry{LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{25}
+  \item \spxentry{LoadingWindow}\spxextra{class in src.Views.View\_LoadingScreen}, \hyperpage{15}
+  \item \spxentry{log\_dimensionless\_jerk()}\spxextra{in module src.Views.Graph}, \hyperpage{34}
+
+  \indexspace
+  \bigletter M
+  \item \spxentry{main()}\spxextra{in module src.Controllers.OpenCVThreadedController}, 
+		\hyperpage{6}
+  \item \spxentry{main()}\spxextra{in module src.Controllers.Program\_Controller}, \hyperpage{3}
+  \item \spxentry{merge\_data\_points()}\spxextra{in module src.Controllers.OpenCVThreadedController}, 
+		\hyperpage{6}
+
+  \indexspace
+  \bigletter O
+  \item \spxentry{openFileNameDialog()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{23}
+
+  \indexspace
+  \bigletter P
+  \item \spxentry{PhoneControl}\spxextra{class in src.Controllers.PhoneController}, \hyperpage{9}
+  \item \spxentry{PhonesNotSyncedException}, \hyperpage{7}
+
+  \indexspace
+  \bigletter R
+  \item \spxentry{read\_video()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}, 
+		\hyperpage{5}
+  \item \spxentry{RecordingNotStartedException}, \hyperpage{7}
+  \item \spxentry{ReportWindow}\spxextra{class in src.Views.View\_ReportScreen}, \hyperpage{17}
+  \item \spxentry{rescale\_frame()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}, 
+		\hyperpage{5}
+  \item \spxentry{resize\_bbox()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}, 
+		\hyperpage{5}
+  \item \spxentry{returnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}, 
+		\hyperpage{15}
+  \item \spxentry{returnHome()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{returnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{30}
+  \item \spxentry{RPINotConnectedException}, \hyperpage{7}
+
+  \indexspace
+  \bigletter S
+  \item \spxentry{set\_BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{30}
+  \item \spxentry{set\_BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{27}
+  \item \spxentry{set\_BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{set\_BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{19}
+  \item \spxentry{set\_BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{16}
+  \item \spxentry{set\_BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{30}
+  \item \spxentry{set\_BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{24}
+  \item \spxentry{set\_BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{30}
+  \item \spxentry{set\_BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{24}
+  \item \spxentry{set\_BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{set\_BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{set\_BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{30}
+  \item \spxentry{set\_BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}, 
+		\hyperpage{31}
+  \item \spxentry{set\_BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{16}
+  \item \spxentry{set\_BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}, 
+		\hyperpage{24}
+  \item \spxentry{set\_BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{set\_LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}, 
+		\hyperpage{20}
+  \item \spxentry{set\_LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{set\_LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}, 
+		\hyperpage{16}
+  \item \spxentry{set\_LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{set\_TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{set\_TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{set\_TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{28}
+  \item \spxentry{setButtonLayout()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{19}
+  \item \spxentry{setButtonLayout()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{23}
+  \item \spxentry{setButtonLayout()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{30}
+  \item \spxentry{setClrConfirmBtns()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setFlightInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setStartAndStopBtns()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setStatusLabel()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setSubtitle()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}, 
+		\hyperpage{15}
+  \item \spxentry{setSubTitle()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{19}
+  \item \spxentry{setSubTitle()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setTeamMembers()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{24}
+  \item \spxentry{setTimerLabel()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setTitle()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}, 
+		\hyperpage{16}
+  \item \spxentry{setTitle()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{24}
+  \item \spxentry{setTitle()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{27}
+  \item \spxentry{setTitle()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{30}
+  \item \spxentry{setupAMLogo()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{24}
+  \item \spxentry{setupFileStructure()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{setupFlightInfo()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{20}
+  \item \spxentry{setupGraph()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{20}
+  \item \spxentry{setupLoadingIcon()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}, 
+		\hyperpage{16}
+  \item \spxentry{setupPicture()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{24}
+  \item \spxentry{setupPicture()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{31}
+  \item \spxentry{setupSlider()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{20}
+  \item \spxentry{setupSocket()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+  \item \spxentry{setupTitle()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{21}
+  \item \spxentry{show\_home()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{show\_loading\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{show\_report\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{show\_tracking\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{show\_verify\_screen()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{showWindow()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{21}
+  \item \spxentry{signalExportResults()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{21}
+  \item \spxentry{signalImportFlight()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{24}
+  \item \spxentry{signalReturnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{21}
+  \item \spxentry{signalStartTracking()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}, 
+		\hyperpage{21}
+  \item \spxentry{signalStartTracking()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{24}
+  \item \spxentry{signalTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}, 
+		\hyperpage{16}
+  \item \spxentry{signalTransferFootage()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}, 
+		\hyperpage{16}
+  \item \spxentry{signalVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}, 
+		\hyperpage{24}
+  \item \spxentry{src.Controllers.Exceptions}\spxextra{module}, \hyperpage{7}
+  \item \spxentry{src.Controllers.OpenCVThreadedController}\spxextra{module}, \hyperpage{5}
+  \item \spxentry{src.Controllers.PhoneController}\spxextra{module}, \hyperpage{9}
+  \item \spxentry{src.Controllers.Program\_Controller}\spxextra{module}, \hyperpage{1}
+  \item \spxentry{src.Export.ExportFile}\spxextra{module}, \hyperpage{11}
+  \item \spxentry{src.Export.ImportFile}\spxextra{module}, \hyperpage{13}
+  \item \spxentry{src.Tests.Graph\_Test}\spxextra{module}, \hyperpage{35}
+  \item \spxentry{src.Tests.ImportFile\_Test}\spxextra{module}, \hyperpage{39}
+  \item \spxentry{src.Views.Graph}\spxextra{module}, \hyperpage{33}
+  \item \spxentry{src.Views.View\_LoadingScreen}\spxextra{module}, \hyperpage{15}
+  \item \spxentry{src.Views.View\_ReportScreen}\spxextra{module}, \hyperpage{17}
+  \item \spxentry{src.Views.View\_StartupScreen}\spxextra{module}, \hyperpage{23}
+  \item \spxentry{src.Views.View\_TrackingScreen}\spxextra{module}, \hyperpage{25}
+  \item \spxentry{src.Views.View\_VerifySetupScreen}\spxextra{module}, \hyperpage{29}
+  \item \spxentry{start\_analysis()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{startFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+  \item \spxentry{startRecording()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+  \item \spxentry{startTracking()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{28}
+  \item \spxentry{StartupWindow}\spxextra{class in src.Views.View\_StartupScreen}, \hyperpage{23}
+  \item \spxentry{stopRecording()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+  \item \spxentry{stopTracking()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}, 
+		\hyperpage{28}
+  \item \spxentry{sync()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+  \item \spxentry{synced()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+  \item \spxentry{syncPhone()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{31}
+
+  \indexspace
+  \bigletter T
+  \item \spxentry{TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{25}
+  \item \spxentry{TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}, 
+		\hyperpage{26}
+  \item \spxentry{test\_checkLegalInput()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{35}
+  \item \spxentry{test\_computeVelocity()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{35}
+  \item \spxentry{test\_graphShows\_noError()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{35}
+  \item \spxentry{test\_import()}\spxextra{src.Tests.ImportFile\_Test.ImportFileTests method}, 
+		\hyperpage{39}
+  \item \spxentry{test\_readCoordinates\_size100\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{35}
+  \item \spxentry{test\_readCoordinates\_size100\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{35}
+  \item \spxentry{test\_readCoordinates\_size1200\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{35}
+  \item \spxentry{test\_readCoordinates\_size1200\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{35}
+  \item \spxentry{test\_readCoordinates\_size200\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{35}
+  \item \spxentry{test\_readCoordinates\_size200\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_readCoordinates\_size600\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_readCoordinates\_size600\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_readCoordinates\_small\_illegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_readCoordinates\_small\_legal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_smoothnessComputes()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_smoothnessValues()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_velocityColors()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_velocityColorsComputes\_correctSize()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_velocityComputes\_correctSize()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{36}
+  \item \spxentry{test\_velocityPoints()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}, 
+		\hyperpage{37}
+  \item \spxentry{testFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{31}
+  \item \spxentry{testLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}, 
+		\hyperpage{31}
+  \item \spxentry{threadSendSignal()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{9}
+  \item \spxentry{threadWaitForFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{10}
+  \item \spxentry{trackDrone()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}, 
+		\hyperpage{5}
+  \item \spxentry{TrackingWindow}\spxextra{class in src.Views.View\_TrackingScreen}, \hyperpage{25}
+  \item \spxentry{transfer\_complete()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{transfer\_footage()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+  \item \spxentry{TransferNotStartedException}, \hyperpage{7}
+
+  \indexspace
+  \bigletter U
+  \item \spxentry{updateFlightStatus()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{2}
+
+  \indexspace
+  \bigletter V
+  \item \spxentry{velocityColors()}\spxextra{in module src.Views.Graph}, \hyperpage{34}
+  \item \spxentry{velocityPoints()}\spxextra{in module src.Views.Graph}, \hyperpage{34}
+  \item \spxentry{VerifySetupWindow}\spxextra{class in src.Views.View\_VerifySetupScreen}, 
+		\hyperpage{29}
+  \item \spxentry{VideoCorruptedException}, \hyperpage{5}
+  \item \spxentry{VideoNotPresentException}, \hyperpage{6}
+
+  \indexspace
+  \bigletter W
+  \item \spxentry{wait\_for\_analysis()}\spxextra{src.Controllers.Program\_Controller.Controller method}, 
+		\hyperpage{3}
+  \item \spxentry{waitForFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}, 
+		\hyperpage{10}
+
+\end{sphinxtheindex}
