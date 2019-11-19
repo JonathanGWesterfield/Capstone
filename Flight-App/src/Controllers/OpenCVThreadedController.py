@@ -366,11 +366,22 @@ def merge_data_points(phone1Points:list, phone2Points:list) -> dict:
             phone1Points[i][1] == None or phone2Points[i][1] == None:
             tup = (phone1Points[i][2], None, None, None)
         else:
-            tup = (phone1Points[i][2],  # time value
-                   (phone1Points[i][0] / 3840) * 15,  # x coordinate scaled to 15 meters
-                   (phone2Points[i][0] / 3840) * 15,  # y coordinate scaled to 15 meters
-                   ( (2160 - ((phone1Points[i][1] + phone2Points[i][1]) / 2) ) / 2160) * 10)  # z coordinate,
-            # scaled to 10 meters
+            # TODO: May need to subtract something from x_A, y_B, to make sure measured from correct side
+            x_A = phone1Points[i][0]
+            y_B = phone2Points[i][0]
+
+            # TODO: May need to subtract something from z_A, z_B to make sure measured from correct side
+            z_A = phone1Points[i][1]
+            z_B = phone2Points[i][1]
+
+            x_coord, y_coord, z_coord = compute_coordinates(x_A, y_B, z_A, z_B)
+            time = phone1Points[i][2]
+            tup = (time, x_coord, y_coord, z_coord)
+            # tup = (phone1Points[i][2],  # time value
+            #        (phone1Points[i][0] / 3840) * 15,  # x coordinate scaled to 15 meters
+            #        (phone2Points[i][0] / 3840) * 15,  # y coordinate scaled to 15 meters
+            #        ( (2160 - ((phone1Points[i][1] + phone2Points[i][1]) / 2) ) / 2160) * 10)  # z coordinate,
+            # # scaled to 10 meters
         points.append(tup)
 
     return points
