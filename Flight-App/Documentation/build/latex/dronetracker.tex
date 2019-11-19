@@ -89,6 +89,40 @@
 
 
 
+\chapter{Intro}
+\label{\detokenize{index:intro}}
+Version 1.0.3
+
+Written by: Hayley Eckert, Jonathan Westerfield, Donald Elrod, and Ismael Rodriguez
+
+This application is the controller for the entire project. It interfaces with the cell phones and controls them in order to record footage of a drone flight. It will then open 2 OpenCV processes in order to analyze the footage from the cell phones.
+
+This flight application relies on \sphinxhref{https://opencv.org/}{OpenCV} and \sphinxhref{https://matplotlib.org/}{MatPlotLib}.
+\begin{description}
+\item[{The main sections of the application are as follows:}] \leavevmode\begin{itemize}
+\item {} \begin{description}
+\item[{Program\_Controller:}] \leavevmode
+Starts up the entire Drone Tracker program the user interacts with
+
+\end{description}
+
+\item {} \begin{description}
+\item[{PhoneController:}] \leavevmode
+Sends and receives network signals from the phone over TCP to control the phone.
+
+\end{description}
+
+\item {} \begin{description}
+\item[{OpenCV:}] \leavevmode
+Takes the file of the video transferred from the phone and extracts the coordinates of the drone from the footage
+
+\end{description}
+
+\end{itemize}
+
+\end{description}
+
+
 \chapter{Program Controller}
 \label{\detokenize{index:module-src.Controllers.Program_Controller}}\label{\detokenize{index:program-controller}}\index{src.Controllers.Program\_Controller (module)@\spxentry{src.Controllers.Program\_Controller}\spxextra{module}}\index{Controller (class in src.Controllers.Program\_Controller)@\spxentry{Controller}\spxextra{class in src.Controllers.Program\_Controller}}
 
@@ -408,7 +442,7 @@ None
 
 
 \chapter{OpenCV}
-\label{\detokenize{index:module-src.Controllers.OpenCVThreadedController}}\label{\detokenize{index:opencv}}\index{src.Controllers.OpenCVThreadedController (module)@\spxentry{src.Controllers.OpenCVThreadedController}\spxextra{module}}\index{DroneTracker (class in src.Controllers.OpenCVThreadedController)@\spxentry{DroneTracker}\spxextra{class in src.Controllers.OpenCVThreadedController}}
+\label{\detokenize{index:id3}}\phantomsection\label{\detokenize{index:module-src.Controllers.OpenCVThreadedController}}\index{src.Controllers.OpenCVThreadedController (module)@\spxentry{src.Controllers.OpenCVThreadedController}\spxextra{module}}\index{DroneTracker (class in src.Controllers.OpenCVThreadedController)@\spxentry{DroneTracker}\spxextra{class in src.Controllers.OpenCVThreadedController}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{index:src.Controllers.OpenCVThreadedController.DroneTracker}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{src.Controllers.OpenCVThreadedController.}}\sphinxbfcode{\sphinxupquote{DroneTracker}}}{\emph{videoFile}}{}
@@ -630,6 +664,23 @@ started and any actions that depend on it will fail.
 
 \end{fulllineitems}
 
+\index{VideoCorruptedException@\spxentry{VideoCorruptedException}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{index:src.Controllers.Exceptions.VideoCorruptedException}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{exception }}\sphinxcode{\sphinxupquote{src.Controllers.Exceptions.}}\sphinxbfcode{\sphinxupquote{VideoCorruptedException}}}{\emph{message: str}}{}
+This error is raised if the video being read is corrupted, or if the frames cannot be
+successfully extracted from the video files
+
+\end{fulllineitems}
+
+\index{VideoNotPresentException@\spxentry{VideoNotPresentException}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{index:src.Controllers.Exceptions.VideoNotPresentException}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{exception }}\sphinxcode{\sphinxupquote{src.Controllers.Exceptions.}}\sphinxbfcode{\sphinxupquote{VideoNotPresentException}}}{\emph{message: str}}{}
+This error is raised when the video for processing is not there, or if an incorrect path is given
+
+\end{fulllineitems}
+
 
 
 \chapter{PhoneController}
@@ -644,7 +695,11 @@ TCP connections with each phone in order to control them.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{index:src.Controllers.PhoneController.PhoneControl.closeConn}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{closeConn}}}{}{{ $\rightarrow$ None}}
 Closes all of the connections and the socket.
-:return: None
+\begin{quote}\begin{description}
+\item[{Returns}] \leavevmode
+None
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 
@@ -2890,7 +2945,11 @@ The horizontal layout containing the 3 buttons
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{index:src.Views.View_VerifySetupScreen.VerifySetupWindow.setTitle}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{setTitle}}}{}{{ $\rightarrow$ PyQt5.QtWidgets.QVBoxLayout}}
 Sets up the title with the application title on top and the name of the screen just below it.
-:return: Layout with the application title and screen title labels
+\begin{quote}\begin{description}
+\item[{Returns}] \leavevmode
+Layout with the application title and screen title labels
+
+\end{description}\end{quote}
 
 \end{fulllineitems}
 

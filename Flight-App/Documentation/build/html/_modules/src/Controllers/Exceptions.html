@@ -217,6 +217,31 @@
 <span class="sd">        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VideoNotPresentException"><a class="viewcode-back" href="../../../index.html#src.Controllers.Exceptions.VideoNotPresentException">[docs]</a><span class="k">class</span> <span class="nc">VideoNotPresentException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This error is raised when the video for processing is not there, or if an incorrect path is given</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls the base Python Exception class and provides it with the error message we want to display.</span>
+
+<span class="sd">        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VideoCorruptedException"><a class="viewcode-back" href="../../../index.html#src.Controllers.Exceptions.VideoCorruptedException">[docs]</a><span class="k">class</span> <span class="nc">VideoCorruptedException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This error is raised if the video being read is corrupted, or if the frames cannot be</span>
+<span class="sd">    successfully extracted from the video files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls the base Python Exception class and provides it with the error message we want to display.</span>
+
+<span class="sd">        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -3,8 +3,28 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-About
+Welcome to Drone Tracker's documentation!
 =========================================
+
+Intro
+~~~~~~~~~~~~~
+
+Version 1.0.3
+
+Written by: Hayley Eckert, Jonathan Westerfield, Donald Elrod, and Ismael Rodriguez
+
+This application is the controller for the entire project. It interfaces with the cell phones and controls them in order to record footage of a drone flight. It will then open 2 OpenCV processes in order to analyze the footage from the cell phones. 
+
+This flight application relies on `OpenCV <https://opencv.org/>`_ and `MatPlotLib <https://matplotlib.org/>`_.
+
+
+The main sections of the application are as follows:
+ * Program_Controller:
+    Starts up the entire Drone Tracker program the user interacts with
+ * PhoneController:
+    Sends and receives network signals from the phone over TCP to control the phone.
+ * OpenCV:
+    Takes the file of the video transferred from the phone and extracts the coordinates of the drone from the footage
 
 .. toctree::
    :maxdepth: 3

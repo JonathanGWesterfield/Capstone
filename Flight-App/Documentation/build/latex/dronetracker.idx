@@ -1,250 +1,252 @@
-\indexentry{src.Controllers.Program\_Controller (module)@\spxentry{src.Controllers.Program\_Controller}\spxextra{module}|hyperpage}{1}
-\indexentry{Controller (class in src.Controllers.Program\_Controller)@\spxentry{Controller}\spxextra{class in src.Controllers.Program\_Controller}|hyperpage}{1}
-\indexentry{cleanup() (src.Controllers.Program\_Controller.Controller method)@\spxentry{cleanup()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{1}
-\indexentry{get\_all\_files() (src.Controllers.Program\_Controller.Controller method)@\spxentry{get\_all\_files()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{1}
-\indexentry{get\_flight\_info() (src.Controllers.Program\_Controller.Controller method)@\spxentry{get\_flight\_info()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{1}
-\indexentry{get\_in\_order() (src.Controllers.Program\_Controller.Controller method)@\spxentry{get\_in\_order()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{1}
-\indexentry{import\_flight() (src.Controllers.Program\_Controller.Controller method)@\spxentry{import\_flight()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{1}
-\indexentry{setupFileStructure() (src.Controllers.Program\_Controller.Controller method)@\spxentry{setupFileStructure()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{show\_home() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_home()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{show\_loading\_window() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_loading\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{show\_report\_window() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_report\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{show\_tracking\_window() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_tracking\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{show\_verify\_screen() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_verify\_screen()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{start\_analysis() (src.Controllers.Program\_Controller.Controller method)@\spxentry{start\_analysis()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{transfer\_complete() (src.Controllers.Program\_Controller.Controller method)@\spxentry{transfer\_complete()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{transfer\_footage() (src.Controllers.Program\_Controller.Controller method)@\spxentry{transfer\_footage()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{updateFlightStatus() (src.Controllers.Program\_Controller.Controller method)@\spxentry{updateFlightStatus()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{2}
-\indexentry{wait\_for\_analysis() (src.Controllers.Program\_Controller.Controller method)@\spxentry{wait\_for\_analysis()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{3}
-\indexentry{close\_conn() (in module src.Controllers.Program\_Controller)@\spxentry{close\_conn()}\spxextra{in module src.Controllers.Program\_Controller}|hyperpage}{3}
-\indexentry{createPhoneConnection() (in module src.Controllers.Program\_Controller)@\spxentry{createPhoneConnection()}\spxextra{in module src.Controllers.Program\_Controller}|hyperpage}{3}
-\indexentry{main() (in module src.Controllers.Program\_Controller)@\spxentry{main()}\spxextra{in module src.Controllers.Program\_Controller}|hyperpage}{3}
-\indexentry{src.Controllers.OpenCVThreadedController (module)@\spxentry{src.Controllers.OpenCVThreadedController}\spxextra{module}|hyperpage}{5}
-\indexentry{DroneTracker (class in src.Controllers.OpenCVThreadedController)@\spxentry{DroneTracker}\spxextra{class in src.Controllers.OpenCVThreadedController}|hyperpage}{5}
-\indexentry{is\_light\_on() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{is\_light\_on()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{5}
-\indexentry{read\_video() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{read\_video()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{5}
-\indexentry{rescale\_frame() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{rescale\_frame()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{5}
-\indexentry{resize\_bbox() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{resize\_bbox()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{5}
-\indexentry{trackDrone() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{trackDrone()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{5}
-\indexentry{VideoCorruptedException@\spxentry{VideoCorruptedException}|hyperpage}{5}
-\indexentry{VideoNotPresentException@\spxentry{VideoNotPresentException}|hyperpage}{6}
-\indexentry{get\_phone\_id() (in module src.Controllers.OpenCVThreadedController)@\spxentry{get\_phone\_id()}\spxextra{in module src.Controllers.OpenCVThreadedController}|hyperpage}{6}
-\indexentry{main() (in module src.Controllers.OpenCVThreadedController)@\spxentry{main()}\spxextra{in module src.Controllers.OpenCVThreadedController}|hyperpage}{6}
-\indexentry{merge\_data\_points() (in module src.Controllers.OpenCVThreadedController)@\spxentry{merge\_data\_points()}\spxextra{in module src.Controllers.OpenCVThreadedController}|hyperpage}{6}
-\indexentry{src.Controllers.Exceptions (module)@\spxentry{src.Controllers.Exceptions}\spxextra{module}|hyperpage}{7}
-\indexentry{FailedDisconnectException@\spxentry{FailedDisconnectException}|hyperpage}{7}
-\indexentry{FailedRPIFlashException@\spxentry{FailedRPIFlashException}|hyperpage}{7}
-\indexentry{PhonesNotSyncedException@\spxentry{PhonesNotSyncedException}|hyperpage}{7}
-\indexentry{RPINotConnectedException@\spxentry{RPINotConnectedException}|hyperpage}{7}
-\indexentry{RecordingNotStartedException@\spxentry{RecordingNotStartedException}|hyperpage}{7}
-\indexentry{TransferNotStartedException@\spxentry{TransferNotStartedException}|hyperpage}{7}
-\indexentry{src.Controllers.PhoneController (module)@\spxentry{src.Controllers.PhoneController}\spxextra{module}|hyperpage}{9}
-\indexentry{PhoneControl (class in src.Controllers.PhoneController)@\spxentry{PhoneControl}\spxextra{class in src.Controllers.PhoneController}|hyperpage}{9}
-\indexentry{closeConn() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{closeConn()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{isTransferring() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{isTransferring()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{setupSocket() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{setupSocket()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{startFileTransfer() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{startFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{startRecording() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{startRecording()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{stopRecording() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{stopRecording()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{sync() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{sync()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{synced() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{synced()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{threadSendSignal() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{threadSendSignal()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{9}
-\indexentry{threadWaitForFileTransfer() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{threadWaitForFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{10}
-\indexentry{waitForFileTransfer() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{waitForFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{10}
-\indexentry{src.Export.ExportFile (module)@\spxentry{src.Export.ExportFile}\spxextra{module}|hyperpage}{11}
-\indexentry{export\_data() (in module src.Export.ExportFile)@\spxentry{export\_data()}\spxextra{in module src.Export.ExportFile}|hyperpage}{11}
-\indexentry{src.Export.ImportFile (module)@\spxentry{src.Export.ImportFile}\spxextra{module}|hyperpage}{13}
-\indexentry{importData() (in module src.Export.ImportFile)@\spxentry{importData()}\spxextra{in module src.Export.ImportFile}|hyperpage}{13}
-\indexentry{src.Views.View\_LoadingScreen (module)@\spxentry{src.Views.View\_LoadingScreen}\spxextra{module}|hyperpage}{15}
-\indexentry{LoadingWindow (class in src.Views.View\_LoadingScreen)@\spxentry{LoadingWindow}\spxextra{class in src.Views.View\_LoadingScreen}|hyperpage}{15}
-\indexentry{BtnHome() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{15}
-\indexentry{BtnTestReport() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{15}
-\indexentry{LblStatus() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{15}
-\indexentry{del\_BtnHome() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{del\_BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{15}
-\indexentry{del\_BtnTestReport() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{del\_BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{15}
-\indexentry{del\_LblStatus() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{del\_LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{15}
-\indexentry{initView() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{15}
-\indexentry{returnHome() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{returnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{15}
-\indexentry{setSubtitle() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{setSubtitle()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{15}
-\indexentry{setTitle() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{setTitle()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{16}
-\indexentry{set\_BtnHome() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{set\_BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{16}
-\indexentry{set\_BtnTestReport() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{set\_BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{16}
-\indexentry{set\_LblStatus() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{set\_LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{16}
-\indexentry{setupLoadingIcon() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{setupLoadingIcon()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{16}
-\indexentry{signalTestReport() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{signalTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{16}
-\indexentry{signalTransferFootage() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{signalTransferFootage()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{16}
-\indexentry{src.Views.View\_ReportScreen (module)@\spxentry{src.Views.View\_ReportScreen}\spxextra{module}|hyperpage}{17}
-\indexentry{ReportWindow (class in src.Views.View\_ReportScreen)@\spxentry{ReportWindow}\spxextra{class in src.Views.View\_ReportScreen}|hyperpage}{17}
-\indexentry{BtnExport() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{17}
-\indexentry{BtnFlyAgain() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{17}
-\indexentry{BtnHome() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{17}
-\indexentry{BtnViewGraphNoVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{17}
-\indexentry{BtnViewGraphVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{17}
-\indexentry{LblFlightDate() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{17}
-\indexentry{LblFlightInstructions() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{17}
-\indexentry{LblFlightLength() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{LblInstructor() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{LblPilot() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{analyzeFlight() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{analyzeFlight()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{18}
-\indexentry{createStatisticsTable() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{createStatisticsTable()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{18}
-\indexentry{del\_BtnExport() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{del\_BtnFlyAgain() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{del\_BtnHome() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{del\_BtnViewGraphNoVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{del\_BtnViewGraphVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{del\_LblFlightDate() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{del\_LblFlightInstructions() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{del\_LblFlightLength() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{18}
-\indexentry{del\_LblInstructor() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
-\indexentry{del\_LblPilot() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
-\indexentry{handleEndSliderValueChange() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{handleEndSliderValueChange()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{19}
-\indexentry{handleStartSliderValueChange() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{handleStartSliderValueChange()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{19}
-\indexentry{initView() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{19}
-\indexentry{setButtonLayout() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setButtonLayout()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{19}
-\indexentry{setSubTitle() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setSubTitle()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{19}
-\indexentry{set\_BtnExport() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
-\indexentry{set\_BtnFlyAgain() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{set\_BtnHome() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{set\_BtnViewGraphNoVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{set\_BtnViewGraphVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{set\_LblFlightDate() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{set\_LblFlightInstructions() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{set\_LblFlightLength() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{set\_LblInstructor() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{set\_LblPilot() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
-\indexentry{setupFlightInfo() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setupFlightInfo()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{20}
-\indexentry{setupGraph() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setupGraph()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{20}
-\indexentry{setupSlider() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setupSlider()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{20}
-\indexentry{setupTitle() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setupTitle()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
-\indexentry{showWindow() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{showWindow()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
-\indexentry{signalExportResults() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{signalExportResults()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
-\indexentry{signalReturnHome() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{signalReturnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
-\indexentry{signalStartTracking() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{signalStartTracking()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
-\indexentry{src.Views.View\_StartupScreen (module)@\spxentry{src.Views.View\_StartupScreen}\spxextra{module}|hyperpage}{23}
-\indexentry{StartupWindow (class in src.Views.View\_StartupScreen)@\spxentry{StartupWindow}\spxextra{class in src.Views.View\_StartupScreen}|hyperpage}{23}
-\indexentry{BtnImport() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{23}
-\indexentry{BtnStart() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{23}
-\indexentry{BtnVerifySetup() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{23}
-\indexentry{del\_BtnImport() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{del\_BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{23}
-\indexentry{del\_BtnStart() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{del\_BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{23}
-\indexentry{del\_BtnVerifySetup() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{del\_BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{23}
-\indexentry{initView() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{23}
-\indexentry{openFileNameDialog() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{openFileNameDialog()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{23}
-\indexentry{setButtonLayout() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setButtonLayout()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{23}
-\indexentry{setTeamMembers() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setTeamMembers()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{24}
-\indexentry{setTitle() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setTitle()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{24}
-\indexentry{set\_BtnImport() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{set\_BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{24}
-\indexentry{set\_BtnStart() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{set\_BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{24}
-\indexentry{set\_BtnVerifySetup() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{set\_BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{24}
-\indexentry{setupAMLogo() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setupAMLogo()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{24}
-\indexentry{setupPicture() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setupPicture()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{24}
-\indexentry{signalImportFlight() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{signalImportFlight()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{24}
-\indexentry{signalStartTracking() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{signalStartTracking()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{24}
-\indexentry{signalVerifySetup() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{signalVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{24}
-\indexentry{src.Views.View\_TrackingScreen (module)@\spxentry{src.Views.View\_TrackingScreen}\spxextra{module}|hyperpage}{25}
-\indexentry{TrackingWindow (class in src.Views.View\_TrackingScreen)@\spxentry{TrackingWindow}\spxextra{class in src.Views.View\_TrackingScreen}|hyperpage}{25}
-\indexentry{BtnClear() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{25}
-\indexentry{BtnConfirm() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{25}
-\indexentry{BtnStart() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{25}
-\indexentry{BtnStop() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{25}
-\indexentry{LblInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{25}
-\indexentry{LblPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{25}
-\indexentry{LblTimer() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{25}
-\indexentry{TBInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{25}
-\indexentry{TBPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{TEInstructions() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{clearValues() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{clearValues()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{26}
-\indexentry{confirmValues() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{confirmValues()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{26}
-\indexentry{del\_BtnClear() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_BtnConfirm() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_BtnStart() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_BtnStop() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_LblInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_LblPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_LblTimer() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_TBInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_TBPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{26}
-\indexentry{del\_TEInstructions() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
-\indexentry{initView() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{returnHome() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{returnHome()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setClrConfirmBtns() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setClrConfirmBtns()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setFlightInstructions() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setFlightInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setInstructor() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setPilot() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setStartAndStopBtns() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setStartAndStopBtns()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setStatusLabel() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setStatusLabel()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setSubTitle() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setSubTitle()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setTimerLabel() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setTimerLabel()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{setTitle() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setTitle()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{27}
-\indexentry{set\_BtnClear() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
-\indexentry{set\_BtnConfirm() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{set\_BtnStart() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{set\_BtnStop() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{set\_LblInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{set\_LblPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{set\_LblTimer() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{set\_TBInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{set\_TBPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{set\_TEInstructions() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
-\indexentry{startTracking() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{startTracking()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{28}
-\indexentry{stopTracking() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{stopTracking()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{28}
-\indexentry{src.Views.View\_VerifySetupScreen (module)@\spxentry{src.Views.View\_VerifySetupScreen}\spxextra{module}|hyperpage}{29}
-\indexentry{VerifySetupWindow (class in src.Views.View\_VerifySetupScreen)@\spxentry{VerifySetupWindow}\spxextra{class in src.Views.View\_VerifySetupScreen}|hyperpage}{29}
-\indexentry{BtnCheck() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{29}
-\indexentry{BtnHome() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{29}
-\indexentry{BtnPhoneSync() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{29}
-\indexentry{BtnTestFull() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{29}
-\indexentry{BtnTestLight() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{29}
-\indexentry{checkStatus() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{checkStatus()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{29}
-\indexentry{del\_BtnCheck() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{29}
-\indexentry{del\_BtnHome() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{30}
-\indexentry{del\_BtnPhoneSync() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{30}
-\indexentry{del\_BtnTestFull() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{30}
-\indexentry{del\_BtnTestLight() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{30}
-\indexentry{initView() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{30}
-\indexentry{returnHome() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{returnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{30}
-\indexentry{setButtonLayout() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{setButtonLayout()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{30}
-\indexentry{setTitle() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{setTitle()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{30}
-\indexentry{set\_BtnCheck() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{30}
-\indexentry{set\_BtnHome() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{30}
-\indexentry{set\_BtnPhoneSync() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{30}
-\indexentry{set\_BtnTestFull() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{30}
-\indexentry{set\_BtnTestLight() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{31}
-\indexentry{setupPicture() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{setupPicture()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{31}
-\indexentry{syncPhone() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{syncPhone()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{31}
-\indexentry{testFull() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{testFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{31}
-\indexentry{testLight() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{testLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{31}
-\indexentry{src.Views.Graph (module)@\spxentry{src.Views.Graph}\spxextra{module}|hyperpage}{33}
-\indexentry{checkCoordinates() (in module src.Views.Graph)@\spxentry{checkCoordinates()}\spxextra{in module src.Views.Graph}|hyperpage}{33}
-\indexentry{checkLegalInput() (in module src.Views.Graph)@\spxentry{checkLegalInput()}\spxextra{in module src.Views.Graph}|hyperpage}{33}
-\indexentry{computeVelocity() (in module src.Views.Graph)@\spxentry{computeVelocity()}\spxextra{in module src.Views.Graph}|hyperpage}{33}
-\indexentry{computeVelocityStatistics() (in module src.Views.Graph)@\spxentry{computeVelocityStatistics()}\spxextra{in module src.Views.Graph}|hyperpage}{33}
-\indexentry{dimensionless\_jerk() (in module src.Views.Graph)@\spxentry{dimensionless\_jerk()}\spxextra{in module src.Views.Graph}|hyperpage}{33}
-\indexentry{generateGraph() (in module src.Views.Graph)@\spxentry{generateGraph()}\spxextra{in module src.Views.Graph}|hyperpage}{33}
-\indexentry{log\_dimensionless\_jerk() (in module src.Views.Graph)@\spxentry{log\_dimensionless\_jerk()}\spxextra{in module src.Views.Graph}|hyperpage}{34}
-\indexentry{velocityColors() (in module src.Views.Graph)@\spxentry{velocityColors()}\spxextra{in module src.Views.Graph}|hyperpage}{34}
-\indexentry{velocityPoints() (in module src.Views.Graph)@\spxentry{velocityPoints()}\spxextra{in module src.Views.Graph}|hyperpage}{34}
-\indexentry{src.Tests.Graph\_Test (module)@\spxentry{src.Tests.Graph\_Test}\spxextra{module}|hyperpage}{35}
-\indexentry{Graph\_Test (class in src.Tests.Graph\_Test)@\spxentry{Graph\_Test}\spxextra{class in src.Tests.Graph\_Test}|hyperpage}{35}
-\indexentry{test\_checkLegalInput() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_checkLegalInput()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{35}
-\indexentry{test\_computeVelocity() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_computeVelocity()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{35}
-\indexentry{test\_graphShows\_noError() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_graphShows\_noError()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{35}
-\indexentry{test\_readCoordinates\_size100\_allLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size100\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{35}
-\indexentry{test\_readCoordinates\_size100\_someLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size100\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{35}
-\indexentry{test\_readCoordinates\_size1200\_allLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size1200\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{35}
-\indexentry{test\_readCoordinates\_size1200\_someLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size1200\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{35}
-\indexentry{test\_readCoordinates\_size200\_allLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size200\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{35}
-\indexentry{test\_readCoordinates\_size200\_someLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size200\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_readCoordinates\_size600\_allLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size600\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_readCoordinates\_size600\_someLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size600\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_readCoordinates\_small\_illegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_small\_illegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_readCoordinates\_small\_legal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_small\_legal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_smoothnessComputes() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_smoothnessComputes()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_smoothnessValues() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_smoothnessValues()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_velocityColors() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_velocityColors()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_velocityColorsComputes\_correctSize() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_velocityColorsComputes\_correctSize()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_velocityComputes\_correctSize() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_velocityComputes\_correctSize()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{36}
-\indexentry{test\_velocityPoints() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_velocityPoints()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
-\indexentry{src.Tests.ImportFile\_Test (module)@\spxentry{src.Tests.ImportFile\_Test}\spxextra{module}|hyperpage}{39}
-\indexentry{ImportFileTests (class in src.Tests.ImportFile\_Test)@\spxentry{ImportFileTests}\spxextra{class in src.Tests.ImportFile\_Test}|hyperpage}{39}
-\indexentry{test\_import() (src.Tests.ImportFile\_Test.ImportFileTests method)@\spxentry{test\_import()}\spxextra{src.Tests.ImportFile\_Test.ImportFileTests method}|hyperpage}{39}
+\indexentry{src.Controllers.Program\_Controller (module)@\spxentry{src.Controllers.Program\_Controller}\spxextra{module}|hyperpage}{3}
+\indexentry{Controller (class in src.Controllers.Program\_Controller)@\spxentry{Controller}\spxextra{class in src.Controllers.Program\_Controller}|hyperpage}{3}
+\indexentry{cleanup() (src.Controllers.Program\_Controller.Controller method)@\spxentry{cleanup()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{3}
+\indexentry{get\_all\_files() (src.Controllers.Program\_Controller.Controller method)@\spxentry{get\_all\_files()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{3}
+\indexentry{get\_flight\_info() (src.Controllers.Program\_Controller.Controller method)@\spxentry{get\_flight\_info()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{3}
+\indexentry{get\_in\_order() (src.Controllers.Program\_Controller.Controller method)@\spxentry{get\_in\_order()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{3}
+\indexentry{import\_flight() (src.Controllers.Program\_Controller.Controller method)@\spxentry{import\_flight()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{3}
+\indexentry{setupFileStructure() (src.Controllers.Program\_Controller.Controller method)@\spxentry{setupFileStructure()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{show\_home() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_home()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{show\_loading\_window() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_loading\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{show\_report\_window() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_report\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{show\_tracking\_window() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_tracking\_window()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{show\_verify\_screen() (src.Controllers.Program\_Controller.Controller method)@\spxentry{show\_verify\_screen()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{start\_analysis() (src.Controllers.Program\_Controller.Controller method)@\spxentry{start\_analysis()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{transfer\_complete() (src.Controllers.Program\_Controller.Controller method)@\spxentry{transfer\_complete()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{transfer\_footage() (src.Controllers.Program\_Controller.Controller method)@\spxentry{transfer\_footage()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{updateFlightStatus() (src.Controllers.Program\_Controller.Controller method)@\spxentry{updateFlightStatus()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{4}
+\indexentry{wait\_for\_analysis() (src.Controllers.Program\_Controller.Controller method)@\spxentry{wait\_for\_analysis()}\spxextra{src.Controllers.Program\_Controller.Controller method}|hyperpage}{5}
+\indexentry{close\_conn() (in module src.Controllers.Program\_Controller)@\spxentry{close\_conn()}\spxextra{in module src.Controllers.Program\_Controller}|hyperpage}{5}
+\indexentry{createPhoneConnection() (in module src.Controllers.Program\_Controller)@\spxentry{createPhoneConnection()}\spxextra{in module src.Controllers.Program\_Controller}|hyperpage}{5}
+\indexentry{main() (in module src.Controllers.Program\_Controller)@\spxentry{main()}\spxextra{in module src.Controllers.Program\_Controller}|hyperpage}{5}
+\indexentry{src.Controllers.OpenCVThreadedController (module)@\spxentry{src.Controllers.OpenCVThreadedController}\spxextra{module}|hyperpage}{7}
+\indexentry{DroneTracker (class in src.Controllers.OpenCVThreadedController)@\spxentry{DroneTracker}\spxextra{class in src.Controllers.OpenCVThreadedController}|hyperpage}{7}
+\indexentry{is\_light\_on() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{is\_light\_on()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{7}
+\indexentry{read\_video() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{read\_video()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{7}
+\indexentry{rescale\_frame() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{rescale\_frame()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{7}
+\indexentry{resize\_bbox() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{resize\_bbox()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{7}
+\indexentry{trackDrone() (src.Controllers.OpenCVThreadedController.DroneTracker method)@\spxentry{trackDrone()}\spxextra{src.Controllers.OpenCVThreadedController.DroneTracker method}|hyperpage}{7}
+\indexentry{VideoCorruptedException@\spxentry{VideoCorruptedException}|hyperpage}{7}
+\indexentry{VideoNotPresentException@\spxentry{VideoNotPresentException}|hyperpage}{8}
+\indexentry{get\_phone\_id() (in module src.Controllers.OpenCVThreadedController)@\spxentry{get\_phone\_id()}\spxextra{in module src.Controllers.OpenCVThreadedController}|hyperpage}{8}
+\indexentry{main() (in module src.Controllers.OpenCVThreadedController)@\spxentry{main()}\spxextra{in module src.Controllers.OpenCVThreadedController}|hyperpage}{8}
+\indexentry{merge\_data\_points() (in module src.Controllers.OpenCVThreadedController)@\spxentry{merge\_data\_points()}\spxextra{in module src.Controllers.OpenCVThreadedController}|hyperpage}{8}
+\indexentry{src.Controllers.Exceptions (module)@\spxentry{src.Controllers.Exceptions}\spxextra{module}|hyperpage}{9}
+\indexentry{FailedDisconnectException@\spxentry{FailedDisconnectException}|hyperpage}{9}
+\indexentry{FailedRPIFlashException@\spxentry{FailedRPIFlashException}|hyperpage}{9}
+\indexentry{PhonesNotSyncedException@\spxentry{PhonesNotSyncedException}|hyperpage}{9}
+\indexentry{RPINotConnectedException@\spxentry{RPINotConnectedException}|hyperpage}{9}
+\indexentry{RecordingNotStartedException@\spxentry{RecordingNotStartedException}|hyperpage}{9}
+\indexentry{TransferNotStartedException@\spxentry{TransferNotStartedException}|hyperpage}{9}
+\indexentry{VideoCorruptedException@\spxentry{VideoCorruptedException}|hyperpage}{9}
+\indexentry{VideoNotPresentException@\spxentry{VideoNotPresentException}|hyperpage}{9}
+\indexentry{src.Controllers.PhoneController (module)@\spxentry{src.Controllers.PhoneController}\spxextra{module}|hyperpage}{11}
+\indexentry{PhoneControl (class in src.Controllers.PhoneController)@\spxentry{PhoneControl}\spxextra{class in src.Controllers.PhoneController}|hyperpage}{11}
+\indexentry{closeConn() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{closeConn()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{isTransferring() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{isTransferring()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{setupSocket() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{setupSocket()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{startFileTransfer() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{startFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{startRecording() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{startRecording()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{stopRecording() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{stopRecording()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{sync() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{sync()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{synced() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{synced()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{threadSendSignal() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{threadSendSignal()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{11}
+\indexentry{threadWaitForFileTransfer() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{threadWaitForFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{12}
+\indexentry{waitForFileTransfer() (src.Controllers.PhoneController.PhoneControl method)@\spxentry{waitForFileTransfer()}\spxextra{src.Controllers.PhoneController.PhoneControl method}|hyperpage}{12}
+\indexentry{src.Export.ExportFile (module)@\spxentry{src.Export.ExportFile}\spxextra{module}|hyperpage}{13}
+\indexentry{export\_data() (in module src.Export.ExportFile)@\spxentry{export\_data()}\spxextra{in module src.Export.ExportFile}|hyperpage}{13}
+\indexentry{src.Export.ImportFile (module)@\spxentry{src.Export.ImportFile}\spxextra{module}|hyperpage}{15}
+\indexentry{importData() (in module src.Export.ImportFile)@\spxentry{importData()}\spxextra{in module src.Export.ImportFile}|hyperpage}{15}
+\indexentry{src.Views.View\_LoadingScreen (module)@\spxentry{src.Views.View\_LoadingScreen}\spxextra{module}|hyperpage}{17}
+\indexentry{LoadingWindow (class in src.Views.View\_LoadingScreen)@\spxentry{LoadingWindow}\spxextra{class in src.Views.View\_LoadingScreen}|hyperpage}{17}
+\indexentry{BtnHome() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{17}
+\indexentry{BtnTestReport() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{17}
+\indexentry{LblStatus() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{17}
+\indexentry{del\_BtnHome() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{del\_BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{17}
+\indexentry{del\_BtnTestReport() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{del\_BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{17}
+\indexentry{del\_LblStatus() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{del\_LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{17}
+\indexentry{initView() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{17}
+\indexentry{returnHome() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{returnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{17}
+\indexentry{setSubtitle() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{setSubtitle()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{17}
+\indexentry{setTitle() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{setTitle()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{18}
+\indexentry{set\_BtnHome() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{set\_BtnHome()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{18}
+\indexentry{set\_BtnTestReport() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{set\_BtnTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{18}
+\indexentry{set\_LblStatus() (src.Views.View\_LoadingScreen.LoadingWindow property)@\spxentry{set\_LblStatus()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow property}|hyperpage}{18}
+\indexentry{setupLoadingIcon() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{setupLoadingIcon()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{18}
+\indexentry{signalTestReport() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{signalTestReport()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{18}
+\indexentry{signalTransferFootage() (src.Views.View\_LoadingScreen.LoadingWindow method)@\spxentry{signalTransferFootage()}\spxextra{src.Views.View\_LoadingScreen.LoadingWindow method}|hyperpage}{18}
+\indexentry{src.Views.View\_ReportScreen (module)@\spxentry{src.Views.View\_ReportScreen}\spxextra{module}|hyperpage}{19}
+\indexentry{ReportWindow (class in src.Views.View\_ReportScreen)@\spxentry{ReportWindow}\spxextra{class in src.Views.View\_ReportScreen}|hyperpage}{19}
+\indexentry{BtnExport() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
+\indexentry{BtnFlyAgain() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
+\indexentry{BtnHome() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
+\indexentry{BtnViewGraphNoVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
+\indexentry{BtnViewGraphVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
+\indexentry{LblFlightDate() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
+\indexentry{LblFlightInstructions() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{19}
+\indexentry{LblFlightLength() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{LblInstructor() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{LblPilot() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{analyzeFlight() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{analyzeFlight()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{20}
+\indexentry{createStatisticsTable() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{createStatisticsTable()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{20}
+\indexentry{del\_BtnExport() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{del\_BtnFlyAgain() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{del\_BtnHome() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{del\_BtnViewGraphNoVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{del\_BtnViewGraphVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{del\_LblFlightDate() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{del\_LblFlightInstructions() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{del\_LblFlightLength() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{20}
+\indexentry{del\_LblInstructor() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{21}
+\indexentry{del\_LblPilot() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{del\_LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{21}
+\indexentry{handleEndSliderValueChange() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{handleEndSliderValueChange()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
+\indexentry{handleStartSliderValueChange() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{handleStartSliderValueChange()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
+\indexentry{initView() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
+\indexentry{setButtonLayout() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setButtonLayout()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
+\indexentry{setSubTitle() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setSubTitle()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{21}
+\indexentry{set\_BtnExport() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnExport()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{21}
+\indexentry{set\_BtnFlyAgain() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnFlyAgain()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{set\_BtnHome() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{set\_BtnViewGraphNoVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnViewGraphNoVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{set\_BtnViewGraphVelocity() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_BtnViewGraphVelocity()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{set\_LblFlightDate() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblFlightDate()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{set\_LblFlightInstructions() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblFlightInstructions()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{set\_LblFlightLength() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblFlightLength()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{set\_LblInstructor() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblInstructor()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{set\_LblPilot() (src.Views.View\_ReportScreen.ReportWindow property)@\spxentry{set\_LblPilot()}\spxextra{src.Views.View\_ReportScreen.ReportWindow property}|hyperpage}{22}
+\indexentry{setupFlightInfo() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setupFlightInfo()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{22}
+\indexentry{setupGraph() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setupGraph()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{22}
+\indexentry{setupSlider() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setupSlider()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{22}
+\indexentry{setupTitle() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{setupTitle()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{23}
+\indexentry{showWindow() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{showWindow()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{23}
+\indexentry{signalExportResults() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{signalExportResults()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{23}
+\indexentry{signalReturnHome() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{signalReturnHome()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{23}
+\indexentry{signalStartTracking() (src.Views.View\_ReportScreen.ReportWindow method)@\spxentry{signalStartTracking()}\spxextra{src.Views.View\_ReportScreen.ReportWindow method}|hyperpage}{23}
+\indexentry{src.Views.View\_StartupScreen (module)@\spxentry{src.Views.View\_StartupScreen}\spxextra{module}|hyperpage}{25}
+\indexentry{StartupWindow (class in src.Views.View\_StartupScreen)@\spxentry{StartupWindow}\spxextra{class in src.Views.View\_StartupScreen}|hyperpage}{25}
+\indexentry{BtnImport() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{25}
+\indexentry{BtnStart() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{25}
+\indexentry{BtnVerifySetup() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{25}
+\indexentry{del\_BtnImport() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{del\_BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{25}
+\indexentry{del\_BtnStart() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{del\_BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{25}
+\indexentry{del\_BtnVerifySetup() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{del\_BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{25}
+\indexentry{initView() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{25}
+\indexentry{openFileNameDialog() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{openFileNameDialog()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{25}
+\indexentry{setButtonLayout() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setButtonLayout()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{25}
+\indexentry{setTeamMembers() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setTeamMembers()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{26}
+\indexentry{setTitle() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setTitle()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{26}
+\indexentry{set\_BtnImport() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{set\_BtnImport()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{26}
+\indexentry{set\_BtnStart() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{set\_BtnStart()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{26}
+\indexentry{set\_BtnVerifySetup() (src.Views.View\_StartupScreen.StartupWindow property)@\spxentry{set\_BtnVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow property}|hyperpage}{26}
+\indexentry{setupAMLogo() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setupAMLogo()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{26}
+\indexentry{setupPicture() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{setupPicture()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{26}
+\indexentry{signalImportFlight() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{signalImportFlight()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{26}
+\indexentry{signalStartTracking() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{signalStartTracking()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{26}
+\indexentry{signalVerifySetup() (src.Views.View\_StartupScreen.StartupWindow method)@\spxentry{signalVerifySetup()}\spxextra{src.Views.View\_StartupScreen.StartupWindow method}|hyperpage}{26}
+\indexentry{src.Views.View\_TrackingScreen (module)@\spxentry{src.Views.View\_TrackingScreen}\spxextra{module}|hyperpage}{27}
+\indexentry{TrackingWindow (class in src.Views.View\_TrackingScreen)@\spxentry{TrackingWindow}\spxextra{class in src.Views.View\_TrackingScreen}|hyperpage}{27}
+\indexentry{BtnClear() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
+\indexentry{BtnConfirm() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
+\indexentry{BtnStart() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
+\indexentry{BtnStop() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
+\indexentry{LblInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
+\indexentry{LblPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
+\indexentry{LblTimer() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
+\indexentry{TBInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{27}
+\indexentry{TBPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{TEInstructions() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{clearValues() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{clearValues()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{28}
+\indexentry{confirmValues() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{confirmValues()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{28}
+\indexentry{del\_BtnClear() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_BtnConfirm() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_BtnStart() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_BtnStop() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_LblInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_LblPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_LblTimer() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_TBInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_TBPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{28}
+\indexentry{del\_TEInstructions() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{del\_TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{29}
+\indexentry{initView() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{returnHome() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{returnHome()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setClrConfirmBtns() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setClrConfirmBtns()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setFlightInstructions() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setFlightInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setInstructor() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setPilot() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setStartAndStopBtns() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setStartAndStopBtns()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setStatusLabel() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setStatusLabel()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setSubTitle() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setSubTitle()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setTimerLabel() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setTimerLabel()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{setTitle() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{setTitle()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{29}
+\indexentry{set\_BtnClear() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_BtnClear()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{29}
+\indexentry{set\_BtnConfirm() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_BtnConfirm()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{set\_BtnStart() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_BtnStart()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{set\_BtnStop() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_BtnStop()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{set\_LblInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_LblInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{set\_LblPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_LblPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{set\_LblTimer() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_LblTimer()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{set\_TBInstructor() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_TBInstructor()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{set\_TBPilot() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_TBPilot()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{set\_TEInstructions() (src.Views.View\_TrackingScreen.TrackingWindow property)@\spxentry{set\_TEInstructions()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow property}|hyperpage}{30}
+\indexentry{startTracking() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{startTracking()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{30}
+\indexentry{stopTracking() (src.Views.View\_TrackingScreen.TrackingWindow method)@\spxentry{stopTracking()}\spxextra{src.Views.View\_TrackingScreen.TrackingWindow method}|hyperpage}{30}
+\indexentry{src.Views.View\_VerifySetupScreen (module)@\spxentry{src.Views.View\_VerifySetupScreen}\spxextra{module}|hyperpage}{31}
+\indexentry{VerifySetupWindow (class in src.Views.View\_VerifySetupScreen)@\spxentry{VerifySetupWindow}\spxextra{class in src.Views.View\_VerifySetupScreen}|hyperpage}{31}
+\indexentry{BtnCheck() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{31}
+\indexentry{BtnHome() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{31}
+\indexentry{BtnPhoneSync() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{31}
+\indexentry{BtnTestFull() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{31}
+\indexentry{BtnTestLight() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{31}
+\indexentry{checkStatus() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{checkStatus()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{31}
+\indexentry{del\_BtnCheck() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{31}
+\indexentry{del\_BtnHome() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{32}
+\indexentry{del\_BtnPhoneSync() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{32}
+\indexentry{del\_BtnTestFull() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{32}
+\indexentry{del\_BtnTestLight() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{del\_BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{32}
+\indexentry{initView() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{initView()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{32}
+\indexentry{returnHome() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{returnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{32}
+\indexentry{setButtonLayout() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{setButtonLayout()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{32}
+\indexentry{setTitle() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{setTitle()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{32}
+\indexentry{set\_BtnCheck() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnCheck()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{32}
+\indexentry{set\_BtnHome() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnHome()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{32}
+\indexentry{set\_BtnPhoneSync() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnPhoneSync()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{32}
+\indexentry{set\_BtnTestFull() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnTestFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{32}
+\indexentry{set\_BtnTestLight() (src.Views.View\_VerifySetupScreen.VerifySetupWindow property)@\spxentry{set\_BtnTestLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow property}|hyperpage}{33}
+\indexentry{setupPicture() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{setupPicture()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{33}
+\indexentry{syncPhone() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{syncPhone()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{33}
+\indexentry{testFull() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{testFull()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{33}
+\indexentry{testLight() (src.Views.View\_VerifySetupScreen.VerifySetupWindow method)@\spxentry{testLight()}\spxextra{src.Views.View\_VerifySetupScreen.VerifySetupWindow method}|hyperpage}{33}
+\indexentry{src.Views.Graph (module)@\spxentry{src.Views.Graph}\spxextra{module}|hyperpage}{35}
+\indexentry{checkCoordinates() (in module src.Views.Graph)@\spxentry{checkCoordinates()}\spxextra{in module src.Views.Graph}|hyperpage}{35}
+\indexentry{checkLegalInput() (in module src.Views.Graph)@\spxentry{checkLegalInput()}\spxextra{in module src.Views.Graph}|hyperpage}{35}
+\indexentry{computeVelocity() (in module src.Views.Graph)@\spxentry{computeVelocity()}\spxextra{in module src.Views.Graph}|hyperpage}{35}
+\indexentry{computeVelocityStatistics() (in module src.Views.Graph)@\spxentry{computeVelocityStatistics()}\spxextra{in module src.Views.Graph}|hyperpage}{35}
+\indexentry{dimensionless\_jerk() (in module src.Views.Graph)@\spxentry{dimensionless\_jerk()}\spxextra{in module src.Views.Graph}|hyperpage}{35}
+\indexentry{generateGraph() (in module src.Views.Graph)@\spxentry{generateGraph()}\spxextra{in module src.Views.Graph}|hyperpage}{35}
+\indexentry{log\_dimensionless\_jerk() (in module src.Views.Graph)@\spxentry{log\_dimensionless\_jerk()}\spxextra{in module src.Views.Graph}|hyperpage}{36}
+\indexentry{velocityColors() (in module src.Views.Graph)@\spxentry{velocityColors()}\spxextra{in module src.Views.Graph}|hyperpage}{36}
+\indexentry{velocityPoints() (in module src.Views.Graph)@\spxentry{velocityPoints()}\spxextra{in module src.Views.Graph}|hyperpage}{36}
+\indexentry{src.Tests.Graph\_Test (module)@\spxentry{src.Tests.Graph\_Test}\spxextra{module}|hyperpage}{37}
+\indexentry{Graph\_Test (class in src.Tests.Graph\_Test)@\spxentry{Graph\_Test}\spxextra{class in src.Tests.Graph\_Test}|hyperpage}{37}
+\indexentry{test\_checkLegalInput() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_checkLegalInput()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
+\indexentry{test\_computeVelocity() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_computeVelocity()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
+\indexentry{test\_graphShows\_noError() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_graphShows\_noError()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
+\indexentry{test\_readCoordinates\_size100\_allLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size100\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
+\indexentry{test\_readCoordinates\_size100\_someLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size100\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
+\indexentry{test\_readCoordinates\_size1200\_allLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size1200\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
+\indexentry{test\_readCoordinates\_size1200\_someLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size1200\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
+\indexentry{test\_readCoordinates\_size200\_allLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size200\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{37}
+\indexentry{test\_readCoordinates\_size200\_someLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size200\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_readCoordinates\_size600\_allLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size600\_allLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_readCoordinates\_size600\_someLegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_size600\_someLegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_readCoordinates\_small\_illegal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_small\_illegal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_readCoordinates\_small\_legal() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_readCoordinates\_small\_legal()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_smoothnessComputes() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_smoothnessComputes()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_smoothnessValues() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_smoothnessValues()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_velocityColors() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_velocityColors()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_velocityColorsComputes\_correctSize() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_velocityColorsComputes\_correctSize()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_velocityComputes\_correctSize() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_velocityComputes\_correctSize()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{38}
+\indexentry{test\_velocityPoints() (src.Tests.Graph\_Test.Graph\_Test method)@\spxentry{test\_velocityPoints()}\spxextra{src.Tests.Graph\_Test.Graph\_Test method}|hyperpage}{39}
+\indexentry{src.Tests.ImportFile\_Test (module)@\spxentry{src.Tests.ImportFile\_Test}\spxextra{module}|hyperpage}{41}
+\indexentry{ImportFileTests (class in src.Tests.ImportFile\_Test)@\spxentry{ImportFileTests}\spxextra{class in src.Tests.ImportFile\_Test}|hyperpage}{41}
+\indexentry{test\_import() (src.Tests.ImportFile\_Test.ImportFileTests method)@\spxentry{test\_import()}\spxextra{src.Tests.ImportFile\_Test.ImportFileTests method}|hyperpage}{41}

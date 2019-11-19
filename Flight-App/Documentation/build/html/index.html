@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About &mdash; Drone Tracker 1.0.3 documentation</title>
+  <title>Welcome to Drone Tracker’s documentation! &mdash; Drone Tracker 1.0.3 documentation</title>
   
 
   
@@ -80,9 +80,12 @@
             
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">About</a></li>
+<li><a class="reference internal" href="#">Welcome to Drone Tracker’s documentation!</a><ul>
+<li><a class="reference internal" href="#intro">Intro</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-src.Controllers.Program_Controller">Program Controller</a></li>
-<li><a class="reference internal" href="#module-src.Controllers.OpenCVThreadedController">OpenCV</a></li>
+<li><a class="reference internal" href="#id3">OpenCV</a></li>
 <li><a class="reference internal" href="#module-src.Controllers.Exceptions">Exceptions</a></li>
 <li><a class="reference internal" href="#module-src.Controllers.PhoneController">PhoneController</a></li>
 <li><a class="reference internal" href="#module-src.Export.ExportFile">Export Flight</a></li>
@@ -141,7 +144,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>About</li>
+      <li>Welcome to Drone Tracker’s documentation!</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -160,9 +163,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="about">
-<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="welcome-to-drone-tracker-s-documentation">
+<h1>Welcome to Drone Tracker’s documentation!<a class="headerlink" href="#welcome-to-drone-tracker-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="intro">
+<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
+<p>Version 1.0.3</p>
+<p>Written by: Hayley Eckert, Jonathan Westerfield, Donald Elrod, and Ismael Rodriguez</p>
+<p>This application is the controller for the entire project. It interfaces with the cell phones and controls them in order to record footage of a drone flight. It will then open 2 OpenCV processes in order to analyze the footage from the cell phones.</p>
+<p>This flight application relies on <a class="reference external" href="https://opencv.org/">OpenCV</a> and <a class="reference external" href="https://matplotlib.org/">MatPlotLib</a>.</p>
+<dl class="simple">
+<dt>The main sections of the application are as follows:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>Program_Controller:</dt><dd><p>Starts up the entire Drone Tracker program the user interacts with</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>PhoneController:</dt><dd><p>Sends and receives network signals from the phone over TCP to control the phone.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>OpenCV:</dt><dd><p>Takes the file of the video transferred from the phone and extracts the coordinates of the drone from the footage</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
 <div class="toctree-wrapper compound">
+</div>
 </div>
 </div>
 <div class="section" id="module-src.Controllers.Program_Controller">
@@ -433,9 +463,9 @@ the points together into a single 3D coordinate list.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-src.Controllers.OpenCVThreadedController">
-<span id="opencv"></span><h1>OpenCV<a class="headerlink" href="#module-src.Controllers.OpenCVThreadedController" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<div class="section" id="id3">
+<h1>OpenCV<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.Controllers.OpenCVThreadedController"></span><dl class="class">
 <dt id="src.Controllers.OpenCVThreadedController.DroneTracker">
 <em class="property">class </em><code class="sig-prename descclassname">src.Controllers.OpenCVThreadedController.</code><code class="sig-name descname">DroneTracker</code><span class="sig-paren">(</span><em class="sig-param">videoFile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#DroneTracker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.DroneTracker" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class is intended to track sUASs in video recorded from the smartphone app
@@ -614,6 +644,19 @@ are trying to access a function that requires the phone cameras to be rolling.</
 started and any actions that depend on it will fail.</p>
 </dd></dl>
 
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.VideoCorruptedException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">VideoCorruptedException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#VideoCorruptedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.VideoCorruptedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This error is raised if the video being read is corrupted, or if the frames cannot be
+successfully extracted from the video files</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.VideoNotPresentException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">VideoNotPresentException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#VideoNotPresentException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.VideoNotPresentException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This error is raised when the video for processing is not there, or if an incorrect path is given</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-src.Controllers.PhoneController">
 <span id="phonecontroller"></span><h1>PhoneController<a class="headerlink" href="#module-src.Controllers.PhoneController" title="Permalink to this headline">¶</a></h1>
@@ -625,8 +668,12 @@ TCP connections with each phone in order to control them.</p>
 <dl class="method">
 <dt id="src.Controllers.PhoneController.PhoneControl.closeConn">
 <code class="sig-name descname">closeConn</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.closeConn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.closeConn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Closes all of the connections and the socket.
-:return: None</p>
+<dd><p>Closes all of the connections and the socket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -2485,8 +2532,12 @@ put on screen.</p>
 <dl class="method">
 <dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.setTitle">
 <code class="sig-name descname">setTitle</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.setTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.setTitle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets up the title with the application title on top and the name of the screen just below it.
-:return: Layout with the application title and screen title labels</p>
+<dd><p>Sets up the title with the application title on top and the name of the screen just below it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Layout with the application title and screen title labels</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">

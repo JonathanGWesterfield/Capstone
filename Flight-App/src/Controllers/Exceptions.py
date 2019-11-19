@@ -74,3 +74,28 @@ class FailedDisconnectException(Exception):
         :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)
+
+class VideoNotPresentException(Exception):
+    """
+    This error is raised when the video for processing is not there, or if an incorrect path is given
+    """
+    def __init__(self, message: str):
+        """
+        Calls the base Python Exception class and provides it with the error message we want to display.
+
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
+        """
+        Exception.__init__(self, message)
+
+class VideoCorruptedException(Exception):
+    """
+    This error is raised if the video being read is corrupted, or if the frames cannot be
+    successfully extracted from the video files
+    """
+    def __init__(self, message: str):
+        """
+        Calls the base Python Exception class and provides it with the error message we want to display.
+
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
+        """
+        Exception.__init__(self, message)

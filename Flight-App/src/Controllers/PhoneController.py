@@ -67,6 +67,7 @@ class PhoneControl:
     def closeConn(self) -> None:
         """
         Closes all of the connections and the socket.
+
         :return: None
         """
         # Make sure the phones are connected and synced first

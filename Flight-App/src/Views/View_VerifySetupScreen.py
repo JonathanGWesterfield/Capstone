@@ -149,6 +149,7 @@ class VerifySetupWindow(qtw.QWidget):
     def setTitle(self) -> qtw.QVBoxLayout:
         """
         Sets up the title with the application title on top and the name of the screen just below it.
+
         :return: Layout with the application title and screen title labels
         """
         lblTitle = qtw.QLabel("UAS Performance Tracker")
