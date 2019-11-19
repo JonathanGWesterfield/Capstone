@@ -8,6 +8,7 @@ import argparse
 import numpy as np
 from threading import Thread
 import queue
+import math
 
 import time
 
@@ -373,6 +374,45 @@ def merge_data_points(phone1Points:list, phone2Points:list) -> dict:
         points.append(tup)
 
     return points
+
+def compute_coordinates(xA, yB, zA, zB):
+    """
+    Compute the real world coordinates from pixel coordinates.
+    :param xA: position of the drone measured from left of camera A's image (in px)
+    :param yB: position of the drone measured from left of camera B's image (in px)
+    :param zA: position of the drone measured from bottom of camera A's image (in px)
+    :param zB: position of the drone measured from bottom of camera B's image (in px)
+    :return: x_coord, y_coord, z_coord as the real world coordinates of the drone
+    """
+    # Define constants
+    Ial = 200 # pixel value of the left side of the flight region as seen by camA
+    Iar = 200 # pixel value of the right side of the flight region as seen by camA
+    Ibr = 200 # pixel value of the right side of the flight region as seen by camB
+    Ibl = 200 # pixel value of the left side of the flight region as seen by cmamB
+    w = 15 # width of the field in meters
+    d = 16.736 # distance of the cameras from the edges of the flight area
+    Ih = 2840 # pixel value of the height of the image
+    Theta_C = math.pi / 12 # angle of (the center of the field of view of) the camera relative to the horizontal, in radians
+
+    # Calculate X and Y
+    Tx = (w*(xA - ((Ial + Iar)/2))) / (d*(Iar-Ial))
+    Ty = (w*(yB - ((Ibl + Ibr)/2))) / (d*(Ibr - Ibl))
+    x_coord = (2*d*(Ty + math.pow(Ty, 2)) + w*(1 + Ty + 2*math.pow(Ty,2))) / (2*(math.pow(Ty, 2) + 1))
+    y_coord = - (2*d*(math.pow(Ty, 2) - Ty) - (w*(Ty-1))) / (2*(math.pow(Ty, 2) + 1))
+
+    # Calculate angles
+    Theta_X = math.atan((x_coord-w/2)/(d+y_coord))
+    Theta_Y = math.atan((y_coord-w/2)/(d+w-x_coord))
+    Theta_Z_A = Theta_C + math.atan((w*(2*zA - Ih)) / ((2*d*math.cos(Theta_C))*(Iar - Ial)))
+    Theta_Z_B = Theta_C + math.atan((w*(2*zB - Ih)) / ((2*d*math.cos(Theta_C))*(Ibr-Ibl)))
+
+    # Calculate Z
+    z_coord_A = ((y_coord+d) / (math.cos(Theta_X))) * math.tan(Theta_Z_A)
+    z_coord_B = ((w-x_coord + d) / (math.cos(Theta_Y))) * math.tan(Theta_Z_B)
+    z_coord = (z_coord_A + z_coord_B) / 2
+
+    # Return x, y, z
+    return x_coord, y_coord, z_coord
 
 def get_phone_id(filename:str) -> str:
     """
