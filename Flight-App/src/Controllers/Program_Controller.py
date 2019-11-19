@@ -15,10 +15,15 @@ class Controller:
     """
     Controller class for the application. Changes between application views based on user input.
     Run this file in order to begin the application.
-    :return: None
     """
 
-    def __init__(self, phoneControl: PhoneControl): #, rpiControl: RPIController):
+    def __init__(self, phoneControl: PhoneControl) -> None:
+        """
+        Class constructor. Creates an empty .flight file structure to be overwritten by the flight
+        output from the opencv processes.
+
+        :param phoneControl: The phone controller object used to send/receive signals to/from the phones.
+        """
         self.pilotName = ''
         self.instructorName = ''
         self.flightInstructions = ''
@@ -43,9 +48,10 @@ class Controller:
         self.setupFileStructure() # setup the file structure needed for the program
         self.cleanup() # make sure we start with a clean file directory structure (except for past .flight files)
 
-    def show_home(self):
+    def show_home(self) -> None:
         """
         Loads the home startup screen for the user.
+
         :return: None
         """
         # Close previous window.
@@ -84,9 +90,10 @@ class Controller:
         # Show the screen
         self.home.show()
 
-    def import_flight(self, flightPath: str):
+    def import_flight(self, flightPath: str) -> None:
         """
         Reads in a .flight file and displays the report view for it.
+
         :param flightPath: String with file path of chosen file to import.
         :return: None
         """
@@ -94,9 +101,10 @@ class Controller:
             print('Importing file ' + flightPath)
             self.show_report_window(flightPath, True, {})
 
-    def show_verify_screen(self):
+    def show_verify_screen(self) -> None:
         """
         Loads the verify setup screen for the user.
+
         :return: None
         """
         # Initialize verify setup screen by instantiating VerifySetupWindow class.
@@ -116,16 +124,18 @@ class Controller:
         # Show verify setup screen.
         self.verify_screen.show()
 
-    def updateFlightStatus(self):
+    def updateFlightStatus(self) -> None:
         """
         Sets the status of the system verification test.
+
         :return: none
         """
         self.flightModeEnabled = True
 
-    def show_tracking_window(self):
+    def show_tracking_window(self) -> None:
         """
         Loads the tracking screen for the user.
+
         :return: None
         """
         # Close report window if open.
@@ -152,9 +162,10 @@ class Controller:
         # Show the tracking screen.
         self.tracking_window.show()
 
-    def get_flight_info(self, pilotName: str, instructorName: str, flightInstructions: str):
+    def get_flight_info(self, pilotName: str, instructorName: str, flightInstructions: str) -> None:
         """
          Saves the pilot name, instructor name, and flight instructions once confirmed by the user.
+
          :param pilotName: String containing the pilot name
          :param instructorName: String containing the instructor name
          :param flightInstructions: String containing the flight instructions
@@ -164,9 +175,10 @@ class Controller:
         self.instructorName = instructorName
         self.flightInstructions = flightInstructions
 
-    def show_report_window(self, previousFlight: str, usingPreviousFlight: bool, flightData: dict):
+    def show_report_window(self, previousFlight: str, usingPreviousFlight: bool, flightData: dict) -> None:
         """
         Loads the report screen for the user.
+
         :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is
         true, or empty if usingPreviousFlight is false.
         :param usingPreviousFlight: Boolean representing if the report view is for an existing .flight file or a
@@ -196,9 +208,10 @@ class Controller:
         # Show the report screen.
         self.report_window.show()
 
-    def show_loading_window(self):
+    def show_loading_window(self) -> None:
         """
         Loads the loading screen for the user.
+
         :return: None
         """
         # Initialize the report by instantiating LoadingWindow class.
@@ -226,11 +239,12 @@ class Controller:
 
         print("Window shown")
 
-    def setupFileStructure(self):
+    def setupFileStructure(self) -> None:
         """
         Sets up the folders that need to exist before we can transfer footage and analyze. The file structure
         should be: drone-tracker > FTP, opencv-output, Flights. This makes it easier to keep track of
         the files that we are working with during the application lifecycle.
+
         :return: None
         """
         self.pathToFiles = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/drone-tracker/')
@@ -259,12 +273,13 @@ class Controller:
 
         return
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         """
         Goes through our file structure and deletes all files (except anything in the Flight folder).
         This is for when we are done with the program and want to delete the raw footage from the phone,
         the output points from the opencv processing and any other files that were used during the
         program execution. Should also be called before any time the user wants to fly.
+
         :return: None
         """
         # Delete everything in the FTP folder
@@ -295,6 +310,7 @@ class Controller:
         the phone to the laptop. We need to grab the 2 videos filenames in the folder in order to send them to
         the opencv analysis to have the coordinates extracted. This will also be used when we need to splice
         together all of the coordinates output by the OpenCVController json files.
+
         :param folderPath: The directory that we need to get all of the files from.
         :return: A list of all of the file names in that directory
         """
@@ -312,6 +328,7 @@ class Controller:
         Will return the file names in order. This means that phone-1 will be first in the list and
         phone-2 will be second. Need this to ensure that a specific phone's coordinates are being
         used for the Z, X axis and the other is used for Z, Y
+
         :param files: The list of files we get from the get_all_files() function
         :return: The list of file names starting with phone-1 first and phone-2 second
         """
@@ -343,9 +360,10 @@ class Controller:
         return inOrder
 
 
-    def transfer_footage(self, phoneControl: PhoneControl):
+    def transfer_footage(self, phoneControl: PhoneControl) -> None:
         """
         Transfers footage and calls DroneController to analyze the footage.
+
         :param phoneControl: Phone Controller object for the active phone connection.
         :return: none
         """
@@ -362,10 +380,11 @@ class Controller:
             msgBox.setText(str(e))
             msgBox.exec()
 
-    def start_analysis(self):
+    def start_analysis(self) -> None:
         """
         Spawns the sub processes that will analyze the footage of the drone footage. We will need
         to have the files before hand so we can pass them into each OpenCVController process.
+
         :return: None
         """
         # Get the files deposited into the FTP directory from the phone
@@ -384,12 +403,13 @@ class Controller:
 
         return
 
-    def wait_for_analysis(self):
+    def wait_for_analysis(self) -> None:
         """
         Waits for the analysis of the footage to complete. Essentially is just a loop that checks to
         see if the file locks (*.lock) for our files are still in that directory. If they are, we wait,
         otherwise, we will exit the loop. From there, we need to get the output from those processes and splice
         the points together into a single 3D coordinate list.
+
         :return: None
         """
         finished = False
@@ -417,26 +437,29 @@ class Controller:
         self.transfer_complete(self.flightDict)
 
 
-    def transfer_complete(self, flightData: dict):
+    def transfer_complete(self, flightData: dict) -> None:
         """
         Calls the report view using the flight data dictionary.
+
         :param flightData: Dictionary of flight data
         :return: none.
         """
         self.show_report_window("", False, flightData)
 
-def createPhoneConnection(portNo):
+def createPhoneConnection(portNo) -> PhoneControl:
     """
     Creates a PhoneControl object used to commmunicate with the phones.
-    :param portNo: Port number
+
+    :param portNo: Port number we are going to be listening for signals from the phone over.
     :return: PhoneControl object.
     """
     phoneControl = PhoneControl(portNo)
     return phoneControl
 
-def close_conn(phoneControl: PhoneControl):
+def close_conn(phoneControl: PhoneControl) -> None:
     """
     Closes the connection from the laptop to the phones.
+
     :param phoneControl: PhoneControl object containing the active connection.
     :return: None.
     """
@@ -446,9 +469,10 @@ def close_conn(phoneControl: PhoneControl):
     except Exception as e:
         print(str(e))
 
-def main():
+def main() -> None:
     """
     Begins the main application.
+
     :return: None
     """
     # Create the main application.

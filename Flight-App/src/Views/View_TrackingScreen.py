@@ -19,7 +19,7 @@ class TrackingWindow(qtw.QWidget):
     sigStopTracking = qtc.pyqtSignal()
     sigFlightInfoConfirmed = qtc.pyqtSignal(str, str, str)
 
-    def __init__(self, phoneControl: PhoneControl):
+    def __init__(self, phoneControl: PhoneControl) -> None:
         """
         Class Constructor
         """
@@ -29,9 +29,10 @@ class TrackingWindow(qtw.QWidget):
         self.startedTracking = False
         self.initView()
 
-    def initView(self):
+    def initView(self) -> None:
         """
          Initializes and lays out all of the controls and elements on the view.
+
          :return: None
          """
         # Set up window
@@ -82,16 +83,18 @@ class TrackingWindow(qtw.QWidget):
         # Attach the layout to the screen
         self.setLayout(vLayout)
 
-    def returnHome(self):
+    def returnHome(self) -> None:
         """
         Sends a signal to the main controller that the Return Home button was pushed.
+
         :return: none
         """
         self.sigReturnHome.emit()
 
-    def startTracking(self):
+    def startTracking(self) -> None:
         """
         Sends a signal to the main controller that the Start Tracking button was pushed.
+
         :return: none
         """
         if self.startedTracking is False:
@@ -113,9 +116,10 @@ class TrackingWindow(qtw.QWidget):
                 "Tracking has already been started.")
             msgBox.exec()
 
-    def stopTracking(self):
+    def stopTracking(self) -> None:
         """
         Sends a signal to the main controller that the Stop Tracking button was pushed.
+
         :return: none
         """
         try:
@@ -134,6 +138,7 @@ class TrackingWindow(qtw.QWidget):
     def setTitle(self) -> qtw.QVBoxLayout:
         """
         Sets up the title with the application title on top and the name of the screen just below it.
+
         :return: Layout with the application title and screen title labels
         """
         lblTitle = qtw.QLabel("UAS Performance Tracker")
@@ -153,6 +158,7 @@ class TrackingWindow(qtw.QWidget):
     def setSubTitle(self, text) -> qtw.QLabel:
         """
         Sets up a subtitle label for the window
+
         :return: Subtitle of the application taken from the "text" parameter
         """
         lblTitle = qtw.QLabel(text)
@@ -164,6 +170,7 @@ class TrackingWindow(qtw.QWidget):
     def setStatusLabel(self, text) -> qtw.QLabel:
         """
         Sets up a status label for the window
+
         :return: Label of the application taken from the "text" parameter
         """
         lblTitle = qtw.QLabel(text)
@@ -172,9 +179,10 @@ class TrackingWindow(qtw.QWidget):
 
         return lblTitle
 
-    def confirmValues(self):
+    def confirmValues(self) -> None:
         """
          Confirms the values in the textboxes by displaying a pop up message of the values.
+
          :return: None
          """
         pilotName = self.TBPilot.text()
@@ -187,7 +195,7 @@ class TrackingWindow(qtw.QWidget):
             "Pilot Name: \n" + pilotName + "\nInstructor Name: \n" + instructorName + "\nInstructions: \n" + instructions)
         msgBox.exec()
 
-    def clearValues(self):
+    def clearValues(self) -> None:
         """
          Clears the values in the text boxes.
          :return: None
@@ -204,6 +212,7 @@ class TrackingWindow(qtw.QWidget):
         """
         Sets up the Pilot label and the textbox that will be used to set the pilot flying during this
         session.
+
         :return: Returns a vertical layout with the pilot label over the pilot textbox
         """
         self.__lblPilot = qtw.QLabel('Pilot: ')
@@ -224,6 +233,7 @@ class TrackingWindow(qtw.QWidget):
         """
         Sets up the instructor label and the textbox that will be used to set the instructor flying during this
         session.
+
         :return: Returns a vertical layout with the instructor label over the instructor textbox
         """
         self.__lblInstr = qtw.QLabel('Instructor: ')
@@ -244,6 +254,7 @@ class TrackingWindow(qtw.QWidget):
         """
         Sets the textbox that will allow the instructor to type in the flight instructions for the pilot
         to try to match.
+
         :return: A vertical layout with the Instructions label on top of the text box
         """
         lblInstr = self.setSubTitle('Flight Instructions')
@@ -260,6 +271,7 @@ class TrackingWindow(qtw.QWidget):
     def setClrConfirmBtns(self) -> qtw.QHBoxLayout:
         """
         Sets the buttons for clearing and confirming the pilot, instructor, and flight instruction information.
+
         :return: The confirmation button
         """
         self.__btnClear = qtw.QPushButton('Clear')
@@ -279,6 +291,7 @@ class TrackingWindow(qtw.QWidget):
         """
         Sets the label that will continuously update and display the time that the application has been
         actively tracking. Need to attach a QTimer() to it.
+
         :return: The label that will contain the timer.
         """
         lblTimerTitle = qtw.QLabel('Time Spent Tracking Drone:')
@@ -296,6 +309,7 @@ class TrackingWindow(qtw.QWidget):
     def setStartAndStopBtns(self) -> qtw.QHBoxLayout:
         """
         Sets up the start and stop buttons for tracking the drones.
+
         :return:
         """
 
@@ -319,23 +333,26 @@ class TrackingWindow(qtw.QWidget):
     def TBPilot(self) -> qtw.QLineEdit:
         """
         Getter for the Pilot Textbox so we can attach functionality to it
+
         :return: The pilot textbox
         """
         return self.__tbPilot
 
     @TBPilot.setter
-    def set_TBPilot(self, tb: qtw.QLineEdit):
+    def set_TBPilot(self, tb: qtw.QLineEdit) -> None:
         """
         Setter for the Pilot Textbox
+
         :param tb: Textbox we want to replace the current one with
         :return: None
         """
         self.__tbPilot = tb
 
     @TBPilot.deleter
-    def del_TBPilot(self):
+    def del_TBPilot(self) -> None:
         """
         Deleter for the pilot textbox
+
         :return: None
         """
         del self.__tbPilot
@@ -347,23 +364,26 @@ class TrackingWindow(qtw.QWidget):
     def LblPilot(self) -> qtw.QLabel:
         """
         Getter for the Pilot label so we can attach functionality to it
+
         :return: The pilot label
         """
         return self.__lblPilot
 
     @LblPilot.setter
-    def set_LblPilot(self, lbl: qtw.QLabel):
+    def set_LblPilot(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the pilot label
+
         :param lbl:  Label we want to replace the current one with
         :return: None
         """
         self.__lblPilot = lbl
 
     @LblPilot.deleter
-    def del_LblPilot(self):
+    def del_LblPilot(self) -> None:
         """
         Deleter for the pilot label
+
         :return: None
         """
         del self.__lblPilot
@@ -375,24 +395,27 @@ class TrackingWindow(qtw.QWidget):
     def TBInstructor(self) -> qtw.QLineEdit:
         """
         Getter for the Instructor textbox so we can attach functionality to it later.
+
         :return: The instructor textbox
         """
         return self.__tbInstr
 
     @TBInstructor.setter
-    def set_TBInstructor(self, tb: qtw.QLineEdit):
+    def set_TBInstructor(self, tb: qtw.QLineEdit) -> None:
         """
         Setter for the instructor textbox
+
         :param tb: The textbox we want to replace the current one with
         :return: None
         """
         self.__tbInstr = tb
 
     @TBInstructor.deleter
-    def del_TBInstructor(self):
+    def del_TBInstructor(self) -> None:
         """
         Deleter for the instructor textbox
-        :return:
+
+        :return: None
         """
         del self.__tbInstr
 
@@ -403,23 +426,26 @@ class TrackingWindow(qtw.QWidget):
     def LblInstructor(self) -> qtw.QLabel:
         """
         Getter for the Instructor label so we can attach functionality to it later.
+
         :return: The instructor label
         """
         return self.__lblInstr
 
     @LblInstructor.setter
-    def set_LblInstructor(self, lbl: qtw.QLabel):
+    def set_LblInstructor(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the instructor label
+
         :param lbl: The label we want to replace the current one with
         :return: None
         """
         self.__lblInstr = lbl
 
     @LblInstructor.deleter
-    def del_LblInstructor(self):
+    def del_LblInstructor(self) -> None:
         """
         Deleter for the instructor label
+
         :return: None
         """
         del self.__lblInstr
@@ -431,23 +457,26 @@ class TrackingWindow(qtw.QWidget):
     def TEInstructions(self) -> qtw.QPlainTextEdit:
         """
         Getter for the instructions text edit box
+
         :return: Reference to the instructions text edit box
         """
         return self.__teInstr
 
     @TEInstructions.setter
-    def set_TEInstructions(self, te: qtw.QPlainTextEdit):
+    def set_TEInstructions(self, te: qtw.QPlainTextEdit) -> None:
         """
         Setter for the instructions text edit box
+
         :param te: The Text edit box we want to replace the current one with.
         :return: None
         """
         self.__teInstr = te
 
     @TEInstructions.deleter
-    def del_TEInstructions(self):
+    def del_TEInstructions(self) -> None:
         """
         Deleter for the Instructions Text edit box
+
         :return: None
         """
         del self.__teInstr
@@ -459,23 +488,26 @@ class TrackingWindow(qtw.QWidget):
     def BtnClear(self) -> qtw.QPushButton:
         """
         Getter for the Clear button so we can attach functionality to it later.
+
         :return: Reference to the clear button
         """
         return self.__btnClear
 
     @BtnClear.setter
-    def set_BtnClear(self, btn: qtw.QPushButton):
+    def set_BtnClear(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the clear button.
+
         :param btn: The button we want to replace the current one with.
         :return: None
         """
         self.__btnClear = btn
 
     @BtnClear.deleter
-    def del_BtnClear(self):
+    def del_BtnClear(self) -> None:
         """
         Deleter for the clear button.
+
         :return: None
         """
         del self.__btnClear
@@ -487,23 +519,26 @@ class TrackingWindow(qtw.QWidget):
     def BtnConfirm(self) -> qtw.QPushButton:
         """
         Getter for the Confirm button so we can attach functionality to it later.
+
         :return: Reference to the confirm button
         """
         return self.__btnConfirm
 
     @BtnConfirm.setter
-    def set_BtnConfirm(self, btn: qtw.QPushButton):
+    def set_BtnConfirm(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the confirm button.
+
         :param btn: The button we want to replace the current one with.
         :return: None
         """
         self.__btnConfirm = btn
 
     @BtnConfirm.deleter
-    def del_BtnConfirm(self):
+    def del_BtnConfirm(self) -> None:
         """
         Deleter for the confirm button.
+
         :return: None
         """
         del self.__btnConfirm
@@ -516,23 +551,26 @@ class TrackingWindow(qtw.QWidget):
         """
         Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
         application has been tracking the drone.
+
         :return: The timer label
         """
         return self.__lblTimer
 
     @LblTimer.setter
-    def set_LblTimer(self, lbl: qtw.QLabel):
+    def set_LblTimer(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the LblTimer property.
+
         :param lbl: The label we want to replace the current one with.
         :return: None
         """
         self.__lblTimer = lbl
 
     @LblTimer.deleter
-    def del_LblTimer(self):
+    def del_LblTimer(self) -> None:
         """
         Deleter for the timer label.
+
         :return: None
         """
         del self.__lblTimer
@@ -544,23 +582,26 @@ class TrackingWindow(qtw.QWidget):
     def BtnStart(self) -> qtw.QPushButton:
         """
         Getter for the Start button
+
         :return: Reference to the start button
         """
         return self.__btnStart
 
     @BtnStart.setter
-    def set_BtnStart(self, btn: qtw.QPushButton):
+    def set_BtnStart(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the start button.
+
         :param btn: Button we want to replace the current one with.
         :return: None
         """
         self.__btnStart = btn
 
     @BtnStart.deleter
-    def del_BtnStart(self):
+    def del_BtnStart(self) -> None:
         """
         Deleter for the start button.
+
         :return: None
         """
         del self.__btnStart
@@ -572,23 +613,26 @@ class TrackingWindow(qtw.QWidget):
     def BtnStop(self) -> qtw.QPushButton:
         """
         Getter for the Stop button
+
         :return: Reference to the stop button
         """
         return self.__btnStop
 
     @BtnStop.setter
-    def set_BtnStop(self, btn: qtw.QPushButton):
+    def set_BtnStop(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the stop button.
+
         :param btn: Button we want to replace the current one with.
         :return: None
         """
         self.__btnStop = btn
 
     @BtnStop.deleter
-    def del_BtnStop(self):
+    def del_BtnStop(self) -> None:
         """
         Deleter for the stop button.
+        
         :return: None
         """
         del self.__btnStop

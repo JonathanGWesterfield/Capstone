@@ -2,10 +2,15 @@ import unittest
 import Export.ImportFile
 
 class ImportFileTests(unittest.TestCase):
-    def test_import(self):
+    """
+    This test class is used the test the import and export functions to ensure we can successfully
+    save and reload past flights.
+    """
+    def test_import(self) -> None:
         """
         Test that .flight file generated from exporting flight data can be imported successfully.
         All data members should exist, and no extra keys should be in the file.
+
         :return: None
         """
         flightDict = Export.ImportFile.importData('../Export/ExportedFiles/Hayley.flight')

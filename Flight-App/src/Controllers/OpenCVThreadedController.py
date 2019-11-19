@@ -18,6 +18,12 @@ class VideoNotPresentException(Exception):
     This error is raised when the video for processing is not there, or if an incorrect path is given
     """
     def __init__(self, message: str):
+        """
+        Calls the base Python Exception class and provides it with the error message we want to display.
+
+        :param message: The error message we want the exception to contain to help with figuring out why the
+        exception be being thrown.
+        """
         Exception.__init__(self, message)
 
 class VideoCorruptedException(Exception):
@@ -26,6 +32,12 @@ class VideoCorruptedException(Exception):
     successfully extracted from the video files
     """
     def __init__(self, message: str):
+        """
+        Calls the base Python Exception class and provides it with the error message we want to display.
+
+        :param message: The error message we want the exception to contain to help with figuring out why the
+        exception be being thrown.
+        """
         Exception.__init__(self, message)
 
 class DroneTracker:
@@ -34,12 +46,12 @@ class DroneTracker:
     All containing code to track the drone and output the coordinates extracted from
     the recorded video is contained within this class, and this file is intended
     to be run as a separate process so that both of the recordings can be processed
-    in parallel (don't try this on Windows though)
+    in parallel (don't try this on Windows though).
     """
 
     major_ver, minor_ver, subminor_ver = (cv2.__version__).split('.')
 
-    def __init__(self, videoFile):
+    def __init__(self, videoFile) -> None:
         """
         Initializes the tracker with the video file path
 
@@ -90,11 +102,12 @@ class DroneTracker:
 
     def resize_bbox(self, bbox: tuple, factor=2) -> tuple:
         """
-        Resizes the bounding box for translating it to the full size video
-
-        In order to be able to see enough of the footage on screen to draw the box around the drone, the video frame must be resized, so the drawn bounding box must be translated back into the coordinate system the full size video uses
-
-        For example, if the 4k footage is shrunk by 50% (to 1080p), the scale factor here must be 2 so the coordinates chosen in the 1080p frame will match up with the actual drone coordinates in the 4k frame
+        Resizes the bounding box for translating it to the full size video.
+        In order to be able to see enough of the footage on screen to draw the box around the drone,
+        the video frame must be resized, so the drawn bounding box must be translated back into the
+        coordinate system the full size video uses.
+        For example, if the 4k footage is shrunk by 50% (to 1080p), the scale factor here must be 2
+        so the coordinates chosen in the 1080p frame will match up with the actual drone coordinates in the 4k frame.
 
         :param bbox: bounding box of selected drone, which is (x, y, box_width, box_height)
         :param factor: the factor by which to scale the bounding box
@@ -106,10 +119,12 @@ class DroneTracker:
         height = bbox[3] * factor
         return (x1, y1, width, height);
 
-    def is_light_on(self, frame):
+    def is_light_on(self, frame) -> bool:
         """
-        Takes in a video frame and returns the frame at which the light turns on
+        Takes in a video frame and returns the frame at which the light turns on.
 
+        :param frame: A single video frame to see if the light is on.
+        :return: True if the light is on, false otherwise.
         """
         # HSV range for white light
         white_lower = np.array([0, 0, 20])
@@ -130,7 +145,7 @@ class DroneTracker:
     def read_video(self) -> None:
         """
         This function is to be threaded, and its purpose is to read in the video file
-        all at once to improve performance
+        all at once to improve performance.
         """
 
         video = cv2.VideoCapture(self.videoFile)
@@ -166,8 +181,9 @@ class DroneTracker:
         Function that contains all code to track the drone, and is to be run
         as a thread. Will run much slower if 2 processes running this method are started and run on different
         videos at the same time.
+
         :return: List of tuples of the extracted coordinates of the footage, in the format
-        [(time, x_coord, y_coord, z_coord)]
+        [(time, x_coord, y_coord, z_coord)].
         """
         # Start video thread
         self.read_video_thread.start()
@@ -336,10 +352,11 @@ def merge_data_points(phone1Points:list, phone2Points:list) -> dict:
     """
     Takes the points outputted by the opencv analysis and merges the points together to create
     the 3D coordinates needed to output the visual flight path.
+
     :param phone1Points: The opencv datapoints created from the main method of this class for the first phone
     :param phone2Points: The opencv datapoints created from the main method of this class for the second phone
-    :return: list of tuples of coordinates and time values that represent the flight path of the drones
-                 in the format [(time, x_coord, y_coord, z_coord)]
+    :return: List of tuples of coordinates and time values that represent the flight path of the drones
+    in the format [(time, x_coord, y_coord, z_coord)]
     """
     points = []
 
@@ -364,6 +381,7 @@ def merge_data_points(phone1Points:list, phone2Points:list) -> dict:
 def get_phone_id(filename:str) -> str:
     """
     Gets the phone Id from the end of the file name so we can keep track of the json and lock files.
+
     :param filename: The file name of the video file. Should have "phone-#.mp4" file names.
     :return: The ID of the phone from the file name
     """
@@ -372,10 +390,11 @@ def get_phone_id(filename:str) -> str:
 
     return fileTokens[-2]
 
-def main(filename:str):
+def main(filename:str) -> None:
     """
     Will take the filename passed in and analyze the footage. All coordinates of the drone in the footage
     will be output to a json file.
+
     :return: None
     """
     try:

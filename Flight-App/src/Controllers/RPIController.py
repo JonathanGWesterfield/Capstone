@@ -14,6 +14,7 @@ class RPIController:
         """
         Class constructor. Initializes the controller with the proper settings to make HTTP requests
         to the node server running on the Raspberry pi.
+
         :param serverHost: The ip address or domain name of the server (the Raspberry PI).
         :param portNum: The port number that the node server is listening on.
         """
@@ -24,8 +25,9 @@ class RPIController:
     def flash(self) -> bool:
         """
         Sends an http request to the server to flash the light that will sync up the footage.
-        ':raises FailedRPIFlashException: Throws this exception if the server didn't send back
-            the acknowledgement signal we were expecting.
+
+        :raises FailedRPIFlashException: Throws this exception if the server didn't send back
+        the acknowledgement signal we were expecting.
         :return: True if the server sent back the **FLASH_ACKNOWLEDGE** message, false otherwise.
         """
         r = requests.get(self.__host + self.__flashEndpoint)
@@ -43,8 +45,9 @@ class RPIController:
         """
         Sends an http request to the server to kill the server. Will be called whenever the Flight
         application is finished and killed.
+
         :raises FailedDisconnectException: Throws this exception if the server didn't send back
-            the acknowledgement signal we were expecting.
+        the acknowledgement signal we were expecting.
         :return: True if the server is dead, false otherwise.
         """
         r = requests.get(self.__host + self.__disconnectEndpoint)
@@ -62,6 +65,7 @@ class RPIController:
 def main():
     """
     Main method used for testing.
+
     :return: None
     """
     control = RPIController('localhost', '9876')

@@ -1,9 +1,10 @@
 import json
 
 def export_data(pilotName, instructorName, flightDate, flightLength, flightInstructions,
-                xCoordinates, yCoordinates, zCoordinates, velocityValues, outPath):
+                xCoordinates, yCoordinates, zCoordinates, velocityValues, outPath) -> None:
     """
     Exports the flight data to a JSON file stored with a ".flight" extension.
+
     :param pilotName: String containing the pilot name
     :param instructorName: String containing the instructor name
     :param flightDate: String containing the flight date

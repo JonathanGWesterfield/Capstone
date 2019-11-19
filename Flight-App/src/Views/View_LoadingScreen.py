@@ -24,9 +24,10 @@ class LoadingWindow(qtw.QWidget):
         self.setFixedSize(550, 550)
         self.initView()
 
-    def initView(self):
+    def initView(self) -> None:
         """
         Sets up the view and lays out all of the components.
+
         :return: None
         """
         self.setWindowTitle('Loading Screen')
@@ -66,16 +67,18 @@ class LoadingWindow(qtw.QWidget):
         self.setLayout(vLayout)
         self.show()
 
-    def returnHome(self):
+    def returnHome(self) -> None:
         """
         Sends a signal to the main controller that the Cancel and Return to Home button was pushed.
+
         :return: none
         """
         self.sigReturnHome.emit()
 
-    def signalTransferFootage(self):
+    def signalTransferFootage(self) -> None:
         """
         Sends a signal to the main controller that the button to transfer footage was pressed.
+
         :return: none
         """
         self.__lblStatus.setText("File is downloading...")
@@ -86,10 +89,11 @@ class LoadingWindow(qtw.QWidget):
         msgBox.exec()
         self.sigTransferFootage.emit()
 
-    def signalTestReport(self):
+    def signalTestReport(self) -> None:
         """
         Sends a signal to the main controller that the Test Report button was pushed.
         NOTE: ONLY USED FOR TESTING PURPOSES
+
         :return: none
         """
         self.sigTestReport.emit()
@@ -97,6 +101,7 @@ class LoadingWindow(qtw.QWidget):
     def setTitle(self) -> qtw.QLabel:
         """
         Sets up the title with the application title on top and the name of the screen just below it.
+
         :return: Layout with the application title and screen title labels
         """
         lblTitle = qtw.QLabel("UAS Performance Tracker")
@@ -106,6 +111,11 @@ class LoadingWindow(qtw.QWidget):
         return lblTitle
 
     def setSubtitle(self) -> qtw.QLabel:
+        """
+        Sets up the subtitle label.
+
+        :return: The subtitle label
+        """
         lblStatus = qtw.QLabel("Click button below to initiate transferring of footage.")
         lblStatus.setFont(qtg.QFont("Helvetica Neue", 16))
         lblStatus.setAlignment(qtc.Qt.AlignCenter)
@@ -116,7 +126,8 @@ class LoadingWindow(qtw.QWidget):
         """
         Used for configuring the loading icon on the loading screen.
         Loading icon is a gif, so QMovie is used to animate the icon.
-        :return: None
+
+        :return: The icon containing the loading label.
         """
         label = qtw.QLabel()
         movie = qtg.QMovie('../resources/loading2.gif')
@@ -133,23 +144,26 @@ class LoadingWindow(qtw.QWidget):
         """
         Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
         application has been tracking the drone.
+
         :return: The timer label
         """
         return self.__lblStatus
 
     @LblStatus.setter
-    def set_LblStatus(self, lbl: qtw.QLabel):
+    def set_LblStatus(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the LblTimer property.
         :param lbl: The label we want to replace the current one with.
+
         :return: None
         """
         self.__lblStatus = lbl
 
     @LblStatus.deleter
-    def del_LblStatus(self):
+    def del_LblStatus(self) -> None:
         """
         Deleter for the timer label.
+
         :return: None
         """
         del self.__lblStatus
@@ -160,23 +174,26 @@ class LoadingWindow(qtw.QWidget):
     def BtnHome(self) -> qtw.QPushButton:
         """
         The home for the view. Is used to return to home screen.
+
         :return: None
         """
         return self.__btnHome
 
     @BtnHome.setter
-    def set_BtnHome(self, btn: qtw.QPushButton):
+    def set_BtnHome(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the home button.
+
         :param btn: A Qt QPushButton we want to replace the home button with.
         :return: None
         """
         self.__btnHome = btn
 
     @BtnHome.deleter
-    def del_BtnHome(self):
+    def del_BtnHome(self) -> None:
         """
         Deleter for the home button. Never call this.
+
         :return: None
         """
         del self.__btnHome
@@ -185,23 +202,26 @@ class LoadingWindow(qtw.QWidget):
     def BtnTestReport(self) -> qtw.QPushButton:
         """
         The test report for the view. Is used to switch to the test report screen.
-        :return: None
+
+        :return: The reference to the test report button.
         """
         return self.__btnTestReport
 
     @BtnTestReport.setter
-    def set_BtnTestReport(self, btn: qtw.QPushButton):
+    def set_BtnTestReport(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the test report button.
+
         :param btn: A Qt QPushButton we want to replace the test report button with.
         :return: None
         """
         self.__btnTestReport = btn
 
     @BtnTestReport.deleter
-    def del_BtnTestReport(self):
+    def del_BtnTestReport(self) -> None:
         """
         Deleter for the test report button. Never call this.
+
         :return: None
         """
         del self.__btnTestReport

@@ -1,9 +1,10 @@
 import json
 
-def importData(inPath):
+def importData(inPath) -> dict:
     """
     Imports the flight data from a JSON file stored with a ".flight" extension.
-    :param inPath: String containing the pilot name
+
+    :param inPath: String containing the pilot name.
     :return: Flight dictionary
     """
 

@@ -4,18 +4,24 @@ import math
 from Export.ImportFile import importData
 
 class Graph_Test(unittest.TestCase):
+    """
+    This class is for testing the graphing functions that we are using to display the flight path
+    onto the UI. We want to make sure that what is being displayed is correct.
+    """
 
-    def test_computeVelocity(self):
+    def test_computeVelocity(self) -> None:
         """
         Test that the velocity is computed as expected between two points (1,1,1) and (3,3,1) with timeDiff = 1.
+
         :return: None
         """
         velocity = Graph.computeVelocity(1,1,1,3,3,1,1,2)
         self.assertEqual(velocity, math.sqrt(8))
 
-    def test_checkLegalInput(self):
+    def test_checkLegalInput(self) -> None:
         """
         Test that legal and illegal coordinate points can be detected.
+
         :return: None
         """
         # Check normal point. Expected output: True.
@@ -48,17 +54,19 @@ class Graph_Test(unittest.TestCase):
         # Check when z is string input. Expected output: False.
         self.assertFalse(Graph.checkLegalInput(3, 2, "howdy"))
 
-    def test_readCoordinates_small_legal(self):
+    def test_readCoordinates_small_legal(self) -> None:
         """
         Test that coordinates from a small data file are read in correctly.
+
         :return: None
         """
         test_dict = importData('TestFiles/JSONDUMP.flight')
         self.assertEqual(test_dict["coords"], [[0, 0, 0, 0], [1, 0, 0, 1], [2, 0, 0, 3], [3, 0, 0, 8]])
 
-    def test_readCoordinates_small_illegal(self):
+    def test_readCoordinates_small_illegal(self) -> None:
         """
         Test that coordinates from a small data file are read in correctly.
+
         :return: None
         """
         test_dict = importData('TestFiles/JSONDUMP_with_illegal.flight')
@@ -69,11 +77,12 @@ class Graph_Test(unittest.TestCase):
         test_dict = Graph.velocityPoints(test_dict)
         self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
 
-    def test_readCoordinates_size100_allLegal(self):
+    def test_readCoordinates_size100_allLegal(self) -> None:
         """
         Test that file containing 100 (x,y,z) points is read in correctly.
         This test contains all legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         length = 100
@@ -82,11 +91,12 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), length)
 
-    def test_readCoordinates_size100_someLegal(self):
+    def test_readCoordinates_size100_someLegal(self) -> None:
         """
         Test that file containing 100 (x,y,z) points is read in correctly.
         This test contains 80% legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         length = 100
@@ -96,10 +106,11 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
-    def test_readCoordinates_size200_allLegal(self):
+    def test_readCoordinates_size200_allLegal(self) -> None:
         """
         Test that file containing 200 (x,y,z) points is read in correctly. This contains all legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         length = 200
@@ -108,10 +119,11 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), length)
 
-    def test_readCoordinates_size200_someLegal(self):
+    def test_readCoordinates_size200_someLegal(self) -> None:
         """
         Test that file containing 200 (x,y,z) points is read in correctly. This contains 80% legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         length = 200
@@ -121,10 +133,11 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
-    def test_readCoordinates_size600_allLegal(self):
+    def test_readCoordinates_size600_allLegal(self) -> None:
         """
         Test that file containing 600 (x,y,z) points is read in correctly. This contains all legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         length = 600
@@ -133,10 +146,11 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), length)
 
-    def test_readCoordinates_size600_someLegal(self):
+    def test_readCoordinates_size600_someLegal(self) -> None:
         """
         Test that file containing 600 (x,y,z) points is read in correctly. This contains 80% legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         length = 600
@@ -146,10 +160,11 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
-    def test_readCoordinates_size1200_allLegal(self):
+    def test_readCoordinates_size1200_allLegal(self) -> None:
         """
         Test that file containing 1200 (x,y,z) points is read in correctly. This contains all legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         length = 1200
@@ -158,10 +173,11 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), length)
 
-    def test_readCoordinates_size1200_someLegal(self):
+    def test_readCoordinates_size1200_someLegal(self) -> None:
         """
         Test that file containing 1200 (x,y,z) points is read in correctly. This contains 80% legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         length = 1200
@@ -171,12 +187,13 @@ class Graph_Test(unittest.TestCase):
         self.assertEqual(len(test_dict["coords"]), length)
         self.assertEqual(len(test_dict["legalPoints"]), numLegal)
 
-    def test_graphShows_noError(self):
+    def test_graphShows_noError(self) -> None:
         """
         Test that graph generates correctly with and with velocity changes shown
         for data set of 100, then 200, then 800, then 1200 data points.
         For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         # Test small data sets
@@ -228,9 +245,10 @@ class Graph_Test(unittest.TestCase):
         self.assertIsNotNone(Graph.generateGraph(test_dict, True, 0, test_dict["flightLength"]))
         self.assertIsNotNone(Graph.generateGraph(test_dict, False, 0, test_dict["flightLength"]))
 
-    def test_velocityPoints(self):
+    def test_velocityPoints(self) -> None:
         """
         Test that velocity between consecutive points is computed as expected.
+
         :return: None
         """
         test_dict = {
@@ -251,9 +269,10 @@ class Graph_Test(unittest.TestCase):
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(test_dict["velocities"], velocityArray)
 
-    def test_velocityColors(self):
+    def test_velocityColors(self) -> None:
         """
         Test that the correct color is assigned to the graph segment between consecutive velocity values.
+
         :return: None
         """
         test_dict = {
@@ -274,12 +293,13 @@ class Graph_Test(unittest.TestCase):
         colors = Graph.velocityColors(test_dict)
         self.assertEqual(colors, ['g', 'g', 'g', 'r'])
 
-    def test_velocityComputes_correctSize(self):
+    def test_velocityComputes_correctSize(self) -> None:
         """
         Test that velocityPoints returns array of correct size when inputted data set of 100, 200, then 800,
         then 1200 data points. For each size, two tests are run.
         One test contains all legal inputs. Another test contains 80% legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         # Test small data sets
@@ -329,12 +349,13 @@ class Graph_Test(unittest.TestCase):
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(test_dict["velocities"]), 0.8 * size)
 
-    def test_velocityColorsComputes_correctSize(self):
+    def test_velocityColorsComputes_correctSize(self) -> None:
         """
         Test that velocityColors returns array of correct size when inputted data set of 100, then 200, then 800,
         then 1200 data points. For each size, two tests are run.
         One test contains all legal inputs. Another test contains 80% legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
 
@@ -385,9 +406,10 @@ class Graph_Test(unittest.TestCase):
         test_dict = Graph.velocityPoints(test_dict)
         self.assertEqual(len(Graph.velocityColors(test_dict)), 0.8 * size)
 
-    def test_smoothnessValues(self):
+    def test_smoothnessValues(self) -> None:
         """
         Test that smoothness function returns expected number.
+
         :return: None
         """
         size = 100
@@ -403,12 +425,13 @@ class Graph_Test(unittest.TestCase):
         smoothness = Graph.log_dimensionless_jerk(test_dict["velocities"], 0.5)
         self.assertEqual(round(smoothness, 2), -16.24)
 
-    def test_smoothnessComputes(self):
+    def test_smoothnessComputes(self) -> None:
         """
         Test that smoothness function returns a number when inputted data set of 100, then 200, then 800,
         then 1200 data points. For each size, two tests are run.
         One test contains all legal inputs. Another test contains 80% legal inputs.
         Illegal coordinate points in file should not be included in "legalPoints" list in dictionary.
+
         :return: None
         """
         size = 100
