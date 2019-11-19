@@ -103,8 +103,7 @@ class PhoneControl:
         :param conn: A socket connection to a phone that has already been opened.
         :param signal: The Signal we want to send to the phone. Valid options are: START, STOP, and START_FTP
         :param sigMessage: A message that we want to send alongside the signal for the phone to use.
-        :param sigAck: The Signal we expect to get back from the phone in response to our signal. Valid options
-        are: START_ACKNOWLEDGE, STOP_ACKNOWLEDGE, START_FTP_ACKNOWLEDGE.
+        :param sigAck: The Signal we expect to get back from the phone in response to our signal. Valid options are: START_ACKNOWLEDGE, STOP_ACKNOWLEDGE, START_FTP_ACKNOWLEDGE.
         :return: None
         """
         try:

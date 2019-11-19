@@ -29,8 +29,7 @@ class VerifySetupWindow(qtw.QWidget):
         """
         Class constructor.
 
-        :param phoneControl: The PhoneController.PhoneControl Object that is used to send/recieve signals to
-        and from the phone.
+        :param phoneControl: The PhoneController.PhoneControl Object that is used to send/recieve signals to and from the phone.
         """
         qtw.QWidget.__init__(self)
         self.setFixedSize(550, 550)

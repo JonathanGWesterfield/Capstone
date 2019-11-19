@@ -9,8 +9,7 @@ class RecordingNotStartedException(Exception):
         """
         Calls the base Python Exception class and provides it with the error message we want to display.
 
-        :param message: The error message we want the exception to contain to help with figuring out why the
-        exception be being thrown.
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)
 
@@ -23,8 +22,7 @@ class TransferNotStartedException(Exception):
         """
         Calls the base Python Exception class and provides it with the error message we want to display.
 
-        :param message: The error message we want the exception to contain to help with figuring out why the
-        exception be being thrown.
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)
 
@@ -37,8 +35,7 @@ class PhonesNotSyncedException(Exception):
         """
         Calls the base Python Exception class and provides it with the error message we want to display.
 
-        :param message: The error message we want the exception to contain to help with figuring out why the
-        exception be being thrown.
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)
 
@@ -50,8 +47,7 @@ class RPINotConnectedException(Exception):
         """
         Calls the base Python Exception class and provides it with the error message we want to display.
 
-        :param message: The error message we want the exception to contain to help with figuring out why the
-        exception be being thrown.
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)
 
@@ -63,8 +59,7 @@ class FailedRPIFlashException(Exception):
         """
         Calls the base Python Exception class and provides it with the error message we want to display.
 
-        :param message: The error message we want the exception to contain to help with figuring out why the
-        exception be being thrown.
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)
 
@@ -76,7 +71,6 @@ class FailedDisconnectException(Exception):
         """
         Calls the base Python Exception class and provides it with the error message we want to display.
 
-        :param message: The error message we want the exception to contain to help with figuring out why the
-        exception be being thrown.
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)

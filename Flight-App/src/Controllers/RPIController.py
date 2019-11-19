@@ -26,8 +26,7 @@ class RPIController:
         """
         Sends an http request to the server to flash the light that will sync up the footage.
 
-        :raises FailedRPIFlashException: Throws this exception if the server didn't send back
-        the acknowledgement signal we were expecting.
+        :raises FailedRPIFlashException: Throws this exception if the server didn't send back the acknowledgement signal we were expecting.
         :return: True if the server sent back the **FLASH_ACKNOWLEDGE** message, false otherwise.
         """
         r = requests.get(self.__host + self.__flashEndpoint)
@@ -46,8 +45,7 @@ class RPIController:
         Sends an http request to the server to kill the server. Will be called whenever the Flight
         application is finished and killed.
 
-        :raises FailedDisconnectException: Throws this exception if the server didn't send back
-        the acknowledgement signal we were expecting.
+        :raises FailedDisconnectException: Throws this exception if the server didn't send back the acknowledgement signal we were expecting.
         :return: True if the server is dead, false otherwise.
         """
         r = requests.get(self.__host + self.__disconnectEndpoint)

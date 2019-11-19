@@ -128,9 +128,7 @@ def dimensionless_jerk(movement: list, fs: int) -> float:
     """
     Calculates the dimensionless jerk for a 1 dimensional array of points.
 
-    :param movement: The numpy array of points to calculate the jerk for. The array
-        containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be
-        a 1 dimensional list.
+    :param movement: The numpy array of points to calculate the jerk for. The array containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be a 1 dimensional list.
     :param fs: The sampling frequency of the data points.
     :return: The dimensionless jerk estimate of the given movement's smoothness.
     """
@@ -152,9 +150,7 @@ def log_dimensionless_jerk(movement: list, fs: int) -> float:
     Calculates the smoothness metric for the given speed profile using the log dimensionless jerk
     metric.
 
-    :param movement: The numpy array of points to calculate the jerk for. The array
-        containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be
-        a 1 dimensional list.
+    :param movement: The numpy array of points to calculate the jerk for. The array containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be a 1 dimensional list.
     :param fs: The sampling frequency of the data points.
     :return: The dimensionless jerk estimate of the given movement's smoothness.
     """

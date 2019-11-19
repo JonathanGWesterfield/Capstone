@@ -198,6 +198,7 @@ class TrackingWindow(qtw.QWidget):
     def clearValues(self) -> None:
         """
          Clears the values in the text boxes.
+
          :return: None
          """
         # TODO: Change cursor location out of text box so all boxes can clear at the same time

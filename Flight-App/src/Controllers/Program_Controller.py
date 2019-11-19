@@ -179,12 +179,9 @@ class Controller:
         """
         Loads the report screen for the user.
 
-        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is
-        true, or empty if usingPreviousFlight is false.
-        :param usingPreviousFlight: Boolean representing if the report view is for an existing .flight file or a
-        new analysis.
-        :param flightData: Dictionary containing the flight data. Should be populated with only coordinates if
-        usingPreviousFlight is false, and empty if usingPreviousFlight is true.
+        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is true, or empty if usingPreviousFlight is false.
+        :param usingPreviousFlight: Boolean representing if the report view is for an existing .flight file or a new analysis.
+        :param flightData: Dictionary containing the flight data. Should be populated with only coordinates if usingPreviousFlight is false, and empty if usingPreviousFlight is true.
         :return: None
         """
         # Initialize the report by instantiating ReportWindow class.

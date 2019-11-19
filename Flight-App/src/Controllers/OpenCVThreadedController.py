@@ -21,8 +21,7 @@ class VideoNotPresentException(Exception):
         """
         Calls the base Python Exception class and provides it with the error message we want to display.
 
-        :param message: The error message we want the exception to contain to help with figuring out why the
-        exception be being thrown.
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)
 
@@ -35,8 +34,7 @@ class VideoCorruptedException(Exception):
         """
         Calls the base Python Exception class and provides it with the error message we want to display.
 
-        :param message: The error message we want the exception to contain to help with figuring out why the
-        exception be being thrown.
+        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
         """
         Exception.__init__(self, message)
 
@@ -182,8 +180,7 @@ class DroneTracker:
         as a thread. Will run much slower if 2 processes running this method are started and run on different
         videos at the same time.
 
-        :return: List of tuples of the extracted coordinates of the footage, in the format
-        [(time, x_coord, y_coord, z_coord)].
+        :return: List of tuples of the extracted coordinates of the footage, in the format [(time, x_coord, y_coord, z_coord)].
         """
         # Start video thread
         self.read_video_thread.start()
@@ -355,8 +352,7 @@ def merge_data_points(phone1Points:list, phone2Points:list) -> dict:
 
     :param phone1Points: The opencv datapoints created from the main method of this class for the first phone
     :param phone2Points: The opencv datapoints created from the main method of this class for the second phone
-    :return: List of tuples of coordinates and time values that represent the flight path of the drones
-    in the format [(time, x_coord, y_coord, z_coord)]
+    :return: List of tuples of coordinates and time values that represent the flight path of the drone in the format [(time, x_coord, y_coord, z_coord)]
     """
     points = []
 

@@ -44,8 +44,7 @@ class ReportWindow(qtw.QWidget):
         :param pilotName: String containing pilot name
         :param instructorName: String containing instructor name
         :param flightInstructions: String containing flight instructions.
-        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is
-        true, or blank if usingPreviousFlight is false.
+        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is true, or blank if usingPreviousFlight is false.
         :param usingPreviousFlight: Boolean denoting if the report should be populated from the same file or a different one.
         :param flightDict: Dictionary containing flight data. Should be empty if usingPreviousFlight is true.
         :return: None
