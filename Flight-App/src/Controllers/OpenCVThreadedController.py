@@ -396,20 +396,22 @@ def compute_coordinates(xA, yB, zA, zB):
     :return: x_coord, y_coord, z_coord as the real world coordinates of the drone
     """
     # Define constants
-    Ial = 200 # pixel value of the left side of the flight region as seen by camA
-    Iar = 200 # pixel value of the right side of the flight region as seen by camA
-    Ibr = 200 # pixel value of the right side of the flight region as seen by camB
-    Ibl = 200 # pixel value of the left side of the flight region as seen by cmamB
+    Ial = 570 # pixel value of the left side of the flight region as seen by camA
+    Iar = 3316 # pixel value of the right side of the flight region as seen by camA
+    Iae = 358
+    Ibr = Iar # pixel value of the right side of the flight region as seen by camB
+    Ibl = Ial # pixel value of the left side of the flight region as seen by cmamB
+    Ibe = Iae
     w = 15 # width of the field in meters
     d = 16.736 # distance of the cameras from the edges of the flight area
-    Ih = 2840 # pixel value of the height of the image
+    Ih = 2160 # pixel value of the height of the image
     Theta_C = math.pi / 12 # angle of (the center of the field of view of) the camera relative to the horizontal, in radians
 
     # Calculate X and Y
     Tx = (w*(xA - ((Ial + Iar)/2))) / (d*(Iar-Ial))
     Ty = (w*(yB - ((Ibl + Ibr)/2))) / (d*(Ibr - Ibl))
-    x_coord = (2*d*(Ty + math.pow(Ty, 2)) + w*(1 + Ty + 2*math.pow(Ty,2))) / (2*(math.pow(Ty, 2) + 1))
-    y_coord = - (2*d*(math.pow(Ty, 2) - Ty) - (w*(Ty-1))) / (2*(math.pow(Ty, 2) + 1))
+    x_coord = (2*Tx*d*(Ty+1) + w*(Tx*(2*Ty + 1) + 1)) / (2*(Tx * Ty + 1))
+    y_coord = -(2*d*(Tx*Ty-Ty) - w*(Ty+1)) / (2*(Tx*Ty + 1))
 
     # Calculate angles
     Theta_X = math.atan((x_coord-w/2)/(d+y_coord))
