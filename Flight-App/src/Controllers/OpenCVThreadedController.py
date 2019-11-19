@@ -371,8 +371,8 @@ def merge_data_points(phone1Points:list, phone2Points:list) -> dict:
             y_B = phone2Points[i][0]
 
             # TODO: May need to subtract something from z_A, z_B to make sure measured from correct side
-            z_A = phone1Points[i][1]
-            z_B = phone2Points[i][1]
+            z_A = 2160 - phone1Points[i][1]
+            z_B = 2160 - phone2Points[i][1]
 
             x_coord, y_coord, z_coord = compute_coordinates(x_A, y_B, z_A, z_B)
             time = phone1Points[i][2]
