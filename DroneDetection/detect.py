@@ -38,7 +38,7 @@ class DroneTracker:
         self.look_for_light = False
 
         # Thread handles
-        self.video_thread_handle_1 = Thread(target=self.read_video, args=(1,))
+        self.video_thread_handle_1 = Thread(target=self.video_read, args=(1,))
         self.video_thread_handle_2 = Thread(target=self.read_video, args=(2,))
         self.track_thread_1 = Thread(target=self.track_drone, args=(1,))
         self.track_thread_2 = Thread(target=self.track_drone, args=(2,))
@@ -81,19 +81,19 @@ class DroneTracker:
             self.tracker_2 = cv2.TrackerCSRT_create()
 
 
-    def rescale_frame(self, frame: object, percent: int = 50) -> object:
-        """
-        Resizes a frame as a percentage of the original frame size
+def rescale_frame(self, frame: object, percent: int = 50) -> object:
+    """
+    Resizes a frame as a percentage of the original frame size
 
-        :param frame: the frame to be resized
-        :param percent: the percent value the frame needs to be rescaled to
-        :returns: frame that is resized with the given parameter
-        """
+    :param frame: the frame to be resized
+    :param percent: the percent value the frame needs to be rescaled to
+    :returns: frame that is resized with the given parameter
+    """
 
-        width = int(frame.shape[1] * percent / 100)
-        height = int(frame.shape[0] * percent / 100)
-        dim = (width, height)
-        return cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
+    width = int(frame.shape[1] * percent / 100)
+    height = int(frame.shape[0] * percent / 100)
+    dim = (width, height)
+    return cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
 
 
     def resize_bbox(self, bbox: tuple, factor: int = 2) -> tuple:
@@ -150,7 +150,7 @@ class DroneTracker:
         # Cycle through all of the data points that can be represented with the extracted coordinates
         # from both videos
         for i in range(0, shortest_len-1):
-            if self.data_points_1[i][0] == None or self.data_points_2[i][0] == None or 
+            if self.data_points_1[i][0] == None or self.data_points_2[i][0] == None or \
                 self.data_points_1[i][1] == None or self.data_points_2[i][1] == None:
                 tup = (self.data_points_1[i][2], None, None, None)
             else:
