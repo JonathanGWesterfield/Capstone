@@ -8,49 +8,13 @@ import argparse
 import numpy as np
 from threading import Thread
 import queue
-import math
-
-import time
 
 import json
 
-class VideoNotPresentException(Exception):
-    """
-    This error is raised when the video for processing is not there, or if an incorrect path is given
-    """
-    def __init__(self, message: str):
-        """
-        Calls the base Python Exception class and provides it with the error message we want to display.
-
-        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
-        """
-        Exception.__init__(self, message)
-
-class VideoCorruptedException(Exception):
-    """
-    This error is raised if the video being read is corrupted, or if the frames cannot be
-    successfully extracted from the video files
-    """
-    def __init__(self, message: str):
-        """
-        Calls the base Python Exception class and provides it with the error message we want to display.
-
-        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.
-        """
-        Exception.__init__(self, message)
-
 class DroneTracker:
-    """
-    This class is intended to track sUASs in video recorded from the smartphone app
-    All containing code to track the drone and output the coordinates extracted from
-    the recorded video is contained within this class, and this file is intended
-    to be run as a separate process so that both of the recordings can be processed
-    in parallel (don't try this on Windows though).
-    """
-
     major_ver, minor_ver, subminor_ver = (cv2.__version__).split('.')
 
-    def __init__(self, videoFile) -> None:
+    def __init__(self, videoFile):
         """
         Initializes the tracker with the video file path
 
@@ -101,12 +65,11 @@ class DroneTracker:
 
     def resize_bbox(self, bbox: tuple, factor=2) -> tuple:
         """
-        Resizes the bounding box for translating it to the full size video.
-        In order to be able to see enough of the footage on screen to draw the box around the drone,
-        the video frame must be resized, so the drawn bounding box must be translated back into the
-        coordinate system the full size video uses.
-        For example, if the 4k footage is shrunk by 50% (to 1080p), the scale factor here must be 2
-        so the coordinates chosen in the 1080p frame will match up with the actual drone coordinates in the 4k frame.
+        Resizes the bounding box for translating it to the full size video
+
+        In order to be able to see enough of the footage on screen to draw the box around the drone, the video frame must be resized, so the drawn bounding box must be translated back into the coordinate system the full size video uses
+
+        For example, if the 4k footage is shrunk by 50% (to 1080p), the scale factor here must be 2 so the coordinates chosen in the 1080p frame will match up with the actual drone coordinates in the 4k frame
 
         :param bbox: bounding box of selected drone, which is (x, y, box_width, box_height)
         :param factor: the factor by which to scale the bounding box
@@ -118,12 +81,10 @@ class DroneTracker:
         height = bbox[3] * factor
         return (x1, y1, width, height);
 
-    def is_light_on(self, frame) -> bool:
+    def is_light_on(self, frame):
         """
-        Takes in a video frame and returns the frame at which the light turns on.
+        Takes in a video frame and returns the frame at which the light turns on
 
-        :param frame: A single video frame to see if the light is on.
-        :return: True if the light is on, false otherwise.
         """
         # HSV range for white light
         white_lower = np.array([0, 0, 20])
@@ -144,19 +105,24 @@ class DroneTracker:
     def read_video(self) -> None:
         """
         This function is to be threaded, and its purpose is to read in the video file
-        all at once to improve performance.
+        all at once to improve performance
         """
 
         video = cv2.VideoCapture(self.videoFile)
         # If unable to open the video file (probably wrong path)
         if not video.isOpened():
-            raise VideoNotPresentException("Could not open video")
+            print("Could not open video")
+            sys.exit()
 
         # Read first frame.
         ok, frame = video.read()
         # If unable to get a frame (probably bad format)
         if not ok:
-            raise VideoCorruptedException("Cannot read video file")
+            print('Cannot read video file')
+            """
+            here i should delete the lock files
+            """
+            sys.exit()
 
         self.total_frames += 1
         self.frame_queue.put(frame)
@@ -175,14 +141,8 @@ class DroneTracker:
         self.done_reading = True
 
 
-    def trackDrone(self) -> list:
-        """
-        Function that contains all code to track the drone, and is to be run
-        as a thread. Will run much slower if 2 processes running this method are started and run on different
-        videos at the same time.
+    def trackDrone(self):
 
-        :return: List of tuples of the extracted coordinates of the footage, in the format [(time, x_coord, y_coord, z_coord)].
-        """
         # Start video thread
         self.read_video_thread.start()
 
@@ -219,7 +179,7 @@ class DroneTracker:
                 cv2.destroyWindow("Tracking")
                 print("done tracking this drone at " + str(tm) + " seconds")
                 break
-
+            
             # Get frame from the frame queue
             frame = self.frame_queue.get(block=True)
 
@@ -240,8 +200,8 @@ class DroneTracker:
                 p1 = (int(bbox[0]), int(bbox[1]))
                 p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
                 if self.current_frame % 15 == 0:
-                    x_coord = bbox[0] + (bbox[2] / 2)
-                    y_coord = bbox[1] + (bbox[3] / 2)
+                    x_coord = bbox[0] + bbox[2] / 2
+                    y_coord = bbox[1] + bbox[3] / 2
                     print("drone coordinate at time " + str(tm) + ": [" + str(x_coord) + ", " + str(y_coord) + "] ("
                           + str((x_coord/3860)*15) + ", " + str((y_coord/2160)*10) + ")")
                     self.data_points.append((x_coord, y_coord, tm))
@@ -288,9 +248,11 @@ class DroneTracker:
                             skip = 30
                         elif skip == 30:
                             skip = 60
+                        elif skip == 60:
+                            skip = 90
                         # else:
                         #     skip += 30
-
+                        
                     # If the user selected a bounding box, create a new tracker
                     # and continue to track the drone
                     else:
@@ -318,13 +280,13 @@ class DroneTracker:
 
             # Exit if ESC pressed
             k = cv2.waitKey(1) & 0xff
-            # if k == 27:
-            #     break
+            if k == 27: 
+                break
 
             # Allows the user to reset the bounding box in the case that the tracker
             # begins to track a different object or isn't tracking the drone accurately
             # enough
-            if "r" == chr(k):
+            elif "r" == chr(k):
                 # Rescale the frame so the user can see the entire frame to reselect the drone
                 resizedFrame = self.rescale_frame(frame, 40)
                 # Ask the user to draw a box around the drone
@@ -346,14 +308,37 @@ class DroneTracker:
 
         return self.data_points
 
+    def get_data_points(self, data_points_1, data_points_2) -> list:
+        """
+        Returns a list of tuples that represent the flight path of the drone
+        :return: list of tuples of coordinates and time values that represent the flight path of the drones
+                 in the format [(time, x_coord, y_coord, z_coord)]
+        """
+        points = []
+
+        shortest_len = min(len(data_points_1), len(data_points_2))
+
+        # Cycle through all of the data points that can be represented with the extracted coordinates
+        # from both videos
+        for i in range(0, shortest_len - 1):
+            tup = (data_points_1[i][2],  # time value
+                   (data_points_1[i][0] / 3840) * 15,  # x coordinate scaled to 15 meters
+                   (data_points_2[i][0] / 3840) * 15,  # y coordinate scaled to 15 meters
+                   (((data_points_1[i][1] + data_points_2[i][1]) / 2) / 2160) * 10)  # z coordinate,
+            # scaled to 10 meters
+            points.append(tup)
+
+        return points
+
+
 def merge_data_points(phone1Points:list, phone2Points:list) -> dict:
     """
     Takes the points outputted by the opencv analysis and merges the points together to create
     the 3D coordinates needed to output the visual flight path.
-
     :param phone1Points: The opencv datapoints created from the main method of this class for the first phone
     :param phone2Points: The opencv datapoints created from the main method of this class for the second phone
-    :return: List of tuples of coordinates and time values that represent the flight path of the drone in the format [(time, x_coord, y_coord, z_coord)]
+    :return: list of tuples of coordinates and time values that represent the flight path of the drones
+                 in the format [(time, x_coord, y_coord, z_coord)]
     """
     points = []
 
@@ -362,67 +347,18 @@ def merge_data_points(phone1Points:list, phone2Points:list) -> dict:
     # Cycle through all of the data points that can be represented with the extracted coordinates
     # from both videos
     for i in range(0, shortest_len - 1):
-        if phone1Points[i][0] == None or phone2Points[i][0] == None or \
-            phone1Points[i][1] == None or phone2Points[i][1] == None:
-            tup = (phone1Points[i][2], None, None, None)
-        else:
-            # This is where the math for the coordinates should be called if trying to
-            # use trig or calc, this is where you should call compute_coordinates
-            tup = (phone1Points[i][2],  # time value
-                   (phone1Points[i][0] / 3840) * 15,  # x coordinate scaled to 15 meters
-                   (phone2Points[i][0] / 3840) * 15,  # y coordinate scaled to 15 meters
-                   ( (2160 - ((phone1Points[i][1] + phone2Points[i][1]) / 2) ) / 2160) * 10)  # z coordinate, scaled to 10 meters
+        tup = (phone1Points[i][2],  # time value
+               (phone1Points[i][0] / 3840) * 15,  # x coordinate scaled to 15 meters
+               (phone2Points[i][0] / 3840) * 15,  # y coordinate scaled to 15 meters
+               (((phone1Points[i][1] + phone2Points[i][1]) / 2) / 2160) * 10)  # z coordinate,
+        # scaled to 10 meters
         points.append(tup)
 
     return points
 
-def compute_coordinates(xA, yB, zA, zB):
-    """
-    Compute the real world coordinates from pixel coordinates.
-    :param xA: position of the drone measured from left of camera A's image (in px)
-    :param yB: position of the drone measured from left of camera B's image (in px)
-    :param zA: position of the drone measured from bottom of camera A's image (in px)
-    :param zB: position of the drone measured from bottom of camera B's image (in px)
-    :return: x_coord, y_coord, z_coord as the real world coordinates of the drone
-    """
-    # Define constants
-    Ial = 570 # pixel value of the left side of the flight region as seen by camA
-    Iar = 3316 # pixel value of the right side of the flight region as seen by camA
-    Iae = 358
-    Ibr = Iar # pixel value of the right side of the flight region as seen by camB
-    Ibl = Ial # pixel value of the left side of the flight region as seen by cmamB
-    Ibe = Iae
-    w = 15 # width of the field in meters
-    d = 16.736 # distance of the cameras from the edges of the flight area
-    Ih = 2160 # pixel value of the height of the image
-    Theta_C = math.pi / 12 # angle of (the center of the field of view of) the camera relative to the horizontal, in radians
-
-    # Calculate X and Y
-    Theta_X_i = (((2*xA) / (Iar-Ial) ) - 1) * math.atan(w/(2*d))
-    Theta_Y_i = (((2*yB) / (Ibr - Ibl)) - 1) * math.atan(w/(2*d))
-    Tx = math.tan(Theta_X_i)
-    Ty = math.tan(Theta_Y_i)
-    x_coord = (2*Tx*d*(Ty+1) + w*(Tx*(2*Ty + 1) + 1)) / (2*(Tx * Ty + 1))
-    y_coord = -(2*d*(Tx*Ty-Ty) - w*(Ty+1)) / (2*(Tx*Ty + 1))
-
-    # Calculate angles
-    Theta_X = math.atan((x_coord-w/2)/(d+y_coord))
-    Theta_Y = math.atan((y_coord-w/2)/(d+w-x_coord))
-    Theta_Z_A = (2*Theta_C*(zA - Iae)) / (Ih - 2*Iae)
-    Theta_Z_B = (2*Theta_C*(zB - Ibe)) / (Ih - 2*Ibe)
-
-    # Calculate Z
-    z_coord_A = ((y_coord+d) / (math.cos(Theta_X))) * math.tan(Theta_Z_A)
-    z_coord_B = ((w-x_coord + d) / (math.cos(Theta_Y))) * math.tan(Theta_Z_B)
-    z_coord = (z_coord_A + z_coord_B) / 2
-
-    # Return x, y, z
-    return x_coord, y_coord, z_coord
-
 def get_phone_id(filename:str) -> str:
     """
     Gets the phone Id from the end of the file name so we can keep track of the json and lock files.
-
     :param filename: The file name of the video file. Should have "phone-#.mp4" file names.
     :return: The ID of the phone from the file name
     """
@@ -431,11 +367,10 @@ def get_phone_id(filename:str) -> str:
 
     return fileTokens[-2]
 
-def main(filename:str) -> None:
+def main(filename:str):
     """
     Will take the filename passed in and analyze the footage. All coordinates of the drone in the footage
     will be output to a json file.
-
     :return: None
     """
     try:
@@ -469,9 +404,7 @@ def main(filename:str) -> None:
         # else:
         #     print("The file does not exist")
 
-    except Exception as e:
-        print("ERROR: ", e)
-
+    except:
         # Remove the lock file to let the parent process know that the extraction is complete even if it failed
         if os.path.exists(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/drone-tracker/opencv-output/') + phoneID + '.lock'):
             os.remove(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/drone-tracker/opencv-output/') + phoneID + '.lock')
@@ -486,7 +419,6 @@ def main(filename:str) -> None:
                                    'Desktop/drone-tracker/opencv-output/') + phoneID + '.lock')
         else:
             print("The file does not exist")
-        sys.exit(0)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=
