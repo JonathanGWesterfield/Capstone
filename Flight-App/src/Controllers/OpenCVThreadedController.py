@@ -408,16 +408,18 @@ def compute_coordinates(xA, yB, zA, zB):
     Theta_C = math.pi / 12 # angle of (the center of the field of view of) the camera relative to the horizontal, in radians
 
     # Calculate X and Y
-    Tx = (w*(xA - ((Ial + Iar)/2))) / (d*(Iar-Ial))
-    Ty = (w*(yB - ((Ibl + Ibr)/2))) / (d*(Ibr - Ibl))
+    Theta_X_i = (((2*xA) / (Iar-Ial) ) - 1) * math.atan(w/(2*d))
+    Theta_Y_i = (((2*yB) / (Ibr - Ibl)) - 1) * math.atan(w/(2*d))
+    Tx = math.tan(Theta_X_i)
+    Ty = math.tan(Theta_Y_i)
     x_coord = (2*Tx*d*(Ty+1) + w*(Tx*(2*Ty + 1) + 1)) / (2*(Tx * Ty + 1))
     y_coord = -(2*d*(Tx*Ty-Ty) - w*(Ty+1)) / (2*(Tx*Ty + 1))
 
     # Calculate angles
     Theta_X = math.atan((x_coord-w/2)/(d+y_coord))
     Theta_Y = math.atan((y_coord-w/2)/(d+w-x_coord))
-    Theta_Z_A = Theta_C + math.atan((w*(2*zA - Ih)) / ((2*d*math.cos(Theta_C))*(Iar - Ial)))
-    Theta_Z_B = Theta_C + math.atan((w*(2*zB - Ih)) / ((2*d*math.cos(Theta_C))*(Ibr-Ibl)))
+    Theta_Z_A = (2*Theta_C*(zA - Iae)) / (Ih - 2*Iae)
+    Theta_Z_B = (2*Theta_C*(zB - Ibe)) / (Ih - 2*Ibe)
 
     # Calculate Z
     z_coord_A = ((y_coord+d) / (math.cos(Theta_X))) * math.tan(Theta_Z_A)
