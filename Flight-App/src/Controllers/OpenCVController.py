@@ -228,7 +228,7 @@ class DroneTracker:
             # Exit if ESC pressed
             k = cv2.waitKey(1) & 0xff
             if k == 27: break
-            3
+        
         return self.data_points
 
     def get_data_points(self, data_points_1, data_points_2) -> list:

@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.Views.View_StartupScreen &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.Views.View_StartupScreen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.Views.View_StartupScreen</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span> <span class="k">as</span> <span class="n">qtc</span><span class="p">,</span> <span class="n">QtWidgets</span> <span class="k">as</span> <span class="n">qtw</span><span class="p">,</span> <span class="n">QtGui</span> <span class="k">as</span> <span class="n">qtg</span>
+
+<div class="viewcode-block" id="StartupWindow"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow">[docs]</a><span class="k">class</span> <span class="nc">StartupWindow</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The view for the home Startup page that is shown when the user opens the application.</span>
+
+<span class="sd">    :ivar __btnVerifySetup: The class property for the &#39;Verify Setup&#39; button.</span>
+<span class="sd">    :ivar __btnStart: The class property for the &#39;Start Tracking&#39; button.</span>
+<span class="sd">    :ivar __btnImport: The class property for the &#39;Import Previous Flight&#39; button.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize signals. Use for switching between views.</span>
+    <span class="n">sigVerifySetup</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">sigStartTracking</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">sigImportFlight</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flightModeEnabled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class Constructor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qtw</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">550</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightModeEnabled</span> <span class="o">=</span> <span class="n">flightModeEnabled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initView</span><span class="p">()</span>
+
+<div class="viewcode-block" id="StartupWindow.initView"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.initView">[docs]</a>    <span class="k">def</span> <span class="nf">initView</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the view and lays out all of the components.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Home Screen&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Set the labels for title and team members</span>
+        <span class="n">lblTitle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setTitle</span><span class="p">()</span>
+        <span class="n">lblTeam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setTeamMembers</span><span class="p">()</span>
+
+        <span class="c1"># Set the app logo</span>
+        <span class="n">logo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupPicture</span><span class="p">()</span>
+
+        <span class="c1"># Set up the Texas A&amp;M icon</span>
+        <span class="n">icon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupAMLogo</span><span class="p">()</span>
+
+        <span class="c1"># Initialize buttons and attach functionality</span>
+        <span class="n">btnLayout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setButtonLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnVerifySetup</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signalVerifySetup</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnImport</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signalImportFlight</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flightModeEnabled</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">BtnStart</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signalStartTracking</span><span class="p">)</span>
+
+        <span class="c1"># Layout all of the above elements on a vertical layout</span>
+        <span class="n">vLayout</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">lblTitle</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">logo</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">btnLayout</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTeam</span><span class="p">)</span>
+
+        <span class="c1"># Attach the layout to the screen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vLayout</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StartupWindow.signalVerifySetup"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.signalVerifySetup">[docs]</a>    <span class="k">def</span> <span class="nf">signalVerifySetup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Verify Setup button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigVerifySetup</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="StartupWindow.signalStartTracking"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.signalStartTracking">[docs]</a>    <span class="k">def</span> <span class="nf">signalStartTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Start Tracking button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigStartTracking</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="StartupWindow.signalImportFlight"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.signalImportFlight">[docs]</a>    <span class="k">def</span> <span class="nf">signalImportFlight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls function to allow user to select a file for import.</span>
+<span class="sd">        Sends a signal to the main controller that the Import Previous Flight button was pushed.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">openFileNameDialog</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigImportFlight</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StartupWindow.setTitle"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.setTitle">[docs]</a>    <span class="k">def</span> <span class="nf">setTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the title with the application title on top and the name of the screen just below it.</span>
+
+<span class="sd">        :return: Layout with the application title and screen title labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;UAS Performance Tracker&quot;</span><span class="p">)</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">lblTitle2</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Home Screen&#39;</span><span class="p">)</span>
+        <span class="n">lblTitle2</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle2</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTitle</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTitle2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="StartupWindow.setTeamMembers"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.setTeamMembers">[docs]</a>    <span class="k">def</span> <span class="nf">setTeamMembers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the team members label for the window</span>
+
+<span class="sd">        :return: Team members label of the application</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTeam1</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Team members:</span><span class="se">\n</span><span class="s2">Jonathan Westerfield, Hayley Eckert, Donald Elrod, </span><span class="se">\n</span><span class="s2">Ismael Rodriguez&quot;</span><span class="p">)</span>
+        <span class="n">lblTeam1</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+        <span class="n">lblTeam1</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">lblTeam1</span><span class="o">.</span><span class="n">setWordWrap</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">lblTeam1</span></div>
+
+<div class="viewcode-block" id="StartupWindow.setButtonLayout"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.setButtonLayout">[docs]</a>    <span class="k">def</span> <span class="nf">setButtonLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lays out the &#39;Test Config&#39;, &#39;Start&#39; and &#39;Import&#39; buttons into a horizontal layout to be</span>
+<span class="sd">        put on screen.</span>
+
+<span class="sd">        :return: The horizontal layout containing the 3 buttons</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnVerifySetup</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Verify Setup&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Start Tracking&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnImport</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Import Previous Flight&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flightModeEnabled</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">palette</span> <span class="o">=</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QPalette</span><span class="p">()</span>
+            <span class="n">palette</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QPalette</span><span class="o">.</span><span class="n">ButtonText</span><span class="p">,</span> <span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">red</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span><span class="o">.</span><span class="n">setPalette</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="n">buttonBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnVerifySetup</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnImport</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">buttonBox</span></div>
+
+<div class="viewcode-block" id="StartupWindow.setupPicture"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.setupPicture">[docs]</a>    <span class="k">def</span> <span class="nf">setupPicture</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Used for configuring the display for the logo on the startup screen.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">()</span>
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s1">&#39;../resources/DroneLogo.png&#39;</span><span class="p">)</span>
+        <span class="n">pixmap2</span> <span class="o">=</span> <span class="n">pixmap</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">pixmap2</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">label</span></div>
+
+<div class="viewcode-block" id="StartupWindow.setupAMLogo"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.setupAMLogo">[docs]</a>    <span class="k">def</span> <span class="nf">setupAMLogo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Used for configuring the display for the A&amp;M logo on the startup screen.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">()</span>
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s1">&#39;../resources/Tamu_Seal.png&#39;</span><span class="p">)</span>
+        <span class="n">pixmap2</span> <span class="o">=</span> <span class="n">pixmap</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">pixmap2</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">label</span></div>
+
+<div class="viewcode-block" id="StartupWindow.openFileNameDialog"><a class="viewcode-back" href="../../../index.html#src.Views.View_StartupScreen.StartupWindow.openFileNameDialog">[docs]</a>    <span class="k">def</span> <span class="nf">openFileNameDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allows user to select a .flight file from a file dialog window.</span>
+
+<span class="sd">        :return: Path to selected file as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">Options</span><span class="p">()</span>
+        <span class="n">options</span> <span class="o">|=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">DontUseNativeDialog</span>
+        <span class="n">fileName</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getOpenFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;QFileDialog.getOpenFileName()&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                                      <span class="s2">&quot;JSON Files (*.flight)&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fileName</span></div>
+
+    <span class="c1"># region &gt; Properties for the buttons so we can attach functionality to them in child classes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnVerifySetup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the verifySetup button. Use to attach functionality.</span>
+
+<span class="sd">        :return: The reference to the verifySetup button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnVerifySetup</span>
+
+    <span class="nd">@BtnVerifySetup</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnVerifySetup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the verify setup button.</span>
+
+<span class="sd">        :param btn: The button we want to replace the current one with</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnVerifySetup</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnVerifySetup</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnVerifySetup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the verify setup button</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnVerifySetup</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnStart</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the startTracking button. Use to attach functionality.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span>
+
+    <span class="nd">@BtnStart</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnStart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The setter for the startTracking button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton we want to replace the start button with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnStart</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnStart</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the startTracking button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnStart</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnImport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Import Previous Flight button. Is used to import past flight files. Use to attach functionality.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnImport</span>
+
+    <span class="nd">@BtnImport</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnImport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the import button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton we want to replace the import button with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnImport</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnImport</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnImport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the import button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnImport</span></div>
+
+    <span class="c1"># endregion</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

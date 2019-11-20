@@ -1,0 +1,664 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.Controllers.OpenCVThreadedController &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.Controllers.OpenCVThreadedController</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.Controllers.OpenCVThreadedController</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+<span class="kn">import</span> <span class="nn">queue</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+
+<div class="viewcode-block" id="VideoNotPresentException"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.VideoNotPresentException">[docs]</a><span class="k">class</span> <span class="nc">VideoNotPresentException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This error is raised when the video for processing is not there, or if an incorrect path is given</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls the base Python Exception class and provides it with the error message we want to display.</span>
+
+<span class="sd">        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VideoCorruptedException"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.VideoCorruptedException">[docs]</a><span class="k">class</span> <span class="nc">VideoCorruptedException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This error is raised if the video being read is corrupted, or if the frames cannot be</span>
+<span class="sd">    successfully extracted from the video files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls the base Python Exception class and provides it with the error message we want to display.</span>
+
+<span class="sd">        :param message: The error message we want the exception to contain to help with figuring out why the exception be being thrown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DroneTracker"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.DroneTracker">[docs]</a><span class="k">class</span> <span class="nc">DroneTracker</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is intended to track sUASs in video recorded from the smartphone app</span>
+<span class="sd">    All containing code to track the drone and output the coordinates extracted from</span>
+<span class="sd">    the recorded video is contained within this class, and this file is intended</span>
+<span class="sd">    to be run as a separate process so that both of the recordings can be processed</span>
+<span class="sd">    in parallel (don&#39;t try this on Windows though).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">major_ver</span><span class="p">,</span> <span class="n">minor_ver</span><span class="p">,</span> <span class="n">subminor_ver</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">videoFile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the tracker with the video file path</span>
+
+<span class="sd">        :param videoFile: the path to the video to analyze</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_frames</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">videoFile</span> <span class="o">=</span> <span class="n">videoFile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">done_reading</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_video_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_video</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
+
+        <span class="n">tracker_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BOOSTING&#39;</span><span class="p">,</span> <span class="s1">&#39;MIL&#39;</span><span class="p">,</span> <span class="s1">&#39;KCF&#39;</span><span class="p">,</span> <span class="s1">&#39;TLD&#39;</span><span class="p">,</span> <span class="s1">&#39;MEDIANFLOW&#39;</span><span class="p">,</span> <span class="s1">&#39;GOTURN&#39;</span><span class="p">,</span> <span class="s1">&#39;MOSSE&#39;</span><span class="p">,</span> <span class="s1">&#39;CSRT&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">=</span> <span class="n">tracker_types</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># here the tracker type in the above line is instantiated</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">==</span> <span class="s1">&#39;BOOSTING&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerBoosting_create</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">==</span> <span class="s1">&#39;MIL&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerMIL_create</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">==</span> <span class="s1">&#39;KCF&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerKCF_create</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">==</span> <span class="s1">&#39;TLD&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerTLD_create</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">==</span> <span class="s1">&#39;MEDIANFLOW&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerMedianFlow_create</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">==</span> <span class="s1">&#39;GOTURN&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerGOTURN_create</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">==</span> <span class="s1">&#39;MOSSE&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerMOSSE_create</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">==</span> <span class="s2">&quot;CSRT&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerCSRT_create</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="DroneTracker.rescale_frame"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.DroneTracker.rescale_frame">[docs]</a>    <span class="k">def</span> <span class="nf">rescale_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">percent</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resizes a frame as a percentage of the original frame size</span>
+
+<span class="sd">        :param frame: the frame to be resized</span>
+<span class="sd">        :param percent: the percent value the frame needs to be rescaled to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">percent</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">percent</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DroneTracker.resize_bbox"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.DroneTracker.resize_bbox">[docs]</a>    <span class="k">def</span> <span class="nf">resize_bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bbox</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resizes the bounding box for translating it to the full size video.</span>
+<span class="sd">        In order to be able to see enough of the footage on screen to draw the box around the drone,</span>
+<span class="sd">        the video frame must be resized, so the drawn bounding box must be translated back into the</span>
+<span class="sd">        coordinate system the full size video uses.</span>
+<span class="sd">        For example, if the 4k footage is shrunk by 50% (to 1080p), the scale factor here must be 2</span>
+<span class="sd">        so the coordinates chosen in the 1080p frame will match up with the actual drone coordinates in the 4k frame.</span>
+
+<span class="sd">        :param bbox: bounding box of selected drone, which is (x, y, box_width, box_height)</span>
+<span class="sd">        :param factor: the factor by which to scale the bounding box</span>
+<span class="sd">        :return: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">factor</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">factor</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">factor</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">factor</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">);</span></div>
+
+<div class="viewcode-block" id="DroneTracker.is_light_on"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.DroneTracker.is_light_on">[docs]</a>    <span class="k">def</span> <span class="nf">is_light_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes in a video frame and returns the frame at which the light turns on.</span>
+
+<span class="sd">        :param frame: A single video frame to see if the light is on.</span>
+<span class="sd">        :return: True if the light is on, false otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># HSV range for white light</span>
+        <span class="n">white_lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+        <span class="n">white_upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">255</span><span class="p">])</span>
+        <span class="n">frame_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Capture frame-by-frame</span>
+        <span class="n">hsv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2HSV</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">hsv</span><span class="p">,</span> <span class="n">white_lower</span><span class="p">,</span> <span class="n">white_upper</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">countNonZero</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+        <span class="c1"># light is on</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="mi">100000</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">180000</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+    
+
+<div class="viewcode-block" id="DroneTracker.read_video"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.DroneTracker.read_video">[docs]</a>    <span class="k">def</span> <span class="nf">read_video</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function is to be threaded, and its purpose is to read in the video file</span>
+<span class="sd">        all at once to improve performance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">videoFile</span><span class="p">)</span>
+        <span class="c1"># If unable to open the video file (probably wrong path)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">video</span><span class="o">.</span><span class="n">isOpened</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">VideoNotPresentException</span><span class="p">(</span><span class="s2">&quot;Could not open video&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Read first frame.</span>
+        <span class="n">ok</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="c1"># If unable to get a frame (probably bad format)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">VideoCorruptedException</span><span class="p">(</span><span class="s2">&quot;Cannot read video file&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_frames</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+        <span class="c1"># Read frames until the end of the video is reached (or until it hits corruption)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">ok</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="c1"># If not ok, which is normally when the end of the file has been read, break from loop</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="c1"># Add the frame to the respective frame queue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total_frames</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># Signal that the thread is done reading the video file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">done_reading</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="DroneTracker.trackDrone"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.DroneTracker.trackDrone">[docs]</a>    <span class="k">def</span> <span class="nf">trackDrone</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function that contains all code to track the drone, and is to be run</span>
+<span class="sd">        as a thread. Will run much slower if 2 processes running this method are started and run on different</span>
+<span class="sd">        videos at the same time.</span>
+
+<span class="sd">        :return: List of tuples of the extracted coordinates of the footage, in the format [(time, x_coord, y_coord, z_coord)].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Start video thread</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_video_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="c1"># Reset the counter so the time from when the sync light is detected is the same for both videos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Here I resize the frame to 40% of its size, so the entire frame can be displayed onto the screen</span>
+        <span class="c1"># The 4k footage is too large for my laptop screen, so this scales it down</span>
+        <span class="n">resizedFrame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="c1"># Ask the user to draw a box around the drone</span>
+        <span class="n">bbox</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">selectROI</span><span class="p">(</span><span class="s2">&quot;Select Drone&quot;</span><span class="p">,</span> <span class="n">resizedFrame</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Reposition the bounding box from 40% resolution to 100% resolution</span>
+        <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_bbox</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="mf">3.33</span><span class="p">)</span>
+
+        <span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="s2">&quot;Select Drone&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize tracker with first frame and bounding box</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">bbox</span><span class="p">)</span>
+
+        <span class="c1"># This while loop will run until the footage is finished, processing all of the drone footage</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># Check if queue is empty but the read thread for the video is not done</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_reading</span><span class="p">:</span>
+                <span class="c1"># If so, sleep for a second for the producer to catch up and try again</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;slept for 1 second&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Check if queue is empty and the read thread for video 1 is done</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_reading</span><span class="p">:</span>
+                <span class="c1"># If so, destroy the window and break out of loop</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="s2">&quot;Tracking&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done tracking this drone at &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tm</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; seconds&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+            <span class="c1"># Get frame from the frame queue</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># Start timer</span>
+            <span class="n">timer</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTickCount</span><span class="p">()</span>
+
+            <span class="c1"># Update tracker</span>
+            <span class="n">ok</span><span class="p">,</span> <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+            <span class="c1"># Calculate Frames per second (FPS)</span>
+            <span class="n">fps</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getTickFrequency</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">getTickCount</span><span class="p">()</span> <span class="o">-</span> <span class="n">timer</span><span class="p">)</span>
+
+            <span class="n">tm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">/</span> <span class="mi">30</span>
+
+            <span class="c1"># Draw bounding box</span>
+            <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+                <span class="c1"># Tracking success</span>
+                <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">p2</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">%</span> <span class="mi">15</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">x_coord</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="n">y_coord</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;drone coordinate at time &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tm</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: [&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x_coord</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">y_coord</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;] (&quot;</span>
+                          <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">x_coord</span><span class="o">/</span><span class="mi">3860</span><span class="p">)</span><span class="o">*</span><span class="mi">15</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">y_coord</span><span class="o">/</span><span class="mi">2160</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x_coord</span><span class="p">,</span> <span class="n">y_coord</span><span class="p">,</span> <span class="n">tm</span><span class="p">))</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Tracking failure</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="s2">&quot;Tracking failure detected&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+                <span class="n">skip</span> <span class="o">=</span> <span class="mi">5</span>
+
+                <span class="c1"># This will loop until the drone is reselected, and creates a new tracker that will</span>
+                <span class="c1"># continue to track the drone</span>
+                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="c1"># Rescale the frame so the user can see the entire frame to reselect the drone</span>
+                    <span class="n">resizedFrame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+                    <span class="c1"># Ask the user to draw a box around the drone</span>
+                    <span class="n">bbox</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">selectROI</span><span class="p">(</span><span class="s2">&quot;Reselect Drone&quot;</span><span class="p">,</span> <span class="n">resizedFrame</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="c1"># Reposition the bounding box from 40% resolution to 100% resolution</span>
+                    <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_bbox</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="mf">3.33</span><span class="p">)</span>
+                    <span class="c1"># Close the ROI selection window</span>
+                    <span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="s2">&quot;Reselect Drone&quot;</span><span class="p">)</span>
+                    <span class="c1"># This will skip 1 second of video if the drone is out of frame,</span>
+                    <span class="c1"># which is detected if the user presses escape on the selectROI function</span>
+                    <span class="k">if</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;skipping &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">skip</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; frames&quot;</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">%</span> <span class="mi">15</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">tm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">/</span> <span class="mi">30</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">data_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tm</span><span class="p">))</span>
+                            <span class="c1"># If the video has totally been processed, exit the function</span>
+                            <span class="c1"># Kind of a hacky way to do it, but I need to break out of 3 loops here</span>
+                            <span class="c1"># so returning is easier than functionalizing the small parts of this giant function</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_reading</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">read_video_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+                                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_points</span>
+                            <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                        <span class="k">if</span> <span class="n">skip</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                            <span class="n">skip</span> <span class="o">=</span> <span class="mi">15</span>
+                        <span class="k">elif</span> <span class="n">skip</span> <span class="o">==</span> <span class="mi">15</span><span class="p">:</span>
+                            <span class="n">skip</span> <span class="o">=</span> <span class="mi">30</span>
+                        <span class="k">elif</span> <span class="n">skip</span> <span class="o">==</span> <span class="mi">30</span><span class="p">:</span>
+                            <span class="n">skip</span> <span class="o">=</span> <span class="mi">60</span>
+                        <span class="c1"># else:</span>
+                        <span class="c1">#     skip += 30</span>
+
+                    <span class="c1"># If the user selected a bounding box, create a new tracker</span>
+                    <span class="c1"># and continue to track the drone</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Creates a new KCF tracker (this is due to the update function not working</span>
+                        <span class="c1"># the same in python as it does in C++: in C++, we could simply update the</span>
+                        <span class="c1"># tracker with the new bounding box instead of creating a new one, but this</span>
+                        <span class="c1"># is a known limitation in python&#39;s implementation of OpenCV and this is my workaround)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerKCF_create</span><span class="p">()</span>
+                        <span class="c1"># Initialize the tracker with the newly selected bounding box</span>
+                        <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">bbox</span><span class="p">)</span>
+                        <span class="k">break</span>
+
+            <span class="c1"># Display tracker type on frame</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker_type</span> <span class="o">+</span> <span class="s2">&quot; Tracker&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">2</span><span class="p">);</span>
+
+            <span class="c1"># Display FPS on frame</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="s2">&quot;FPS : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">fps</span><span class="p">)),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">2</span><span class="p">);</span>
+
+            <span class="n">resizedFrame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+
+            <span class="c1"># Display result</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s2">&quot;Tracking&quot;</span><span class="p">,</span> <span class="n">resizedFrame</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+
+            <span class="c1"># Exit if ESC pressed</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="c1"># if k == 27:</span>
+            <span class="c1">#     break</span>
+
+            <span class="c1"># Allows the user to reset the bounding box in the case that the tracker</span>
+            <span class="c1"># begins to track a different object or isn&#39;t tracking the drone accurately</span>
+            <span class="c1"># enough</span>
+            <span class="k">if</span> <span class="s2">&quot;r&quot;</span> <span class="o">==</span> <span class="nb">chr</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+                <span class="c1"># Rescale the frame so the user can see the entire frame to reselect the drone</span>
+                <span class="n">resizedFrame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+                <span class="c1"># Ask the user to draw a box around the drone</span>
+                <span class="n">bbox</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">selectROI</span><span class="p">(</span><span class="s2">&quot;Reselect Drone&quot;</span><span class="p">,</span> <span class="n">resizedFrame</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="c1"># Reposition the bounding box from 40% resolution to 100% resolution</span>
+                <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_bbox</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+                <span class="c1"># Close the ROI selection window</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">destroyWindow</span><span class="p">(</span><span class="s2">&quot;Reselect Drone&quot;</span><span class="p">)</span>
+
+                <span class="c1"># Creates a new KCF tracker (this is due to the update function not working</span>
+                <span class="c1"># the same in python as it does in C++: in C++, we could simply update the</span>
+                <span class="c1"># tracker with the new bounding box instead of creating a new one, but this</span>
+                <span class="c1"># is a known limitation in python&#39;s implementation of OpenCV and this is my workaround)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TrackerKCF_create</span><span class="p">()</span>
+                <span class="c1"># Initialize the tracker with the newly selected bounding box</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">bbox</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_video_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_points</span></div></div>
+
+<div class="viewcode-block" id="merge_data_points"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.merge_data_points">[docs]</a><span class="k">def</span> <span class="nf">merge_data_points</span><span class="p">(</span><span class="n">phone1Points</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">phone2Points</span><span class="p">:</span><span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes the points outputted by the opencv analysis and merges the points together to create</span>
+<span class="sd">    the 3D coordinates needed to output the visual flight path.</span>
+
+<span class="sd">    :param phone1Points: The opencv datapoints created from the main method of this class for the first phone</span>
+<span class="sd">    :param phone2Points: The opencv datapoints created from the main method of this class for the second phone</span>
+<span class="sd">    :return: List of tuples of coordinates and time values that represent the flight path of the drone in the format [(time, x_coord, y_coord, z_coord)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">shortest_len</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">phone1Points</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">phone2Points</span><span class="p">))</span>
+
+    <span class="c1"># Cycle through all of the data points that can be represented with the extracted coordinates</span>
+    <span class="c1"># from both videos</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">shortest_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">phone1Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">phone2Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> \
+            <span class="n">phone1Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">phone2Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tup</span> <span class="o">=</span> <span class="p">(</span><span class="n">phone1Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tup</span> <span class="o">=</span> <span class="p">(</span><span class="n">phone1Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># time value</span>
+                   <span class="p">(</span><span class="n">phone1Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">3840</span><span class="p">)</span> <span class="o">*</span> <span class="mi">15</span><span class="p">,</span>  <span class="c1"># x coordinate scaled to 15 meters</span>
+                   <span class="p">(</span><span class="n">phone2Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">3840</span><span class="p">)</span> <span class="o">*</span> <span class="mi">15</span><span class="p">,</span>  <span class="c1"># y coordinate scaled to 15 meters</span>
+                   <span class="p">(</span> <span class="p">(</span><span class="mi">2160</span> <span class="o">-</span> <span class="p">((</span><span class="n">phone1Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">phone2Points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="mi">2160</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># z coordinate,</span>
+            <span class="c1"># scaled to 10 meters</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tup</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">points</span></div>
+
+<div class="viewcode-block" id="get_phone_id"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.get_phone_id">[docs]</a><span class="k">def</span> <span class="nf">get_phone_id</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets the phone Id from the end of the file name so we can keep track of the json and lock files.</span>
+
+<span class="sd">    :param filename: The file name of the video file. Should have &quot;phone-#.mp4&quot; file names.</span>
+<span class="sd">    :return: The ID of the phone from the file name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">fileTokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_|\.&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fileTokens</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../index.html#src.Controllers.OpenCVThreadedController.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Will take the filename passed in and analyze the footage. All coordinates of the drone in the footage</span>
+<span class="sd">    will be output to a json file.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># get the correct directory for this thing to work in.</span>
+        <span class="n">pathToDroneFiles</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)),</span> <span class="s1">&#39;Desktop/drone-tracker/opencv-output/&#39;</span><span class="p">)</span>
+
+        <span class="n">phoneID</span> <span class="o">=</span> <span class="n">get_phone_id</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># create lock file to let the parent process know that this is still running</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathToDroneFiles</span> <span class="o">+</span> <span class="n">phoneID</span> <span class="o">+</span> <span class="s1">&#39;.lock&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t find the video file given!!!&quot;</span><span class="p">)</span>
+
+        <span class="n">tracker</span> <span class="o">=</span> <span class="n">DroneTracker</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">data_points</span> <span class="o">=</span> <span class="n">tracker</span><span class="o">.</span><span class="n">trackDrone</span><span class="p">()</span>  <span class="c1"># Extract the coordinates</span>
+
+        <span class="c1"># data = {&quot;coords&quot;: data_points}</span>
+
+        <span class="n">js</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_points</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="c1"># write the extracted coordinates to a json file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathToDroneFiles</span> <span class="o">+</span> <span class="n">phoneID</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">js</span><span class="p">)</span>
+
+        <span class="c1"># # Remove the lock file to let the parent process know that the extraction is complete</span>
+        <span class="c1"># if os.path.exists(pathToDroneFiles + filename + &#39;.lock&#39;):</span>
+        <span class="c1">#     os.remove(pathToDroneFiles + filename + &#39;.lock&#39;)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     print(&quot;The file does not exist&quot;)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+        <span class="c1"># Remove the lock file to let the parent process know that the extraction is complete even if it failed</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)),</span> <span class="s1">&#39;Desktop/drone-tracker/opencv-output/&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">phoneID</span> <span class="o">+</span> <span class="s1">&#39;.lock&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)),</span> <span class="s1">&#39;Desktop/drone-tracker/opencv-output/&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">phoneID</span> <span class="o">+</span> <span class="s1">&#39;.lock&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The file does not exist&quot;</span><span class="p">)</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="c1"># Remove the lock file to let the parent process know that the execution finished regardless of success</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)),</span>
+                                       <span class="s1">&#39;Desktop/drone-tracker/opencv-output/&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">phoneID</span> <span class="o">+</span> <span class="s1">&#39;.lock&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)),</span>
+                                   <span class="s1">&#39;Desktop/drone-tracker/opencv-output/&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">phoneID</span> <span class="o">+</span> <span class="s1">&#39;.lock&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The file does not exist&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span>
+                                     <span class="s1">&#39;Process the drone footage to output all of the X, Y coordinates of the drone&#39;</span><span class="p">)</span>
+    <span class="c1"># parser.add_argument(&#39;filename&#39;, action=&#39;store&#39;, help=&#39;The file name of the video to analyze&#39;)</span>
+    <span class="c1">#</span>
+    <span class="c1"># args = parser.parse_args()</span>
+
+    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+
+
+<span class="c1"># if __name__ == &#39;__main__&#39;:</span>
+    <span class="c1"># tracker_1 = DroneTracker(&quot;/Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Flight-App/src/Controllers/pixel_synced_Trim_Trim.mp4&quot;)</span>
+
+    <span class="c1"># data_points_1 = tracker_1.trackDrone()</span>
+
+    <span class="c1"># tracker_2 = DroneTracker(&quot;/Users/jgwesterfield/Documents/CSCE 483/Drone-Tracker/Flight-App/src/Controllers/s10_synced_Trim_Trim.mp4&quot;)</span>
+
+    <span class="c1"># data_points_2 = tracker_2.trackDrone()</span>
+
+    <span class="c1"># coords = tracker_2.get_data_points(data_points_1, data_points_2)</span>
+
+    <span class="c1"># data = {&quot;coords&quot;: coords}</span>
+
+    <span class="c1"># js = json.dumps(data, indent=4)</span>
+
+    <span class="c1"># print(js)</span>
+
+    <span class="c1"># tracker = DroneTracker(str(sys.argv[1]))</span>
+
+    <span class="c1"># points = tracker.trackDrone()</span>
+
+    <span class="c1"># print(points)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

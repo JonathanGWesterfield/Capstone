@@ -15,9 +15,10 @@ class PhoneControl:
     TCP connections with each phone in order to control them.
     """
 
-    def __init__(self, portNum: int):
+    def __init__(self, portNum: int) -> None:
         """
-        Initializes the server
+        Initializes the server.
+
         :param portNum: The port that we are going to be listening for connections on.
         """
         self.portNum = portNum
@@ -33,6 +34,7 @@ class PhoneControl:
     def synced(self) -> bool:
         """
         The getter function for seeing if the phones synced or not.
+
         :return: True if they have been synced, false otherwise
         """
         return self.connected
@@ -41,13 +43,15 @@ class PhoneControl:
         """
         A flag for us to access to see if the system is still waiting for the video to finish the file
         transfer of the videos it recorded.
+
         :return: True if the video has finished transferring, false otherwise.
         """
         return self.transferring
 
-    def setupSocket(self):
+    def setupSocket(self) -> None:
         """
-        Creates the socket that we will use to listen for incoming connections
+        Creates the socket that we will use to listen for incoming connections.
+
         :return: None
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -60,9 +64,10 @@ class PhoneControl:
 
         return sock
 
-    def closeConn(self):
+    def closeConn(self) -> None:
         """
         Closes all of the connections and the socket.
+
         :return: None
         """
         # Make sure the phones are connected and synced first
@@ -75,9 +80,10 @@ class PhoneControl:
         self.socket.close()
         self.connected = False
 
-    def sync(self):
+    def sync(self) -> None:
         """
         This function will wait until both phones have been connected to this app.
+
         :return: None
         """
         while(len(self.connections) < self.maxClients):
@@ -90,15 +96,15 @@ class PhoneControl:
 
         self.connected = True
 
-    def threadSendSignal(self,conn: socket.socket, signal: str, sigMessage: str, sigAck: str):
+    def threadSendSignal(self,conn: socket.socket, signal: str, sigMessage: str, sigAck: str) -> None:
         """
         This function takes a signal and the expected output so that we don't have to rewrite the same code for
         every action we have with the phones.
+
         :param conn: A socket connection to a phone that has already been opened.
         :param signal: The Signal we want to send to the phone. Valid options are: START, STOP, and START_FTP
         :param sigMessage: A message that we want to send alongside the signal for the phone to use.
-        :param sigAck: The Signal we expect to get back from the phone in response to our signal. Valid options
-            are: START_ACKNOWLEDGE, STOP_ACKNOWLEDGE, START_FTP_ACKNOWLEDGE
+        :param sigAck: The Signal we expect to get back from the phone in response to our signal. Valid options are: START_ACKNOWLEDGE, STOP_ACKNOWLEDGE, START_FTP_ACKNOWLEDGE.
         :return: None
         """
         try:
@@ -136,10 +142,11 @@ class PhoneControl:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
 
-    def startRecording(self):
+    def startRecording(self) -> None:
         """
         Call this in order to send a signal to the phones that they need to start recording.
-        :return:
+
+        :return: None
         """
         threads = list()
 
@@ -168,11 +175,12 @@ class PhoneControl:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
 
-    def stopRecording(self):
+    def stopRecording(self) -> None:
         """
         Call this in order to send a signal to the phones that they need to stop tracking. Sends both
         phones a stop signal and the name of the file path that they will need to send their
         videos to over FTP.
+
         :return: None
         """
         # Make sure the phones are connected and synced first
@@ -205,10 +213,11 @@ class PhoneControl:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
 
-    def startFileTransfer(self, filepath: str):
+    def startFileTransfer(self, filepath: str) -> None:
         """
         Will send a signal to the phone that tells it to transfer the video files it recorded over to the laptop
         by opening an FTP connection.
+
         :param filepath: The file path on our laptop that the phones will need to send their videos to over FTP.
         :return: None
         """
@@ -237,10 +246,11 @@ class PhoneControl:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
 
-    def waitForFileTransfer(self):
+    def waitForFileTransfer(self) -> None:
         """
         Spawns threads that will wait for both phones to send a signal saying that the file transfer
         of the videos is complete.
+
         :return: None
         """
         # Make sure the phones are connected and synced first
@@ -271,10 +281,11 @@ class PhoneControl:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
 
-    def threadWaitForFileTransfer(self, conn: socket.socket):
+    def threadWaitForFileTransfer(self, conn: socket.socket) -> None:
         """
         This is a thread for waiting for the signal from the phone that the file transfer to the filepath specified
         in the startFileTransfer() function arguments.
+
         :param conn: A socket connection to a phone that has already been opened.
         :return: None
         """

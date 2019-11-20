@@ -1,5 +1,6 @@
 import sys
 from PyQt5 import QtCore as qtc, QtWidgets as qtw, QtGui as qtg
+import Views.Graph
 import Graph
 import Export.ExportFile
 import Export.ImportFile
@@ -13,7 +14,7 @@ class ReportWindow(qtw.QWidget):
 
     :ivar __btnExport: The class property for the 'Export Results' button.
     :ivar __btnFlyAgain: The class property for the 'Fly Again' button.
-    ivar __btnHome: The class property for the 'Return to Home' button.
+    :ivar __btnHome: The class property for the 'Return to Home' button.
     :ivar __btnViewGraphVelocity: The class property for the 'View Flight Path' button.
     :ivar __btnViewGraphNoVelocity: The class property for the 'View Flight Path with Velocity Changes' button.
     :var __btnViewInstructions: The class property for the 'View Flight Instructions' button.
@@ -23,7 +24,7 @@ class ReportWindow(qtw.QWidget):
     sigStartTracking = qtc.pyqtSignal()
     sigReturnHome = qtc.pyqtSignal()
     def __init__(self, pilotName: str, instructorName: str, flightInstructions: str, previousFlight: str,
-                 usingPreviousFlight: bool, flightData: dict):
+                 usingPreviousFlight: bool, flightData: dict) -> None:
         """
         Class Constructor
         """
@@ -36,14 +37,14 @@ class ReportWindow(qtw.QWidget):
         self.setFixedSize(550, 700)
 
     def initView(self, pilotName: str, instructorName: str, flightInstructions: str, previousFlight: str,
-                 usingPreviousFlight: bool, flightData: dict):
+                 usingPreviousFlight: bool, flightData: dict) -> None:
         """
         Sets up the view and lays out all of the components.
+
         :param pilotName: String containing pilot name
         :param instructorName: String containing instructor name
         :param flightInstructions: String containing flight instructions.
-        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is
-        true, or blank if usingPreviousFlight is false.
+        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is true, or blank if usingPreviousFlight is false.
         :param usingPreviousFlight: Boolean denoting if the report should be populated from the same file or a different one.
         :param flightDict: Dictionary containing flight data. Should be empty if usingPreviousFlight is true.
         :return: None
@@ -114,9 +115,10 @@ class ReportWindow(qtw.QWidget):
         # Attach the layout to the screen
         self.setLayout(vLayout)
 
-    def signalExportResults(self):
+    def signalExportResults(self) -> None:
         """
         Sends a signal to the main controller that the Export Results button was pushed.
+
         :return: none
         """
         # Save flight results to .flight file.
@@ -130,16 +132,18 @@ class ReportWindow(qtw.QWidget):
             "Results exported!")
         msgBox.exec()
 
-    def signalStartTracking(self):
+    def signalStartTracking(self) -> None:
         """
         Sends a signal to the main controller that the Fly Again button was pushed.
+
         :return: none
         """
         self.sigStartTracking.emit()
 
-    def signalReturnHome(self):
+    def signalReturnHome(self) -> None:
         """
         Sends a signal to the main controller that the Return Home button was pushed.
+
         :return: none
         """
         self.sigReturnHome.emit()
@@ -147,6 +151,7 @@ class ReportWindow(qtw.QWidget):
     def setupTitle(self) -> qtw.QVBoxLayout:
         """
         Sets up the title with the application title on top and the name of the screen just below it.
+
         :return: Layout with the application title and screen title labels
         """
         lblTitle = qtw.QLabel("UAS Performance Tracker")
@@ -166,6 +171,7 @@ class ReportWindow(qtw.QWidget):
     def setSubTitle(self, text) -> qtw.QLabel:
         """
         Sets up a subtitle label for the window
+
         :param text: String as name for label
         :return: Subtitle label
         """
@@ -178,6 +184,7 @@ class ReportWindow(qtw.QWidget):
     def setupFlightInfo(self) -> qtw.QGridLayout:
         """
         Sets up the flight info (pilot, instructor, date, length, and smoothness score) in a grid.
+
         :return: Grid layout of the flight information
         """
         # Setup all labels with default values for testing and detecting errors in the controls
@@ -203,10 +210,11 @@ class ReportWindow(qtw.QWidget):
 
         return grid
 
-    def setupGraph(self, flightData: dict, displayVelocity: bool):
+    def setupGraph(self, flightData: dict, displayVelocity: bool) -> None:
         """
          Sets up the 3d plot for viewing upon click of button. displayVelocity is a boolean denoting if the graph should
          display colored segments for velocity.
+
          :param flightData: Dictionary of flight data
          :param displayVelocity: Bool denoting if velocity should be plotted or not.
          :return: None
@@ -237,6 +245,7 @@ class ReportWindow(qtw.QWidget):
         """
         Lays out the 'Export Results', 'Fly Again' and 'Import Previous Flight' buttons into a horizontal layout to be
         put on screen.
+
         :return: The horizontal layout containing the 3 buttons
         """
         self.__btnExport = qtw.QPushButton('Export Results')
@@ -250,9 +259,10 @@ class ReportWindow(qtw.QWidget):
 
         return buttonBox
 
-    def showWindow(self):
+    def showWindow(self) -> None:
         """
         Takes all of the elements from the view and displays the window.
+
         :return: None
         """
         self.window.show()
@@ -260,6 +270,7 @@ class ReportWindow(qtw.QWidget):
     def createStatisticsTable(self) -> qtw.QTableWidget:
         """
         Creates a table containing flight statistics.
+
         :return: QTableWidget containing flight statistics.
         """
         # Create table
@@ -289,6 +300,7 @@ class ReportWindow(qtw.QWidget):
     def analyzeFlight(self, flightDict: dict) -> dict:
         """
         Analyzes the flight data to extract coordinates, velocity values, and statistics.
+
         :param flightDict: Dictionary of flight data, with only coordinates populated.
         :return: Updated dictionary, with legal points and flight statistics included.
         """
@@ -306,7 +318,16 @@ class ReportWindow(qtw.QWidget):
 
         return flightDict2
 
-    def setupSlider(self):
+    def setupSlider(self) -> qtw.QVBoxLayout:
+        """
+        Setups the slider that will be used to adjust the times of the flight path that will be displayed
+        on the graph. This lets us control the beginning and ending bounds of the time of the flight
+        that we want to view. We have to use 2 sliders. One for the start time and one for the end.
+        We originally wanted to make this such that both sliders were on top of each other to make
+        it more intuitive, but we ran into a bug that prevented us from doing that.
+
+        :return: A horizontal layout containing both sliders and the labels displaying the time that they represent.
+        """
         horizontalLayout0 = qtw.QHBoxLayout()
         horizontalLayout0.setSizeConstraint(qtw.QLayout.SetMinimumSize)
         horizontalLayout0.setContentsMargins(5, 2, 5, 2)
@@ -389,14 +410,28 @@ class ReportWindow(qtw.QWidget):
         return vbox
 
     @qtc.pyqtSlot(int)
-    def handleStartSliderValueChange(self, value):
+    def handleStartSliderValueChange(self, value) -> None:
+        """
+        Listener that will updated the start time label when the user moves the start
+        time slider.
+
+        :param value: The value that the start slider has been moved to horizontally.
+        :return: None
+        """
         self.startSlider.setValue(value)
         minTime = self.MAXVAL - (self.startSlider.value() / 100)
         self.label_current_min.setText(str(round(minTime, 2)))
         # print("start " + str(value))
 
     @qtc.pyqtSlot(int)
-    def handleEndSliderValueChange(self, value):
+    def handleEndSliderValueChange(self, value) -> None:
+        """
+        Listener that will updated the stop time label when the user moves the stop
+        time slider.
+
+        :param value: The value that the stop slider has been moved to horizontally.
+        :return: None
+        """
         self.endSlider.setValue(value)
         maxTime = self.endSlider.value() / 100
         self.label_current_max.setText(str(round(maxTime, 2)))
@@ -410,23 +445,26 @@ class ReportWindow(qtw.QWidget):
     def LblPilot(self) -> qtw.QLabel:
         """
         Getter for the Pilot label so we can set who the pilot is for the flight in child class.
+
         :return: Reference to the pilot label.
         """
         return self.__lblPilot
 
     @LblPilot.setter
-    def set_LblPilot(self, lbl: qtw.QLabel):
+    def set_LblPilot(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the pilot Label.
+
         :param lbl: The label we want to replace the current one with.
         :return: None
         """
         self.__lblPilot = lbl
 
     @LblPilot.deleter
-    def del_LblPilot(self):
+    def del_LblPilot(self) -> None:
         """
         Deleter for the pilot label.
+
         :return: None
         """
         del self.__lblPilot
@@ -438,23 +476,26 @@ class ReportWindow(qtw.QWidget):
     def LblInstructor(self) -> qtw.QLabel:
         """
         Getter for the instructor label.
+
         :return: Reference to the instructor label.
         """
         return self.__lblInstructor
 
     @LblInstructor.setter
-    def set_LblInstructor(self, lbl: qtw.QLabel):
+    def set_LblInstructor(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the instructor Label.
+
         :param lbl: The label we want to replace the current one with.
         :return: None
         """
         self.__lblInstructor = lbl
 
     @LblInstructor.deleter
-    def del_LblInstructor(self):
+    def del_LblInstructor(self) -> None:
         """
         Deleter for the instructor label.
+
         :return: None
         """
         del self.__lblInstructor
@@ -466,23 +507,26 @@ class ReportWindow(qtw.QWidget):
     def LblFlightDate(self) -> qtw.QLabel:
         """
         Getter for the flight date label.
+
         :return: Reference to the flight date label.
         """
         return self.__lblFlDate
 
     @LblFlightDate.setter
-    def set_LblFlightDate(self, lbl: qtw.QLabel):
+    def set_LblFlightDate(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the Flight date label.
+
         :param lbl: The label we want to replace the current one with.
         :return: None
         """
         self.__lblFlDate = lbl
 
     @LblFlightDate.deleter
-    def del_LblFlightDate(self):
+    def del_LblFlightDate(self) -> None:
         """
         Deleter for the flight date label.
+
         :return: None
         """
         del self.__lblFlDate
@@ -494,23 +538,26 @@ class ReportWindow(qtw.QWidget):
     def LblFlightLength(self) -> qtw.QLabel:
         """
         Getter for the flight length label.
+
         :return: Reference to the flight length label.
         """
         return self.__lblFlLength
 
     @LblFlightLength.setter
-    def set_LblFlightLength(self, lbl: qtw.QLabel):
+    def set_LblFlightLength(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the flight length label.
+
         :param lbl: The label we want to replace the current one with.
         :return: None
         """
         self.__lblFlLength = lbl
 
     @LblFlightLength.deleter
-    def del_LblFlightLength(self):
+    def del_LblFlightLength(self) -> None:
         """
         Deleter for the flight length label.
+
         :return: None
         """
         del self.__lblFlLength
@@ -522,23 +569,26 @@ class ReportWindow(qtw.QWidget):
     def LblFlightInstructions(self) -> qtw.QLabel:
         """
         Getter for the flight instructions label.
+
         :return: Reference to the flight length label.
         """
         return self.__lblFlInstructions
 
     @LblFlightInstructions.setter
-    def set_LblFlightInstructions(self, lbl: qtw.QLabel):
+    def set_LblFlightInstructions(self, lbl: qtw.QLabel) -> None:
         """
         Setter for the flight instructions label.
+
         :param lbl: The label we want to replace the current one with.
         :return: None
         """
         self.__lblFlLengthInstructions = lbl
 
     @LblFlightInstructions.deleter
-    def del_LblFlightInstructions(self):
+    def del_LblFlightInstructions(self) -> None:
         """
         Deleter for the flight length label.
+
         :return: None
         """
         del self.__lblFlInstructions
@@ -551,23 +601,26 @@ class ReportWindow(qtw.QWidget):
     def BtnExport(self) -> qtw.QPushButton:
         """
         The export button for the view.
+
         :return: None
         """
         return self.__btnExport
 
     @BtnExport.setter
-    def set_BtnExport(self, btn: qtw.QPushButton):
+    def set_BtnExport(self, btn: qtw.QPushButton) -> None:
         """
         The setter for the export button.
+
         :param btn: A Qt QPushButton we want to replace the export button with.
         :return: None
         """
         self.__btnExport = btn
 
     @BtnExport.deleter
-    def del_BtnExport(self):
+    def del_BtnExport(self) -> None:
         """
         Deleter for the export button. Never call this.
+
         :return: None
         """
         del self.__btnExport
@@ -576,23 +629,26 @@ class ReportWindow(qtw.QWidget):
     def BtnFlyAgain(self) -> qtw.QPushButton:
         """
         The fly again button for the view.
+
         :return: None
         """
         return self.__btnFlyAgain
 
     @BtnFlyAgain.setter
-    def set_BtnFlyAgain(self, btn: qtw.QPushButton):
+    def set_BtnFlyAgain(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the fly again button.
+
         :param btn: A Qt QPushButton.
         :return: None
         """
         self.__btnFlyAgain = btn
 
     @BtnFlyAgain.deleter
-    def del_BtnFlyAgain(self):
+    def del_BtnFlyAgain(self) -> None:
         """
         Deleter for the fly again button. Never call this.
+
         :return: None
         """
         del self.__btnFlyAgain
@@ -601,23 +657,26 @@ class ReportWindow(qtw.QWidget):
     def BtnHome(self) -> qtw.QPushButton:
         """
         The home for the view. Is used to return to home screen.
+
         :return: None
         """
         return self.__btnHome
 
     @BtnHome.setter
-    def set_BtnHome(self, btn: qtw.QPushButton):
+    def set_BtnHome(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the home button.
+
         :param btn: A Qt QPushButton.
         :return: None
         """
         self.__btnHome = btn
 
     @BtnHome.deleter
-    def del_BtnHome(self):
+    def del_BtnHome(self) -> None:
         """
         Deleter for the home button. Never call this.
+
         :return: None
         """
         del self.__btnHome
@@ -626,23 +685,26 @@ class ReportWindow(qtw.QWidget):
     def BtnViewGraphVelocity(self) -> qtw.QPushButton:
         """
         The home for the view graph with velocity button.
+
         :return: None
         """
         return self.__btnViewGraphVelocity
 
     @BtnViewGraphVelocity.setter
-    def set_BtnViewGraphVelocity(self, btn: qtw.QPushButton):
+    def set_BtnViewGraphVelocity(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the view graph with velocity button.
+
         :param btn: A Qt QPushButton.
         :return: None
         """
         self.__btnViewGraphVelocity = btn
 
     @BtnViewGraphVelocity.deleter
-    def del_BtnViewGraphVelocity(self):
+    def del_BtnViewGraphVelocity(self) -> None:
         """
         Deleter for the view graph with velocity button. Never call this.
+
         :return: None
         """
         del self.__btnViewGraphVelocity
@@ -651,23 +713,26 @@ class ReportWindow(qtw.QWidget):
     def BtnViewGraphNoVelocity(self) -> qtw.QPushButton:
         """
         The home for the view graph without velocity button.
+
         :return: None
         """
         return self.__btnViewGraphNoVelocity
 
     @BtnViewGraphNoVelocity.setter
-    def set_BtnViewGraphNoVelocity(self, btn: qtw.QPushButton):
+    def set_BtnViewGraphNoVelocity(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the view graph without velocity button.
+
         :param btn: A Qt QPushButton.
         :return: None
         """
         self.__btnViewGraphNoVelocity = btn
 
     @BtnViewGraphNoVelocity.deleter
-    def del_BtnViewGraphNoVelocity(self):
+    def del_BtnViewGraphNoVelocity(self) -> None:
         """
         Deleter for the view graph without velocity button. Never call this.
+
         :return: None
         """
         del self.__btnViewGraphNoVelocity

@@ -1,0 +1,3104 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to Drone Tracker’s documentation! &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to Drone Tracker’s documentation!</a><ul>
+<li><a class="reference internal" href="#intro">Intro</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-src.Controllers.Program_Controller">Program Controller</a></li>
+<li><a class="reference internal" href="#id3">OpenCV</a></li>
+<li><a class="reference internal" href="#module-src.Controllers.Exceptions">Exceptions</a></li>
+<li><a class="reference internal" href="#module-src.Controllers.PhoneController">PhoneController</a></li>
+<li><a class="reference internal" href="#module-src.Export.ExportFile">Export Flight</a></li>
+<li><a class="reference internal" href="#module-src.Export.ImportFile">Import Flight</a></li>
+<li><a class="reference internal" href="#module-src.Views.View_LoadingScreen">Loading Screen</a></li>
+<li><a class="reference internal" href="#module-src.Views.View_ReportScreen">Report Screen</a></li>
+<li><a class="reference internal" href="#module-src.Views.View_StartupScreen">Startup Screen</a></li>
+<li><a class="reference internal" href="#module-src.Views.View_TrackingScreen">Tracking Screen</a></li>
+<li><a class="reference internal" href="#module-src.Views.View_VerifySetupScreen">Verify Setup Screen</a></li>
+<li><a class="reference internal" href="#module-src.Views.Graph">MatPlot Graph</a></li>
+<li><a class="reference internal" href="#module-src.Tests.Graph_Test">Graph Test</a></li>
+<li><a class="reference internal" href="#module-src.Tests.ImportFile_Test">Import File Test</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Welcome to Drone Tracker’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-drone-tracker-s-documentation">
+<h1>Welcome to Drone Tracker’s documentation!<a class="headerlink" href="#welcome-to-drone-tracker-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="intro">
+<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
+<p>Version 1.0.3</p>
+<p>Written by: Hayley Eckert, Jonathan Westerfield, Donald Elrod, and Ismael Rodriguez</p>
+<p>This application is the controller for the entire project. It interfaces with the cell phones and controls them in order to record footage of a drone flight. It will then open 2 OpenCV processes in order to analyze the footage from the cell phones.</p>
+<p>This flight application relies on <a class="reference external" href="https://opencv.org/">OpenCV</a> and <a class="reference external" href="https://matplotlib.org/">MatPlotLib</a>.</p>
+<dl class="simple">
+<dt>The main sections of the application are as follows:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>Program_Controller:</dt><dd><p>Starts up the entire Drone Tracker program the user interacts with</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>PhoneController:</dt><dd><p>Sends and receives network signals from the phone over TCP to control the phone.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>OpenCV:</dt><dd><p>Takes the file of the video transferred from the phone and extracts the coordinates of the drone from the footage</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+<div class="section" id="module-src.Controllers.Program_Controller">
+<span id="program-controller"></span><h1>Program Controller<a class="headerlink" href="#module-src.Controllers.Program_Controller" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Controllers.Program_Controller.Controller">
+<em class="property">class </em><code class="sig-prename descclassname">src.Controllers.Program_Controller.</code><code class="sig-name descname">Controller</code><span class="sig-paren">(</span><em class="sig-param">phoneControl: Controllers.PhoneController.PhoneControl</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controller class for the application. Changes between application views based on user input.
+Run this file in order to begin the application.</p>
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.cleanup">
+<code class="sig-name descname">cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Goes through our file structure and deletes all files (except anything in the Flight folder).
+This is for when we are done with the program and want to delete the raw footage from the phone,
+the output points from the opencv processing and any other files that were used during the
+program execution. Should also be called before any time the user wants to fly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.get_all_files">
+<code class="sig-name descname">get_all_files</code><span class="sig-paren">(</span><em class="sig-param">folderPath: str</em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.get_all_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.get_all_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will get all of the file names in a folder. This will be used after the video footage is transferred from
+the phone to the laptop. We need to grab the 2 videos filenames in the folder in order to send them to
+the opencv analysis to have the coordinates extracted. This will also be used when we need to splice
+together all of the coordinates output by the OpenCVController json files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folderPath</strong> – The directory that we need to get all of the files from.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all of the file names in that directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.get_flight_info">
+<code class="sig-name descname">get_flight_info</code><span class="sig-paren">(</span><em class="sig-param">pilotName: str</em>, <em class="sig-param">instructorName: str</em>, <em class="sig-param">flightInstructions: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.get_flight_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.get_flight_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the pilot name, instructor name, and flight instructions once confirmed by the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pilotName</strong> – String containing the pilot name</p></li>
+<li><p><strong>instructorName</strong> – String containing the instructor name</p></li>
+<li><p><strong>flightInstructions</strong> – String containing the flight instructions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.get_in_order">
+<code class="sig-name descname">get_in_order</code><span class="sig-paren">(</span><em class="sig-param">files: list</em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.get_in_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.get_in_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will return the file names in order. This means that phone-1 will be first in the list and
+phone-2 will be second. Need this to ensure that a specific phone’s coordinates are being
+used for the Z, X axis and the other is used for Z, Y</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>files</strong> – The list of files we get from the get_all_files() function</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The list of file names starting with phone-1 first and phone-2 second</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.import_flight">
+<code class="sig-name descname">import_flight</code><span class="sig-paren">(</span><em class="sig-param">flightPath: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.import_flight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.import_flight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads in a .flight file and displays the report view for it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flightPath</strong> – String with file path of chosen file to import.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.setupFileStructure">
+<code class="sig-name descname">setupFileStructure</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.setupFileStructure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.setupFileStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the folders that need to exist before we can transfer footage and analyze. The file structure
+should be: drone-tracker &gt; FTP, opencv-output, Flights. This makes it easier to keep track of
+the files that we are working with during the application lifecycle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.show_home">
+<code class="sig-name descname">show_home</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.show_home"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.show_home" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the home startup screen for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.show_loading_window">
+<code class="sig-name descname">show_loading_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.show_loading_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.show_loading_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the loading screen for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.show_report_window">
+<code class="sig-name descname">show_report_window</code><span class="sig-paren">(</span><em class="sig-param">previousFlight: str</em>, <em class="sig-param">usingPreviousFlight: bool</em>, <em class="sig-param">flightData: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.show_report_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.show_report_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the report screen for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>previousFlight</strong> – String containing path to flight data. Should be .flight file if usingPreviousFlight is true, or empty if usingPreviousFlight is false.</p></li>
+<li><p><strong>usingPreviousFlight</strong> – Boolean representing if the report view is for an existing .flight file or a new analysis.</p></li>
+<li><p><strong>flightData</strong> – Dictionary containing the flight data. Should be populated with only coordinates if usingPreviousFlight is false, and empty if usingPreviousFlight is true.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.show_tracking_window">
+<code class="sig-name descname">show_tracking_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.show_tracking_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.show_tracking_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the tracking screen for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.show_verify_screen">
+<code class="sig-name descname">show_verify_screen</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.show_verify_screen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.show_verify_screen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the verify setup screen for the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.start_analysis">
+<code class="sig-name descname">start_analysis</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.start_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.start_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawns the sub processes that will analyze the footage of the drone footage. We will need
+to have the files before hand so we can pass them into each OpenCVController process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.transfer_complete">
+<code class="sig-name descname">transfer_complete</code><span class="sig-paren">(</span><em class="sig-param">flightData: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.transfer_complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.transfer_complete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the report view using the flight data dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flightData</strong> – Dictionary of flight data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>none.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.transfer_footage">
+<code class="sig-name descname">transfer_footage</code><span class="sig-paren">(</span><em class="sig-param">phoneControl: Controllers.PhoneController.PhoneControl</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.transfer_footage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.transfer_footage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transfers footage and calls DroneController to analyze the footage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>phoneControl</strong> – Phone Controller object for the active phone connection.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.updateFlightStatus">
+<code class="sig-name descname">updateFlightStatus</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.updateFlightStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.updateFlightStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the status of the system verification test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.Program_Controller.Controller.wait_for_analysis">
+<code class="sig-name descname">wait_for_analysis</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#Controller.wait_for_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.Controller.wait_for_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Waits for the analysis of the footage to complete. Essentially is just a loop that checks to
+see if the file locks (<a href="#id1"><span class="problematic" id="id2">*</span></a>.lock) for our files are still in that directory. If they are, we wait,
+otherwise, we will exit the loop. From there, we need to get the output from those processes and splice
+the points together into a single 3D coordinate list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Controllers.Program_Controller.close_conn">
+<code class="sig-prename descclassname">src.Controllers.Program_Controller.</code><code class="sig-name descname">close_conn</code><span class="sig-paren">(</span><em class="sig-param">phoneControl: Controllers.PhoneController.PhoneControl</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#close_conn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.close_conn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the connection from the laptop to the phones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>phoneControl</strong> – PhoneControl object containing the active connection.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Controllers.Program_Controller.createPhoneConnection">
+<code class="sig-prename descclassname">src.Controllers.Program_Controller.</code><code class="sig-name descname">createPhoneConnection</code><span class="sig-paren">(</span><em class="sig-param">portNo</em><span class="sig-paren">)</span> &#x2192; Controllers.PhoneController.PhoneControl<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#createPhoneConnection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.createPhoneConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a PhoneControl object used to commmunicate with the phones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>portNo</strong> – Port number we are going to be listening for signals from the phone over.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>PhoneControl object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Controllers.Program_Controller.main">
+<code class="sig-prename descclassname">src.Controllers.Program_Controller.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/Program_Controller.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Program_Controller.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Begins the main application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h1>OpenCV<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-src.Controllers.OpenCVThreadedController"></span><dl class="class">
+<dt id="src.Controllers.OpenCVThreadedController.DroneTracker">
+<em class="property">class </em><code class="sig-prename descclassname">src.Controllers.OpenCVThreadedController.</code><code class="sig-name descname">DroneTracker</code><span class="sig-paren">(</span><em class="sig-param">videoFile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#DroneTracker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.DroneTracker" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is intended to track sUASs in video recorded from the smartphone app
+All containing code to track the drone and output the coordinates extracted from
+the recorded video is contained within this class, and this file is intended
+to be run as a separate process so that both of the recordings can be processed
+in parallel (don’t try this on Windows though).</p>
+<dl class="method">
+<dt id="src.Controllers.OpenCVThreadedController.DroneTracker.is_light_on">
+<code class="sig-name descname">is_light_on</code><span class="sig-paren">(</span><em class="sig-param">frame</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#DroneTracker.is_light_on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.DroneTracker.is_light_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in a video frame and returns the frame at which the light turns on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame</strong> – A single video frame to see if the light is on.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the light is on, false otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.OpenCVThreadedController.DroneTracker.read_video">
+<code class="sig-name descname">read_video</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#DroneTracker.read_video"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.DroneTracker.read_video" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is to be threaded, and its purpose is to read in the video file
+all at once to improve performance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.OpenCVThreadedController.DroneTracker.rescale_frame">
+<code class="sig-name descname">rescale_frame</code><span class="sig-paren">(</span><em class="sig-param">frame</em>, <em class="sig-param">percent=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#DroneTracker.rescale_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.DroneTracker.rescale_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes a frame as a percentage of the original frame size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> – the frame to be resized</p></li>
+<li><p><strong>percent</strong> – the percent value the frame needs to be rescaled to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.OpenCVThreadedController.DroneTracker.resize_bbox">
+<code class="sig-name descname">resize_bbox</code><span class="sig-paren">(</span><em class="sig-param">bbox: tuple</em>, <em class="sig-param">factor=2</em><span class="sig-paren">)</span> &#x2192; tuple<a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#DroneTracker.resize_bbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.DroneTracker.resize_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the bounding box for translating it to the full size video.
+In order to be able to see enough of the footage on screen to draw the box around the drone,
+the video frame must be resized, so the drawn bounding box must be translated back into the
+coordinate system the full size video uses.
+For example, if the 4k footage is shrunk by 50% (to 1080p), the scale factor here must be 2
+so the coordinates chosen in the 1080p frame will match up with the actual drone coordinates in the 4k frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bbox</strong> – bounding box of selected drone, which is (x, y, box_width, box_height)</p></li>
+<li><p><strong>factor</strong> – the factor by which to scale the bounding box</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.OpenCVThreadedController.DroneTracker.trackDrone">
+<code class="sig-name descname">trackDrone</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#DroneTracker.trackDrone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.DroneTracker.trackDrone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that contains all code to track the drone, and is to be run
+as a thread. Will run much slower if 2 processes running this method are started and run on different
+videos at the same time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of tuples of the extracted coordinates of the footage, in the format [(time, x_coord, y_coord, z_coord)].</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.OpenCVThreadedController.VideoCorruptedException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.OpenCVThreadedController.</code><code class="sig-name descname">VideoCorruptedException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#VideoCorruptedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.VideoCorruptedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This error is raised if the video being read is corrupted, or if the frames cannot be
+successfully extracted from the video files</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.OpenCVThreadedController.VideoNotPresentException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.OpenCVThreadedController.</code><code class="sig-name descname">VideoNotPresentException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#VideoNotPresentException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.VideoNotPresentException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This error is raised when the video for processing is not there, or if an incorrect path is given</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Controllers.OpenCVThreadedController.get_phone_id">
+<code class="sig-prename descclassname">src.Controllers.OpenCVThreadedController.</code><code class="sig-name descname">get_phone_id</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#get_phone_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.get_phone_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the phone Id from the end of the file name so we can keep track of the json and lock files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – The file name of the video file. Should have “phone-#.mp4” file names.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The ID of the phone from the file name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Controllers.OpenCVThreadedController.main">
+<code class="sig-prename descclassname">src.Controllers.OpenCVThreadedController.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will take the filename passed in and analyze the footage. All coordinates of the drone in the footage
+will be output to a json file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Controllers.OpenCVThreadedController.merge_data_points">
+<code class="sig-prename descclassname">src.Controllers.OpenCVThreadedController.</code><code class="sig-name descname">merge_data_points</code><span class="sig-paren">(</span><em class="sig-param">phone1Points: list</em>, <em class="sig-param">phone2Points: list</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/src/Controllers/OpenCVThreadedController.html#merge_data_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.OpenCVThreadedController.merge_data_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the points outputted by the opencv analysis and merges the points together to create
+the 3D coordinates needed to output the visual flight path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phone1Points</strong> – The opencv datapoints created from the main method of this class for the first phone</p></li>
+<li><p><strong>phone2Points</strong> – The opencv datapoints created from the main method of this class for the second phone</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of tuples of coordinates and time values that represent the flight path of the drone in the format [(time, x_coord, y_coord, z_coord)]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Controllers.Exceptions">
+<span id="exceptions"></span><h1>Exceptions<a class="headerlink" href="#module-src.Controllers.Exceptions" title="Permalink to this headline">¶</a></h1>
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.FailedDisconnectException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">FailedDisconnectException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#FailedDisconnectException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.FailedDisconnectException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This error is for telling us that something went wrong when we tried to disconnect from the RPI.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.FailedRPIFlashException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">FailedRPIFlashException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#FailedRPIFlashException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.FailedRPIFlashException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This error is for letting us know that the RPI did not flash the light.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.PhonesNotSyncedException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">PhonesNotSyncedException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#PhonesNotSyncedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.PhonesNotSyncedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This exception is for when the user tries to perform an operation with the phones without actually
+syncing the phones first.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.RPINotConnectedException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">RPINotConnectedException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#RPINotConnectedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.RPINotConnectedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is for letting us know that we had an issue connecting to the raspberry pi.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.RecordingNotStartedException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">RecordingNotStartedException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#RecordingNotStartedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.RecordingNotStartedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This exception class is for alerting the user that the recording has not started and they
+are trying to access a function that requires the phone cameras to be rolling.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.TransferNotStartedException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">TransferNotStartedException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#TransferNotStartedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.TransferNotStartedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This exception class is for alerting the user that the file transfer process has not been
+started and any actions that depend on it will fail.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.VideoCorruptedException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">VideoCorruptedException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#VideoCorruptedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.VideoCorruptedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This error is raised if the video being read is corrupted, or if the frames cannot be
+successfully extracted from the video files</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="src.Controllers.Exceptions.VideoNotPresentException">
+<em class="property">exception </em><code class="sig-prename descclassname">src.Controllers.Exceptions.</code><code class="sig-name descname">VideoNotPresentException</code><span class="sig-paren">(</span><em class="sig-param">message: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/Exceptions.html#VideoNotPresentException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.Exceptions.VideoNotPresentException" title="Permalink to this definition">¶</a></dt>
+<dd><p>This error is raised when the video for processing is not there, or if an incorrect path is given</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Controllers.PhoneController">
+<span id="phonecontroller"></span><h1>PhoneController<a class="headerlink" href="#module-src.Controllers.PhoneController" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Controllers.PhoneController.PhoneControl">
+<em class="property">class </em><code class="sig-prename descclassname">src.Controllers.PhoneController.</code><code class="sig-name descname">PhoneControl</code><span class="sig-paren">(</span><em class="sig-param">portNum: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is for communicating with and controlling the phones out in the field. It uses simple
+TCP connections with each phone in order to control them.</p>
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.closeConn">
+<code class="sig-name descname">closeConn</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.closeConn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.closeConn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes all of the connections and the socket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.isTransferring">
+<code class="sig-name descname">isTransferring</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.isTransferring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.isTransferring" title="Permalink to this definition">¶</a></dt>
+<dd><p>A flag for us to access to see if the system is still waiting for the video to finish the file
+transfer of the videos it recorded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the video has finished transferring, false otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.setupSocket">
+<code class="sig-name descname">setupSocket</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.setupSocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.setupSocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the socket that we will use to listen for incoming connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.startFileTransfer">
+<code class="sig-name descname">startFileTransfer</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.startFileTransfer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.startFileTransfer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will send a signal to the phone that tells it to transfer the video files it recorded over to the laptop
+by opening an FTP connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> – The file path on our laptop that the phones will need to send their videos to over FTP.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.startRecording">
+<code class="sig-name descname">startRecording</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.startRecording"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.startRecording" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call this in order to send a signal to the phones that they need to start recording.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.stopRecording">
+<code class="sig-name descname">stopRecording</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.stopRecording"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.stopRecording" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call this in order to send a signal to the phones that they need to stop tracking. Sends both
+phones a stop signal and the name of the file path that they will need to send their
+videos to over FTP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.sync">
+<code class="sig-name descname">sync</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will wait until both phones have been connected to this app.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.synced">
+<code class="sig-name descname">synced</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.synced"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.synced" title="Permalink to this definition">¶</a></dt>
+<dd><p>The getter function for seeing if the phones synced or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if they have been synced, false otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.threadSendSignal">
+<code class="sig-name descname">threadSendSignal</code><span class="sig-paren">(</span><em class="sig-param">conn: socket.socket</em>, <em class="sig-param">signal: str</em>, <em class="sig-param">sigMessage: str</em>, <em class="sig-param">sigAck: str</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.threadSendSignal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.threadSendSignal" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a signal and the expected output so that we don’t have to rewrite the same code for
+every action we have with the phones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conn</strong> – A socket connection to a phone that has already been opened.</p></li>
+<li><p><strong>signal</strong> – The Signal we want to send to the phone. Valid options are: START, STOP, and START_FTP</p></li>
+<li><p><strong>sigMessage</strong> – A message that we want to send alongside the signal for the phone to use.</p></li>
+<li><p><strong>sigAck</strong> – The Signal we expect to get back from the phone in response to our signal. Valid options are: START_ACKNOWLEDGE, STOP_ACKNOWLEDGE, START_FTP_ACKNOWLEDGE.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.threadWaitForFileTransfer">
+<code class="sig-name descname">threadWaitForFileTransfer</code><span class="sig-paren">(</span><em class="sig-param">conn: socket.socket</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.threadWaitForFileTransfer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.threadWaitForFileTransfer" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a thread for waiting for the signal from the phone that the file transfer to the filepath specified
+in the startFileTransfer() function arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>conn</strong> – A socket connection to a phone that has already been opened.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Controllers.PhoneController.PhoneControl.waitForFileTransfer">
+<code class="sig-name descname">waitForFileTransfer</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Controllers/PhoneController.html#PhoneControl.waitForFileTransfer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Controllers.PhoneController.PhoneControl.waitForFileTransfer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawns threads that will wait for both phones to send a signal saying that the file transfer
+of the videos is complete.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Export.ExportFile">
+<span id="export-flight"></span><h1>Export Flight<a class="headerlink" href="#module-src.Export.ExportFile" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="src.Export.ExportFile.export_data">
+<code class="sig-prename descclassname">src.Export.ExportFile.</code><code class="sig-name descname">export_data</code><span class="sig-paren">(</span><em class="sig-param">pilotName</em>, <em class="sig-param">instructorName</em>, <em class="sig-param">flightDate</em>, <em class="sig-param">flightLength</em>, <em class="sig-param">flightInstructions</em>, <em class="sig-param">xCoordinates</em>, <em class="sig-param">yCoordinates</em>, <em class="sig-param">zCoordinates</em>, <em class="sig-param">velocityValues</em>, <em class="sig-param">outPath</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Export/ExportFile.html#export_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Export.ExportFile.export_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports the flight data to a JSON file stored with a “.flight” extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pilotName</strong> – String containing the pilot name</p></li>
+<li><p><strong>instructorName</strong> – String containing the instructor name</p></li>
+<li><p><strong>flightDate</strong> – String containing the flight date</p></li>
+<li><p><strong>flightLength</strong> – String containing the flight length</p></li>
+<li><p><strong>flightInstructions</strong> – String containing the flight instructions</p></li>
+<li><p><strong>xCoordinates</strong> – Array of x coordinates</p></li>
+<li><p><strong>yCoordinates</strong> – Array of y coordinates</p></li>
+<li><p><strong>zCoordinates</strong> – Array of z coordinates</p></li>
+<li><p><strong>velocityValues</strong> – Array of velocity values</p></li>
+<li><p><strong>outPath</strong> – String containing the path to save the file. Should end in “.flight”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Export.ImportFile">
+<span id="import-flight"></span><h1>Import Flight<a class="headerlink" href="#module-src.Export.ImportFile" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="src.Export.ImportFile.importData">
+<code class="sig-prename descclassname">src.Export.ImportFile.</code><code class="sig-name descname">importData</code><span class="sig-paren">(</span><em class="sig-param">inPath</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/src/Export/ImportFile.html#importData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Export.ImportFile.importData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports the flight data from a JSON file stored with a “.flight” extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>inPath</strong> – String containing the pilot name.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flight dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Views.View_LoadingScreen">
+<span id="loading-screen"></span><h1>Loading Screen<a class="headerlink" href="#module-src.Views.View_LoadingScreen" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow">
+<em class="property">class </em><code class="sig-prename descclassname">src.Views.View_LoadingScreen.</code><code class="sig-name descname">LoadingWindow</code><a class="reference internal" href="_modules/src/Views/View_LoadingScreen.html#LoadingWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The view for the loading page that is shown when the user presses the “Stop Tracking” button on the tracking window page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><p><strong>__btnHome</strong> – The class property for the ‘Return to Home’ button.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.BtnHome">
+<em class="property">property </em><code class="sig-name descname">BtnHome</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.BtnTestReport">
+<em class="property">property </em><code class="sig-name descname">BtnTestReport</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.BtnTestReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test report for the view. Is used to switch to the test report screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the test report button.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.LblStatus">
+<em class="property">property </em><code class="sig-name descname">LblStatus</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.LblStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
+application has been tracking the drone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The timer label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.del_BtnHome">
+<em class="property">property </em><code class="sig-name descname">del_BtnHome</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.del_BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.del_BtnTestReport">
+<em class="property">property </em><code class="sig-name descname">del_BtnTestReport</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.del_BtnTestReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test report for the view. Is used to switch to the test report screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the test report button.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.del_LblStatus">
+<em class="property">property </em><code class="sig-name descname">del_LblStatus</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.del_LblStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
+application has been tracking the drone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The timer label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.initView">
+<code class="sig-name descname">initView</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_LoadingScreen.html#LoadingWindow.initView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.initView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the view and lays out all of the components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.returnHome">
+<code class="sig-name descname">returnHome</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_LoadingScreen.html#LoadingWindow.returnHome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.returnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Cancel and Return to Home button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.setSubtitle">
+<code class="sig-name descname">setSubtitle</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QLabel<a class="reference internal" href="_modules/src/Views/View_LoadingScreen.html#LoadingWindow.setSubtitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.setSubtitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the subtitle label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The subtitle label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.setTitle">
+<code class="sig-name descname">setTitle</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QLabel<a class="reference internal" href="_modules/src/Views/View_LoadingScreen.html#LoadingWindow.setTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.setTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the title with the application title on top and the name of the screen just below it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Layout with the application title and screen title labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.set_BtnHome">
+<em class="property">property </em><code class="sig-name descname">set_BtnHome</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.set_BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.set_BtnTestReport">
+<em class="property">property </em><code class="sig-name descname">set_BtnTestReport</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.set_BtnTestReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test report for the view. Is used to switch to the test report screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the test report button.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.set_LblStatus">
+<em class="property">property </em><code class="sig-name descname">set_LblStatus</code><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.set_LblStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
+application has been tracking the drone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The timer label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.setupLoadingIcon">
+<code class="sig-name descname">setupLoadingIcon</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QLabel<a class="reference internal" href="_modules/src/Views/View_LoadingScreen.html#LoadingWindow.setupLoadingIcon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.setupLoadingIcon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used for configuring the loading icon on the loading screen.
+Loading icon is a gif, so QMovie is used to animate the icon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The icon containing the loading label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.signalTestReport">
+<code class="sig-name descname">signalTestReport</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_LoadingScreen.html#LoadingWindow.signalTestReport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.signalTestReport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Test Report button was pushed.
+NOTE: ONLY USED FOR TESTING PURPOSES</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_LoadingScreen.LoadingWindow.signalTransferFootage">
+<code class="sig-name descname">signalTransferFootage</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_LoadingScreen.html#LoadingWindow.signalTransferFootage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_LoadingScreen.LoadingWindow.signalTransferFootage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the button to transfer footage was pressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Views.View_ReportScreen">
+<span id="report-screen"></span><h1>Report Screen<a class="headerlink" href="#module-src.Views.View_ReportScreen" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Views.View_ReportScreen.ReportWindow">
+<em class="property">class </em><code class="sig-prename descclassname">src.Views.View_ReportScreen.</code><code class="sig-name descname">ReportWindow</code><span class="sig-paren">(</span><em class="sig-param">pilotName: str</em>, <em class="sig-param">instructorName: str</em>, <em class="sig-param">flightInstructions: str</em>, <em class="sig-param">previousFlight: str</em>, <em class="sig-param">usingPreviousFlight: bool</em>, <em class="sig-param">flightData: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The view for the report page that is shown when the user opens the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__btnExport</strong> – The class property for the ‘Export Results’ button.</p></li>
+<li><p><strong>__btnFlyAgain</strong> – The class property for the ‘Fly Again’ button.</p></li>
+<li><p><strong>__btnHome</strong> – The class property for the ‘Return to Home’ button.</p></li>
+<li><p><strong>__btnViewGraphVelocity</strong> – The class property for the ‘View Flight Path’ button.</p></li>
+<li><p><strong>__btnViewGraphNoVelocity</strong> – The class property for the ‘View Flight Path with Velocity Changes’ button.</p></li>
+<li><p><strong>__btnViewInstructions</strong> – The class property for the ‘View Flight Instructions’ button.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.BtnExport">
+<em class="property">property </em><code class="sig-name descname">BtnExport</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.BtnExport" title="Permalink to this definition">¶</a></dt>
+<dd><p>The export button for the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.BtnFlyAgain">
+<em class="property">property </em><code class="sig-name descname">BtnFlyAgain</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.BtnFlyAgain" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fly again button for the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.BtnHome">
+<em class="property">property </em><code class="sig-name descname">BtnHome</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.BtnViewGraphNoVelocity">
+<em class="property">property </em><code class="sig-name descname">BtnViewGraphNoVelocity</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.BtnViewGraphNoVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view graph without velocity button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.BtnViewGraphVelocity">
+<em class="property">property </em><code class="sig-name descname">BtnViewGraphVelocity</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.BtnViewGraphVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view graph with velocity button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.LblFlightDate">
+<em class="property">property </em><code class="sig-name descname">LblFlightDate</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.LblFlightDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight date label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight date label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.LblFlightInstructions">
+<em class="property">property </em><code class="sig-name descname">LblFlightInstructions</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.LblFlightInstructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight instructions label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight length label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.LblFlightLength">
+<em class="property">property </em><code class="sig-name descname">LblFlightLength</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.LblFlightLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight length label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight length label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.LblInstructor">
+<em class="property">property </em><code class="sig-name descname">LblInstructor</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.LblInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the instructor label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the instructor label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.LblPilot">
+<em class="property">property </em><code class="sig-name descname">LblPilot</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.LblPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot label so we can set who the pilot is for the flight in child class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the pilot label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.analyzeFlight">
+<code class="sig-name descname">analyzeFlight</code><span class="sig-paren">(</span><em class="sig-param">flightDict: dict</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.analyzeFlight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.analyzeFlight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyzes the flight data to extract coordinates, velocity values, and statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flightDict</strong> – Dictionary of flight data, with only coordinates populated.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Updated dictionary, with legal points and flight statistics included.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.createStatisticsTable">
+<code class="sig-name descname">createStatisticsTable</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QTableWidget<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.createStatisticsTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.createStatisticsTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a table containing flight statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>QTableWidget containing flight statistics.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_BtnExport">
+<em class="property">property </em><code class="sig-name descname">del_BtnExport</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_BtnExport" title="Permalink to this definition">¶</a></dt>
+<dd><p>The export button for the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_BtnFlyAgain">
+<em class="property">property </em><code class="sig-name descname">del_BtnFlyAgain</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_BtnFlyAgain" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fly again button for the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_BtnHome">
+<em class="property">property </em><code class="sig-name descname">del_BtnHome</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_BtnViewGraphNoVelocity">
+<em class="property">property </em><code class="sig-name descname">del_BtnViewGraphNoVelocity</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_BtnViewGraphNoVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view graph without velocity button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_BtnViewGraphVelocity">
+<em class="property">property </em><code class="sig-name descname">del_BtnViewGraphVelocity</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_BtnViewGraphVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view graph with velocity button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_LblFlightDate">
+<em class="property">property </em><code class="sig-name descname">del_LblFlightDate</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_LblFlightDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight date label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight date label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_LblFlightInstructions">
+<em class="property">property </em><code class="sig-name descname">del_LblFlightInstructions</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_LblFlightInstructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight instructions label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight length label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_LblFlightLength">
+<em class="property">property </em><code class="sig-name descname">del_LblFlightLength</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_LblFlightLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight length label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight length label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_LblInstructor">
+<em class="property">property </em><code class="sig-name descname">del_LblInstructor</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_LblInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the instructor label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the instructor label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.del_LblPilot">
+<em class="property">property </em><code class="sig-name descname">del_LblPilot</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.del_LblPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot label so we can set who the pilot is for the flight in child class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the pilot label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.handleEndSliderValueChange">
+<code class="sig-name descname">handleEndSliderValueChange</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.handleEndSliderValueChange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.handleEndSliderValueChange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listener that will updated the stop time label when the user moves the stop
+time slider.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – The value that the stop slider has been moved to horizontally.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.handleStartSliderValueChange">
+<code class="sig-name descname">handleStartSliderValueChange</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.handleStartSliderValueChange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.handleStartSliderValueChange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listener that will updated the start time label when the user moves the start
+time slider.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – The value that the start slider has been moved to horizontally.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.initView">
+<code class="sig-name descname">initView</code><span class="sig-paren">(</span><em class="sig-param">pilotName: str</em>, <em class="sig-param">instructorName: str</em>, <em class="sig-param">flightInstructions: str</em>, <em class="sig-param">previousFlight: str</em>, <em class="sig-param">usingPreviousFlight: bool</em>, <em class="sig-param">flightData: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.initView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.initView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the view and lays out all of the components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pilotName</strong> – String containing pilot name</p></li>
+<li><p><strong>instructorName</strong> – String containing instructor name</p></li>
+<li><p><strong>flightInstructions</strong> – String containing flight instructions.</p></li>
+<li><p><strong>previousFlight</strong> – String containing path to flight data. Should be .flight file if usingPreviousFlight is true, or blank if usingPreviousFlight is false.</p></li>
+<li><p><strong>usingPreviousFlight</strong> – Boolean denoting if the report should be populated from the same file or a different one.</p></li>
+<li><p><strong>flightDict</strong> – Dictionary containing flight data. Should be empty if usingPreviousFlight is true.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.setButtonLayout">
+<code class="sig-name descname">setButtonLayout</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QHBoxLayout<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.setButtonLayout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.setButtonLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lays out the ‘Export Results’, ‘Fly Again’ and ‘Import Previous Flight’ buttons into a horizontal layout to be
+put on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The horizontal layout containing the 3 buttons</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.setSubTitle">
+<code class="sig-name descname">setSubTitle</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QLabel<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.setSubTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.setSubTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up a subtitle label for the window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> – String as name for label</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Subtitle label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_BtnExport">
+<em class="property">property </em><code class="sig-name descname">set_BtnExport</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_BtnExport" title="Permalink to this definition">¶</a></dt>
+<dd><p>The export button for the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_BtnFlyAgain">
+<em class="property">property </em><code class="sig-name descname">set_BtnFlyAgain</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_BtnFlyAgain" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fly again button for the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_BtnHome">
+<em class="property">property </em><code class="sig-name descname">set_BtnHome</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_BtnViewGraphNoVelocity">
+<em class="property">property </em><code class="sig-name descname">set_BtnViewGraphNoVelocity</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_BtnViewGraphNoVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view graph without velocity button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_BtnViewGraphVelocity">
+<em class="property">property </em><code class="sig-name descname">set_BtnViewGraphVelocity</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_BtnViewGraphVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view graph with velocity button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_LblFlightDate">
+<em class="property">property </em><code class="sig-name descname">set_LblFlightDate</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_LblFlightDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight date label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight date label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_LblFlightInstructions">
+<em class="property">property </em><code class="sig-name descname">set_LblFlightInstructions</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_LblFlightInstructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight instructions label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight length label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_LblFlightLength">
+<em class="property">property </em><code class="sig-name descname">set_LblFlightLength</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_LblFlightLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the flight length label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the flight length label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_LblInstructor">
+<em class="property">property </em><code class="sig-name descname">set_LblInstructor</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_LblInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the instructor label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the instructor label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.set_LblPilot">
+<em class="property">property </em><code class="sig-name descname">set_LblPilot</code><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.set_LblPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot label so we can set who the pilot is for the flight in child class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the pilot label.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.setupFlightInfo">
+<code class="sig-name descname">setupFlightInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QGridLayout<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.setupFlightInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.setupFlightInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the flight info (pilot, instructor, date, length, and smoothness score) in a grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Grid layout of the flight information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.setupGraph">
+<code class="sig-name descname">setupGraph</code><span class="sig-paren">(</span><em class="sig-param">flightData: dict</em>, <em class="sig-param">displayVelocity: bool</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.setupGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.setupGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the 3d plot for viewing upon click of button. displayVelocity is a boolean denoting if the graph should
+display colored segments for velocity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flightData</strong> – Dictionary of flight data</p></li>
+<li><p><strong>displayVelocity</strong> – Bool denoting if velocity should be plotted or not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.setupSlider">
+<code class="sig-name descname">setupSlider</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.setupSlider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.setupSlider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setups the slider that will be used to adjust the times of the flight path that will be displayed
+on the graph. This lets us control the beginning and ending bounds of the time of the flight
+that we want to view. We have to use 2 sliders. One for the start time and one for the end.
+We originally wanted to make this such that both sliders were on top of each other to make
+it more intuitive, but we ran into a bug that prevented us from doing that.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A horizontal layout containing both sliders and the labels displaying the time that they represent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.setupTitle">
+<code class="sig-name descname">setupTitle</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.setupTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.setupTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the title with the application title on top and the name of the screen just below it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Layout with the application title and screen title labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.showWindow">
+<code class="sig-name descname">showWindow</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.showWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.showWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes all of the elements from the view and displays the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.signalExportResults">
+<code class="sig-name descname">signalExportResults</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.signalExportResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.signalExportResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Export Results button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.signalReturnHome">
+<code class="sig-name descname">signalReturnHome</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.signalReturnHome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.signalReturnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Return Home button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_ReportScreen.ReportWindow.signalStartTracking">
+<code class="sig-name descname">signalStartTracking</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_ReportScreen.html#ReportWindow.signalStartTracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_ReportScreen.ReportWindow.signalStartTracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Fly Again button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Views.View_StartupScreen">
+<span id="startup-screen"></span><h1>Startup Screen<a class="headerlink" href="#module-src.Views.View_StartupScreen" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Views.View_StartupScreen.StartupWindow">
+<em class="property">class </em><code class="sig-prename descclassname">src.Views.View_StartupScreen.</code><code class="sig-name descname">StartupWindow</code><span class="sig-paren">(</span><em class="sig-param">flightModeEnabled: bool</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The view for the home Startup page that is shown when the user opens the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__btnVerifySetup</strong> – The class property for the ‘Verify Setup’ button.</p></li>
+<li><p><strong>__btnStart</strong> – The class property for the ‘Start Tracking’ button.</p></li>
+<li><p><strong>__btnImport</strong> – The class property for the ‘Import Previous Flight’ button.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.BtnImport">
+<em class="property">property </em><code class="sig-name descname">BtnImport</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.BtnImport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Import Previous Flight button. Is used to import past flight files. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.BtnStart">
+<em class="property">property </em><code class="sig-name descname">BtnStart</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.BtnStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the startTracking button. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.BtnVerifySetup">
+<em class="property">property </em><code class="sig-name descname">BtnVerifySetup</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.BtnVerifySetup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the verifySetup button. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the verifySetup button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.del_BtnImport">
+<em class="property">property </em><code class="sig-name descname">del_BtnImport</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.del_BtnImport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Import Previous Flight button. Is used to import past flight files. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.del_BtnStart">
+<em class="property">property </em><code class="sig-name descname">del_BtnStart</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.del_BtnStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the startTracking button. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.del_BtnVerifySetup">
+<em class="property">property </em><code class="sig-name descname">del_BtnVerifySetup</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.del_BtnVerifySetup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the verifySetup button. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the verifySetup button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.initView">
+<code class="sig-name descname">initView</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.initView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.initView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the view and lays out all of the components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.openFileNameDialog">
+<code class="sig-name descname">openFileNameDialog</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.openFileNameDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.openFileNameDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows user to select a .flight file from a file dialog window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Path to selected file as a string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.setButtonLayout">
+<code class="sig-name descname">setButtonLayout</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QHBoxLayout<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.setButtonLayout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.setButtonLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lays out the ‘Test Config’, ‘Start’ and ‘Import’ buttons into a horizontal layout to be
+put on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The horizontal layout containing the 3 buttons</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.setTeamMembers">
+<code class="sig-name descname">setTeamMembers</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.setTeamMembers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.setTeamMembers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the team members label for the window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Team members label of the application</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.setTitle">
+<code class="sig-name descname">setTitle</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.setTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.setTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the title with the application title on top and the name of the screen just below it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Layout with the application title and screen title labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.set_BtnImport">
+<em class="property">property </em><code class="sig-name descname">set_BtnImport</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.set_BtnImport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Import Previous Flight button. Is used to import past flight files. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.set_BtnStart">
+<em class="property">property </em><code class="sig-name descname">set_BtnStart</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.set_BtnStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the startTracking button. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.set_BtnVerifySetup">
+<em class="property">property </em><code class="sig-name descname">set_BtnVerifySetup</code><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.set_BtnVerifySetup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the verifySetup button. Use to attach functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the verifySetup button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.setupAMLogo">
+<code class="sig-name descname">setupAMLogo</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.setupAMLogo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.setupAMLogo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used for configuring the display for the A&amp;M logo on the startup screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.setupPicture">
+<code class="sig-name descname">setupPicture</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.setupPicture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.setupPicture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used for configuring the display for the logo on the startup screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.signalImportFlight">
+<code class="sig-name descname">signalImportFlight</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.signalImportFlight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.signalImportFlight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls function to allow user to select a file for import.
+Sends a signal to the main controller that the Import Previous Flight button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.signalStartTracking">
+<code class="sig-name descname">signalStartTracking</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.signalStartTracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.signalStartTracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Start Tracking button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_StartupScreen.StartupWindow.signalVerifySetup">
+<code class="sig-name descname">signalVerifySetup</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_StartupScreen.html#StartupWindow.signalVerifySetup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_StartupScreen.StartupWindow.signalVerifySetup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Verify Setup button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Views.View_TrackingScreen">
+<span id="tracking-screen"></span><h1>Tracking Screen<a class="headerlink" href="#module-src.Views.View_TrackingScreen" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow">
+<em class="property">class </em><code class="sig-prename descclassname">src.Views.View_TrackingScreen.</code><code class="sig-name descname">TrackingWindow</code><span class="sig-paren">(</span><em class="sig-param">phoneControl: Controllers.PhoneController.PhoneControl</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The view for the tracking view page that is shown when the user presses the “Start Tracking” button on the home page.
+Allows the user to enter in flight information and begin tracking the drone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__btnConfirm</strong> – The class property for the ‘Confirm’ button.</p></li>
+<li><p><strong>__btnClear</strong> – The class property for the ‘Clear’ button.</p></li>
+<li><p><strong>__btnStart</strong> – The class property for the ‘Start Tracking’ button.</p></li>
+<li><p><strong>__btnStop</strong> – The class property for the ‘Stop Tracking’ button.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.BtnClear">
+<em class="property">property </em><code class="sig-name descname">BtnClear</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.BtnClear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Clear button so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the clear button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.BtnConfirm">
+<em class="property">property </em><code class="sig-name descname">BtnConfirm</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.BtnConfirm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Confirm button so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the confirm button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.BtnStart">
+<em class="property">property </em><code class="sig-name descname">BtnStart</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.BtnStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Start button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the start button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.BtnStop">
+<em class="property">property </em><code class="sig-name descname">BtnStop</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.BtnStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Stop button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the stop button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.LblInstructor">
+<em class="property">property </em><code class="sig-name descname">LblInstructor</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.LblInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Instructor label so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The instructor label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.LblPilot">
+<em class="property">property </em><code class="sig-name descname">LblPilot</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.LblPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot label so we can attach functionality to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The pilot label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.LblTimer">
+<em class="property">property </em><code class="sig-name descname">LblTimer</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.LblTimer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
+application has been tracking the drone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The timer label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.TBInstructor">
+<em class="property">property </em><code class="sig-name descname">TBInstructor</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.TBInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Instructor textbox so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The instructor textbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.TBPilot">
+<em class="property">property </em><code class="sig-name descname">TBPilot</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.TBPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot Textbox so we can attach functionality to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The pilot textbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.TEInstructions">
+<em class="property">property </em><code class="sig-name descname">TEInstructions</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.TEInstructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the instructions text edit box</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the instructions text edit box</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.clearValues">
+<code class="sig-name descname">clearValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.clearValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.clearValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the values in the text boxes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.confirmValues">
+<code class="sig-name descname">confirmValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.confirmValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.confirmValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Confirms the values in the textboxes by displaying a pop up message of the values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_BtnClear">
+<em class="property">property </em><code class="sig-name descname">del_BtnClear</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_BtnClear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Clear button so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the clear button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_BtnConfirm">
+<em class="property">property </em><code class="sig-name descname">del_BtnConfirm</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_BtnConfirm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Confirm button so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the confirm button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_BtnStart">
+<em class="property">property </em><code class="sig-name descname">del_BtnStart</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_BtnStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Start button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the start button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_BtnStop">
+<em class="property">property </em><code class="sig-name descname">del_BtnStop</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_BtnStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Stop button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the stop button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_LblInstructor">
+<em class="property">property </em><code class="sig-name descname">del_LblInstructor</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_LblInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Instructor label so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The instructor label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_LblPilot">
+<em class="property">property </em><code class="sig-name descname">del_LblPilot</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_LblPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot label so we can attach functionality to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The pilot label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_LblTimer">
+<em class="property">property </em><code class="sig-name descname">del_LblTimer</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_LblTimer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
+application has been tracking the drone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The timer label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_TBInstructor">
+<em class="property">property </em><code class="sig-name descname">del_TBInstructor</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_TBInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Instructor textbox so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The instructor textbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_TBPilot">
+<em class="property">property </em><code class="sig-name descname">del_TBPilot</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_TBPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot Textbox so we can attach functionality to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The pilot textbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.del_TEInstructions">
+<em class="property">property </em><code class="sig-name descname">del_TEInstructions</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.del_TEInstructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the instructions text edit box</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the instructions text edit box</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.initView">
+<code class="sig-name descname">initView</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.initView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.initView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes and lays out all of the controls and elements on the view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.returnHome">
+<code class="sig-name descname">returnHome</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.returnHome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.returnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Return Home button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setClrConfirmBtns">
+<code class="sig-name descname">setClrConfirmBtns</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QHBoxLayout<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setClrConfirmBtns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setClrConfirmBtns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the buttons for clearing and confirming the pilot, instructor, and flight instruction information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The confirmation button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setFlightInstructions">
+<code class="sig-name descname">setFlightInstructions</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setFlightInstructions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setFlightInstructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the textbox that will allow the instructor to type in the flight instructions for the pilot
+to try to match.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A vertical layout with the Instructions label on top of the text box</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setInstructor">
+<code class="sig-name descname">setInstructor</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setInstructor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the instructor label and the textbox that will be used to set the instructor flying during this
+session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a vertical layout with the instructor label over the instructor textbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setPilot">
+<code class="sig-name descname">setPilot</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setPilot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the Pilot label and the textbox that will be used to set the pilot flying during this
+session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a vertical layout with the pilot label over the pilot textbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setStartAndStopBtns">
+<code class="sig-name descname">setStartAndStopBtns</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QHBoxLayout<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setStartAndStopBtns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setStartAndStopBtns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the start and stop buttons for tracking the drones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setStatusLabel">
+<code class="sig-name descname">setStatusLabel</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QLabel<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setStatusLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setStatusLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up a status label for the window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Label of the application taken from the “text” parameter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setSubTitle">
+<code class="sig-name descname">setSubTitle</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QLabel<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setSubTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setSubTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up a subtitle label for the window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Subtitle of the application taken from the “text” parameter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setTimerLabel">
+<code class="sig-name descname">setTimerLabel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setTimerLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setTimerLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the label that will continuously update and display the time that the application has been
+actively tracking. Need to attach a QTimer() to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The label that will contain the timer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.setTitle">
+<code class="sig-name descname">setTitle</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.setTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.setTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the title with the application title on top and the name of the screen just below it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Layout with the application title and screen title labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_BtnClear">
+<em class="property">property </em><code class="sig-name descname">set_BtnClear</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_BtnClear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Clear button so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the clear button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_BtnConfirm">
+<em class="property">property </em><code class="sig-name descname">set_BtnConfirm</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_BtnConfirm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Confirm button so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the confirm button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_BtnStart">
+<em class="property">property </em><code class="sig-name descname">set_BtnStart</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_BtnStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Start button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the start button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_BtnStop">
+<em class="property">property </em><code class="sig-name descname">set_BtnStop</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_BtnStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Stop button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the stop button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_LblInstructor">
+<em class="property">property </em><code class="sig-name descname">set_LblInstructor</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_LblInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Instructor label so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The instructor label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_LblPilot">
+<em class="property">property </em><code class="sig-name descname">set_LblPilot</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_LblPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot label so we can attach functionality to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The pilot label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_LblTimer">
+<em class="property">property </em><code class="sig-name descname">set_LblTimer</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_LblTimer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter property for the timer label. We need to attach a QTimer to it so it can count the time the
+application has been tracking the drone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The timer label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_TBInstructor">
+<em class="property">property </em><code class="sig-name descname">set_TBInstructor</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_TBInstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Instructor textbox so we can attach functionality to it later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The instructor textbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_TBPilot">
+<em class="property">property </em><code class="sig-name descname">set_TBPilot</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_TBPilot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the Pilot Textbox so we can attach functionality to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The pilot textbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.set_TEInstructions">
+<em class="property">property </em><code class="sig-name descname">set_TEInstructions</code><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.set_TEInstructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the instructions text edit box</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Reference to the instructions text edit box</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.startTracking">
+<code class="sig-name descname">startTracking</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.startTracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.startTracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Start Tracking button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_TrackingScreen.TrackingWindow.stopTracking">
+<code class="sig-name descname">stopTracking</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_TrackingScreen.html#TrackingWindow.stopTracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_TrackingScreen.TrackingWindow.stopTracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Stop Tracking button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Views.View_VerifySetupScreen">
+<span id="verify-setup-screen"></span><h1>Verify Setup Screen<a class="headerlink" href="#module-src.Views.View_VerifySetupScreen" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow">
+<em class="property">class </em><code class="sig-prename descclassname">src.Views.View_VerifySetupScreen.</code><code class="sig-name descname">VerifySetupWindow</code><span class="sig-paren">(</span><em class="sig-param">phoneControl: Controllers.PhoneController.PhoneControl</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The view for the verify setup page that is shown when the user presses the “Verify Setup” button on the home page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__btnPhoneSync</strong> – The class property for the ‘Phone Sync’ button.</p></li>
+<li><p><strong>__btnTestLight</strong> – The class property for the ‘Test Light’ button.</p></li>
+<li><p><strong>__btnTestFull</strong> – The class property for the ‘Test Full Setup’ button.</p></li>
+<li><p><strong>__btnCheck</strong> – The class property for the ‘Check Status’ button.</p></li>
+<li><p><strong>__btnHome</strong> – The class property for the ‘Return to Home’ button.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnCheck">
+<em class="property">property </em><code class="sig-name descname">BtnCheck</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>The check status button for the view so we can attach functionality to it later on.
+Is used to check the status of the set up procedures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnHome">
+<em class="property">property </em><code class="sig-name descname">BtnHome</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnPhoneSync">
+<em class="property">property </em><code class="sig-name descname">BtnPhoneSync</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnPhoneSync" title="Permalink to this definition">¶</a></dt>
+<dd><p>The phone sync button so we can attach functionality to it later on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the phoneSync button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnTestFull">
+<em class="property">property </em><code class="sig-name descname">BtnTestFull</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnTestFull" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test full setup button for the view so we can attach functionality to it later on.
+Is used to import past flight files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnTestLight">
+<em class="property">property </em><code class="sig-name descname">BtnTestLight</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.BtnTestLight" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test light button so we can attach functionality to it later on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.checkStatus">
+<code class="sig-name descname">checkStatus</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.checkStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.checkStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the status of the system setup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnCheck">
+<em class="property">property </em><code class="sig-name descname">del_BtnCheck</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>The check status button for the view so we can attach functionality to it later on.
+Is used to check the status of the set up procedures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnHome">
+<em class="property">property </em><code class="sig-name descname">del_BtnHome</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnPhoneSync">
+<em class="property">property </em><code class="sig-name descname">del_BtnPhoneSync</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnPhoneSync" title="Permalink to this definition">¶</a></dt>
+<dd><p>The phone sync button so we can attach functionality to it later on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the phoneSync button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnTestFull">
+<em class="property">property </em><code class="sig-name descname">del_BtnTestFull</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnTestFull" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test full setup button for the view so we can attach functionality to it later on.
+Is used to import past flight files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnTestLight">
+<em class="property">property </em><code class="sig-name descname">del_BtnTestLight</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.del_BtnTestLight" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test light button so we can attach functionality to it later on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.initView">
+<code class="sig-name descname">initView</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.initView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.initView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the view and lays out all of the components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.returnHome">
+<code class="sig-name descname">returnHome</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.returnHome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.returnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a signal to the main controller that the Return Home button was pushed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.setButtonLayout">
+<code class="sig-name descname">setButtonLayout</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QHBoxLayout<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.setButtonLayout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.setButtonLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lays out the ‘Phone Sync’, ‘Test Light’ and ‘Test Full Setup’ buttons into a horizontal layout to be
+put on screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The horizontal layout containing the 3 buttons</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.setTitle">
+<code class="sig-name descname">setTitle</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QVBoxLayout<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.setTitle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.setTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the title with the application title on top and the name of the screen just below it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Layout with the application title and screen title labels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnCheck">
+<em class="property">property </em><code class="sig-name descname">set_BtnCheck</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>The check status button for the view so we can attach functionality to it later on.
+Is used to check the status of the set up procedures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnHome">
+<em class="property">property </em><code class="sig-name descname">set_BtnHome</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home for the view. Is used to return to home screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnPhoneSync">
+<em class="property">property </em><code class="sig-name descname">set_BtnPhoneSync</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnPhoneSync" title="Permalink to this definition">¶</a></dt>
+<dd><p>The phone sync button so we can attach functionality to it later on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The reference to the phoneSync button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnTestFull">
+<em class="property">property </em><code class="sig-name descname">set_BtnTestFull</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnTestFull" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test full setup button for the view so we can attach functionality to it later on.
+Is used to import past flight files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnTestLight">
+<em class="property">property </em><code class="sig-name descname">set_BtnTestLight</code><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.set_BtnTestLight" title="Permalink to this definition">¶</a></dt>
+<dd><p>The test light button so we can attach functionality to it later on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.setupPicture">
+<code class="sig-name descname">setupPicture</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; PyQt5.QtWidgets.QLabel<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.setupPicture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.setupPicture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used for configuring the display for the logo on the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns the label that contains our logo so it can be put on the main panel.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.syncPhone">
+<code class="sig-name descname">syncPhone</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.syncPhone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.syncPhone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs phone sync test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.testFull">
+<code class="sig-name descname">testFull</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.testFull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.testFull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs full system test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Views.View_VerifySetupScreen.VerifySetupWindow.testLight">
+<code class="sig-name descname">testLight</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Views/View_VerifySetupScreen.html#VerifySetupWindow.testLight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.View_VerifySetupScreen.VerifySetupWindow.testLight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs light test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Views.Graph">
+<span id="matplot-graph"></span><h1>MatPlot Graph<a class="headerlink" href="#module-src.Views.Graph" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="src.Views.Graph.checkCoordinates">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">checkCoordinates</code><span class="sig-paren">(</span><em class="sig-param">flightDict: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/Graph.html#checkCoordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.checkCoordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the input dictionary of flight data from a .flight file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flightDict</strong> – Dictionary containing flight data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of flight data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Views.Graph.checkLegalInput">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">checkLegalInput</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/Graph.html#checkLegalInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.checkLegalInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the inputted 3D coordinate is within legal bounds. Legal bounds are:
+x, y, z &gt; 0 and x &lt; 15 and y &lt; 15 and z &lt; 10.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – x value to check.</p></li>
+<li><p><strong>y</strong> – y value to check.</p></li>
+<li><p><strong>z</strong> – z value to check.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean denoting if legal or not (true if legal, false if outside bounds).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Views.Graph.computeVelocity">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">computeVelocity</code><span class="sig-paren">(</span><em class="sig-param">x1</em>, <em class="sig-param">y1</em>, <em class="sig-param">z1</em>, <em class="sig-param">x2</em>, <em class="sig-param">y2</em>, <em class="sig-param">z2</em>, <em class="sig-param">t1</em>, <em class="sig-param">t2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/Graph.html#computeVelocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.computeVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the velocity of the drone between two points (x1,y1,z1) and (x2,y2,z2) at respective times t1 and t2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A float value representing the velocity of the drone.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Views.Graph.computeVelocityStatistics">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">computeVelocityStatistics</code><span class="sig-paren">(</span><em class="sig-param">flightDict: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/Graph.html#computeVelocityStatistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.computeVelocityStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes statistics on the velocity points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flightDict</strong> – Dictionary of flight data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Updated dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Views.Graph.dimensionless_jerk">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">dimensionless_jerk</code><span class="sig-paren">(</span><em class="sig-param">movement: list</em>, <em class="sig-param">fs: int</em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="_modules/src/Views/Graph.html#dimensionless_jerk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.dimensionless_jerk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the dimensionless jerk for a 1 dimensional array of points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>movement</strong> – The numpy array of points to calculate the jerk for. The array containing the movement speed profile. Doesn’t need to be numpy array but it MUST at least be a 1 dimensional list.</p></li>
+<li><p><strong>fs</strong> – The sampling frequency of the data points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The dimensionless jerk estimate of the given movement’s smoothness.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Views.Graph.generateGraph">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">generateGraph</code><span class="sig-paren">(</span><em class="sig-param">flightData: dict</em>, <em class="sig-param">displayVelocity: bool</em>, <em class="sig-param">t1: float</em>, <em class="sig-param">t2: float</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/Graph.html#generateGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.generateGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Driver function for generating the 3d graph of drone coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flightData</strong> – Dictionary containing flight data.</p></li>
+<li><p><strong>displayVelocity</strong> – Boolean saying if velocity changes should be displayed on the graph.</p></li>
+<li><p><strong>t1</strong> – Minimum time bound for plotting coordinates.</p></li>
+<li><p><strong>t2</strong> – Maximum time bound for plotting coordinates.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The figure to display as the 3d graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Views.Graph.log_dimensionless_jerk">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">log_dimensionless_jerk</code><span class="sig-paren">(</span><em class="sig-param">movement: list</em>, <em class="sig-param">fs: int</em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="_modules/src/Views/Graph.html#log_dimensionless_jerk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.log_dimensionless_jerk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the smoothness metric for the given speed profile using the log dimensionless jerk
+metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>movement</strong> – The numpy array of points to calculate the jerk for. The array containing the movement speed profile. Doesn’t need to be numpy array but it MUST at least be a 1 dimensional list.</p></li>
+<li><p><strong>fs</strong> – The sampling frequency of the data points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The dimensionless jerk estimate of the given movement’s smoothness.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Views.Graph.velocityColors">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">velocityColors</code><span class="sig-paren">(</span><em class="sig-param">flightDict: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/Graph.html#velocityColors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.velocityColors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the color of the line segment between two points based on velocity values. The line color is determined
+by the change in velocity of the drone between two points. The color of the line should be green if the
+velocity point is greater than the previous velocity point, yellow if within 0.5 m/s, and red if less.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flightDict</strong> – Dictionary of flight data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An array of color values to use when plotting line segments between points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.Views.Graph.velocityPoints">
+<code class="sig-prename descclassname">src.Views.Graph.</code><code class="sig-name descname">velocityPoints</code><span class="sig-paren">(</span><em class="sig-param">flightData: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Views/Graph.html#velocityPoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Views.Graph.velocityPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the velocity of the drone between consecutive points for the entire flight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flightData</strong> – Dictionary of flight Data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Modified flightData dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Tests.Graph_Test">
+<span id="graph-test"></span><h1>Graph Test<a class="headerlink" href="#module-src.Tests.Graph_Test" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Tests.Graph_Test.Graph_Test">
+<em class="property">class </em><code class="sig-prename descclassname">src.Tests.Graph_Test.</code><code class="sig-name descname">Graph_Test</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is for testing the graphing functions that we are using to display the flight path
+onto the UI. We want to make sure that what is being displayed is correct.</p>
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_checkLegalInput">
+<code class="sig-name descname">test_checkLegalInput</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_checkLegalInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_checkLegalInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that legal and illegal coordinate points can be detected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_computeVelocity">
+<code class="sig-name descname">test_computeVelocity</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_computeVelocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_computeVelocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the velocity is computed as expected between two points (1,1,1) and (3,3,1) with timeDiff = 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_graphShows_noError">
+<code class="sig-name descname">test_graphShows_noError</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_graphShows_noError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_graphShows_noError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that graph generates correctly with and with velocity changes shown
+for data set of 100, then 200, then 800, then 1200 data points.
+For each size, two tests are run. One test contains all legal inputs. Another test contains 80% legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size100_allLegal">
+<code class="sig-name descname">test_readCoordinates_size100_allLegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_size100_allLegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size100_allLegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that file containing 100 (x,y,z) points is read in correctly.
+This test contains all legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size100_someLegal">
+<code class="sig-name descname">test_readCoordinates_size100_someLegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_size100_someLegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size100_someLegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that file containing 100 (x,y,z) points is read in correctly.
+This test contains 80% legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size1200_allLegal">
+<code class="sig-name descname">test_readCoordinates_size1200_allLegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_size1200_allLegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size1200_allLegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that file containing 1200 (x,y,z) points is read in correctly. This contains all legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size1200_someLegal">
+<code class="sig-name descname">test_readCoordinates_size1200_someLegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_size1200_someLegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size1200_someLegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that file containing 1200 (x,y,z) points is read in correctly. This contains 80% legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size200_allLegal">
+<code class="sig-name descname">test_readCoordinates_size200_allLegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_size200_allLegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size200_allLegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that file containing 200 (x,y,z) points is read in correctly. This contains all legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size200_someLegal">
+<code class="sig-name descname">test_readCoordinates_size200_someLegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_size200_someLegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size200_someLegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that file containing 200 (x,y,z) points is read in correctly. This contains 80% legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size600_allLegal">
+<code class="sig-name descname">test_readCoordinates_size600_allLegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_size600_allLegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size600_allLegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that file containing 600 (x,y,z) points is read in correctly. This contains all legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size600_someLegal">
+<code class="sig-name descname">test_readCoordinates_size600_someLegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_size600_someLegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_size600_someLegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that file containing 600 (x,y,z) points is read in correctly. This contains 80% legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_small_illegal">
+<code class="sig-name descname">test_readCoordinates_small_illegal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_small_illegal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_small_illegal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that coordinates from a small data file are read in correctly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_readCoordinates_small_legal">
+<code class="sig-name descname">test_readCoordinates_small_legal</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_readCoordinates_small_legal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_readCoordinates_small_legal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that coordinates from a small data file are read in correctly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_smoothnessComputes">
+<code class="sig-name descname">test_smoothnessComputes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_smoothnessComputes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_smoothnessComputes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that smoothness function returns a number when inputted data set of 100, then 200, then 800,
+then 1200 data points. For each size, two tests are run.
+One test contains all legal inputs. Another test contains 80% legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_smoothnessValues">
+<code class="sig-name descname">test_smoothnessValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_smoothnessValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_smoothnessValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that smoothness function returns expected number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_velocityColors">
+<code class="sig-name descname">test_velocityColors</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_velocityColors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_velocityColors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that the correct color is assigned to the graph segment between consecutive velocity values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_velocityColorsComputes_correctSize">
+<code class="sig-name descname">test_velocityColorsComputes_correctSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_velocityColorsComputes_correctSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_velocityColorsComputes_correctSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that velocityColors returns array of correct size when inputted data set of 100, then 200, then 800,
+then 1200 data points. For each size, two tests are run.
+One test contains all legal inputs. Another test contains 80% legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_velocityComputes_correctSize">
+<code class="sig-name descname">test_velocityComputes_correctSize</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_velocityComputes_correctSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_velocityComputes_correctSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that velocityPoints returns array of correct size when inputted data set of 100, 200, then 800,
+then 1200 data points. For each size, two tests are run.
+One test contains all legal inputs. Another test contains 80% legal inputs.
+Illegal coordinate points in file should not be included in “legalPoints” list in dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.Tests.Graph_Test.Graph_Test.test_velocityPoints">
+<code class="sig-name descname">test_velocityPoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/Graph_Test.html#Graph_Test.test_velocityPoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.Graph_Test.Graph_Test.test_velocityPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that velocity between consecutive points is computed as expected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Tests.ImportFile_Test">
+<span id="import-file-test"></span><h1>Import File Test<a class="headerlink" href="#module-src.Tests.ImportFile_Test" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="src.Tests.ImportFile_Test.ImportFileTests">
+<em class="property">class </em><code class="sig-prename descclassname">src.Tests.ImportFile_Test.</code><code class="sig-name descname">ImportFileTests</code><span class="sig-paren">(</span><em class="sig-param">methodName='runTest'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Tests/ImportFile_Test.html#ImportFileTests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.ImportFile_Test.ImportFileTests" title="Permalink to this definition">¶</a></dt>
+<dd><p>This test class is used the test the import and export functions to ensure we can successfully
+save and reload past flights.</p>
+<dl class="method">
+<dt id="src.Tests.ImportFile_Test.ImportFileTests.test_import">
+<code class="sig-name descname">test_import</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/Tests/ImportFile_Test.html#ImportFileTests.test_import"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Tests.ImportFile_Test.ImportFileTests.test_import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that .flight file generated from exporting flight data can be imported successfully.
+All data members should exist, and no extra keys should be in the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

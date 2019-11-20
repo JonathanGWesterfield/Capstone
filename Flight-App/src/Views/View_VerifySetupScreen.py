@@ -25,9 +25,11 @@ class VerifySetupWindow(qtw.QWidget):
     lightSync = False
     fullSetup = False
 
-    def __init__(self, phoneControl: PhoneControl):
+    def __init__(self, phoneControl: PhoneControl) -> None:
         """
-        Class Constructor
+        Class constructor.
+
+        :param phoneControl: The PhoneController.PhoneControl Object that is used to send/recieve signals to and from the phone.
         """
         qtw.QWidget.__init__(self)
         self.setFixedSize(550, 550)
@@ -35,9 +37,10 @@ class VerifySetupWindow(qtw.QWidget):
         # self.rpiControl = rpiControl
         self.initView()
 
-    def initView(self):
+    def initView(self) -> None:
         """
         Sets up the view and lays out all of the components.
+
         :return: None
         """
         # Set window title
@@ -76,9 +79,10 @@ class VerifySetupWindow(qtw.QWidget):
         # Attach the layout to the screen
         self.setLayout(vLayout)
 
-    def syncPhone(self):
+    def syncPhone(self) -> None:
         """
         Runs phone sync test.
+
         :return: None
         """
         try:
@@ -94,9 +98,10 @@ class VerifySetupWindow(qtw.QWidget):
             msgBox.exec()
             self.phoneSync = False
 
-    def testLight(self):
+    def testLight(self) -> None:
         """
         Runs light test.
+
         :return: None
         """
         try:
@@ -108,9 +113,10 @@ class VerifySetupWindow(qtw.QWidget):
             msgBox.exec()
             self.lightSync = False
 
-    def testFull(self):
+    def testFull(self) -> None:
         """
         Runs full system test.
+
         :return: None
         """
         #if self.lightSync is True and self.phoneControl is True:
@@ -132,9 +138,10 @@ class VerifySetupWindow(qtw.QWidget):
                 "Go through the setup process and verify that the performance tracker is set up properly.</center>")
             msgBox.exec()
 
-    def returnHome(self):
+    def returnHome(self) -> None:
         """
         Sends a signal to the main controller that the Return Home button was pushed.
+
         :return: none
         """
         self.sigReturnHome.emit()
@@ -142,6 +149,7 @@ class VerifySetupWindow(qtw.QWidget):
     def setTitle(self) -> qtw.QVBoxLayout:
         """
         Sets up the title with the application title on top and the name of the screen just below it.
+
         :return: Layout with the application title and screen title labels
         """
         lblTitle = qtw.QLabel("UAS Performance Tracker")
@@ -162,6 +170,7 @@ class VerifySetupWindow(qtw.QWidget):
         """
         Lays out the 'Phone Sync', 'Test Light' and 'Test Full Setup' buttons into a horizontal layout to be
         put on screen.
+
         :return: The horizontal layout containing the 3 buttons
         """
         self.__btnPhoneSync = qtw.QPushButton('Phone Sync')
@@ -175,9 +184,10 @@ class VerifySetupWindow(qtw.QWidget):
 
         return buttonBox
 
-    def checkStatus(self):
+    def checkStatus(self) -> None:
         """
          Shows the status of the system setup.
+
          :return: None
          """
         if self.phoneSync is False:
@@ -200,10 +210,11 @@ class VerifySetupWindow(qtw.QWidget):
             phoneStatus + fullSetupStatus)
         msgBox.exec()
 
-    def setupPicture(self):
+    def setupPicture(self) -> qtw.QLabel:
         """
         Used for configuring the display for the logo on the screen.
-        :return: None
+
+        :return: Returns the label that contains our logo so it can be put on the main panel.
         """
         label = qtw.QLabel()
         pixmap = qtg.QPixmap('../resources/DroneLogo.png')
@@ -220,23 +231,26 @@ class VerifySetupWindow(qtw.QWidget):
     def BtnPhoneSync(self) -> qtw.QPushButton:
         """
         The phone sync button so we can attach functionality to it later on.
+
         :return: The reference to the phoneSync button
         """
         return self.__btnPhoneSync
 
     @BtnPhoneSync.setter
-    def set_BtnPhoneSync(self, btn: qtw.QPushButton):
+    def set_BtnPhoneSync(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the phone sync button.
+
         :param btn: The button we want to replace the current one with
         :return: None
         """
         self.__btnPhoneSync = btn
 
     @BtnPhoneSync.deleter
-    def del_BtnPhoneSync(self):
+    def del_BtnPhoneSync(self) -> None:
         """
         Deleter for the phone sync button
+
         :return: None
         """
         del self.__btnPhoneSync
@@ -245,23 +259,26 @@ class VerifySetupWindow(qtw.QWidget):
     def BtnTestLight(self) -> qtw.QPushButton:
         """
         The test light button so we can attach functionality to it later on.
+
         :return: None
         """
         return self.__btnTestLight
 
     @BtnTestLight.setter
-    def set_BtnTestLight(self, btn: qtw.QPushButton):
+    def set_BtnTestLight(self, btn: qtw.QPushButton) -> None:
         """
         The setter for the test light button.
+
         :param btn: A Qt QPushButton we want to replace the start button with.
         :return: None
         """
         self.__btnTestLight = btn
 
     @BtnTestLight.deleter
-    def del_BtnTestLight(self):
+    def del_BtnTestLight(self) -> None:
         """
         Deleter for the test light button. Never call this.
+
         :return: None
         """
         del self.__btnTestLight
@@ -271,23 +288,26 @@ class VerifySetupWindow(qtw.QWidget):
         """
         The test full setup button for the view so we can attach functionality to it later on.
         Is used to import past flight files.
+
         :return: None
         """
         return self.__btnTestFull
 
     @BtnTestFull.setter
-    def set_BtnTestFull(self, btn: qtw.QPushButton):
+    def set_BtnTestFull(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the test full setup button.
+
         :param btn: A Qt QPushButton we want to replace the test full setup button with.
         :return: None
         """
         self.__btnTestFull = btn
 
     @BtnTestFull.deleter
-    def del_BtnTestFull(self):
+    def del_BtnTestFull(self) -> None:
         """
         Deleter for the test full setup button. Never call this.
+
         :return: None
         """
         del self.__btnTestFull
@@ -296,23 +316,26 @@ class VerifySetupWindow(qtw.QWidget):
     def BtnHome(self) -> qtw.QPushButton:
         """
         The home for the view. Is used to return to home screen.
+
         :return: None
         """
         return self.__btnHome
 
     @BtnHome.setter
-    def set_BtnHome(self, btn: qtw.QPushButton):
+    def set_BtnHome(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the home button.
+
         :param btn: A Qt QPushButton we want to replace the home button with.
         :return: None
         """
         self.__btnHome = btn
 
     @BtnHome.deleter
-    def del_BtnHome(self):
+    def del_BtnHome(self) -> None:
         """
         Deleter for the home button. Never call this.
+
         :return: None
         """
         del self.__btnHome
@@ -322,23 +345,26 @@ class VerifySetupWindow(qtw.QWidget):
         """
         The check status button for the view so we can attach functionality to it later on.
         Is used to check the status of the set up procedures.
+
         :return: None
         """
         return self.__btnCheck
 
     @BtnCheck.setter
-    def set_BtnCheck(self, btn: qtw.QPushButton):
+    def set_BtnCheck(self, btn: qtw.QPushButton) -> None:
         """
         Setter for the check status button.
+
         :param btn: A Qt QPushButton we want to replace the check status button with.
         :return: None
         """
         self.__btnCheck = btn
 
     @BtnCheck.deleter
-    def del_BtnCheck(self):
+    def del_BtnCheck(self) -> None:
         """
         Deleter for the check status button. Never call this.
+
         :return: None
         """
         del self.__btnCheck

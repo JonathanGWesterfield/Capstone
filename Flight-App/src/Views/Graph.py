@@ -11,6 +11,7 @@ import re
 def checkCoordinates(flightDict: dict):
     """
     Reads the input dictionary of flight data from a .flight file.
+
     :param flightDict: Dictionary containing flight data.
     :return: Dictionary of flight data.
     """
@@ -26,6 +27,7 @@ def checkLegalInput(x, y, z):
     """
     Checks if the inputted 3D coordinate is within legal bounds. Legal bounds are:
     x, y, z > 0 and x < 15 and y < 15 and z < 10.
+
     :param x: x value to check.
     :param y: y value to check.
     :param z: z value to check.
@@ -55,6 +57,7 @@ def checkLegalInput(x, y, z):
 def computeVelocity(x1, y1, z1, x2, y2, z2, t1, t2):
     """
     Computes the velocity of the drone between two points (x1,y1,z1) and (x2,y2,z2) at respective times t1 and t2.
+
     :return: A float value representing the velocity of the drone.
     """
     distance = math.sqrt(math.pow(x2 - x1, 2) +
@@ -67,6 +70,7 @@ def computeVelocity(x1, y1, z1, x2, y2, z2, t1, t2):
 def velocityPoints(flightData: dict):
     """
     Calculates the velocity of the drone between consecutive points for the entire flight.
+
     :param flightData: Dictionary of flight Data.
     :return: Modified flightData dictionary.
     """
@@ -86,6 +90,7 @@ def velocityColors(flightDict: dict):
     Determines the color of the line segment between two points based on velocity values. The line color is determined
     by the change in velocity of the drone between two points. The color of the line should be green if the
     velocity point is greater than the previous velocity point, yellow if within 0.5 m/s, and red if less.
+
     :param flightDict: Dictionary of flight data.
     :return: An array of color values to use when plotting line segments between points.
     """
@@ -104,6 +109,7 @@ def velocityColors(flightDict: dict):
 def computeVelocityStatistics(flightDict: dict):
     """
     Computes statistics on the velocity points.
+
     :param flightDict: Dictionary of flight data
     :return: Updated dictionary.
     """
@@ -119,11 +125,10 @@ def computeVelocityStatistics(flightDict: dict):
     return flightDict
 
 def dimensionless_jerk(movement: list, fs: int) -> float:
-    """i
+    """
     Calculates the dimensionless jerk for a 1 dimensional array of points.
-    :param movement: The numpy array of points to calculate the jerk for. The array
-        containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be
-        a 1 dimensional list.
+
+    :param movement: The numpy array of points to calculate the jerk for. The array containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be a 1 dimensional list.
     :param fs: The sampling frequency of the data points.
     :return: The dimensionless jerk estimate of the given movement's smoothness.
     """
@@ -144,9 +149,8 @@ def log_dimensionless_jerk(movement: list, fs: int) -> float:
     """
     Calculates the smoothness metric for the given speed profile using the log dimensionless jerk
     metric.
-    :param movement: The numpy array of points to calculate the jerk for. The array
-        containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be
-        a 1 dimensional list.
+
+    :param movement: The numpy array of points to calculate the jerk for. The array containing the movement speed profile. Doesn't need to be numpy array but it MUST at least be a 1 dimensional list.
     :param fs: The sampling frequency of the data points.
     :return: The dimensionless jerk estimate of the given movement's smoothness.
     """
@@ -155,6 +159,7 @@ def log_dimensionless_jerk(movement: list, fs: int) -> float:
 def generateGraph(flightData: dict, displayVelocity: bool, t1: float, t2: float):
     """
     Driver function for generating the 3d graph of drone coordinates.
+
     :param flightData: Dictionary containing flight data.
     :param displayVelocity: Boolean saying if velocity changes should be displayed on the graph.
     :param t1: Minimum time bound for plotting coordinates.
@@ -170,9 +175,9 @@ def generateGraph(flightData: dict, displayVelocity: bool, t1: float, t2: float)
     if displayVelocity is False:
         for coord in flightData["legalPoints"]:
             if coord[0] >= t1 and coord[0] <= t2:
-                x_data.append(coord[1])
+                x_data.append(15 - coord[1])
                 y_data.append(coord[2])
-                z_data.append(coord[3])
+                z_data.append(10 - coord[3])
 
         ax.scatter(x_data, y_data, z_data, s=6, c="k", marker='o')
 

@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.Views.View_VerifySetupScreen &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.Views.View_VerifySetupScreen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.Views.View_VerifySetupScreen</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span> <span class="k">as</span> <span class="n">qtc</span><span class="p">,</span> <span class="n">QtWidgets</span> <span class="k">as</span> <span class="n">qtw</span><span class="p">,</span> <span class="n">QtGui</span> <span class="k">as</span> <span class="n">qtg</span>
+<span class="kn">from</span> <span class="nn">Controllers.PhoneController</span> <span class="k">import</span> <span class="n">PhoneControl</span>
+<span class="c1"># from Controllers.RPIController import RPIController</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+<div class="viewcode-block" id="VerifySetupWindow"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow">[docs]</a><span class="k">class</span> <span class="nc">VerifySetupWindow</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The view for the verify setup page that is shown when the user presses the &quot;Verify Setup&quot; button on the home page.</span>
+
+<span class="sd">    :ivar __btnPhoneSync: The class property for the &#39;Phone Sync&#39; button.</span>
+<span class="sd">    :ivar __btnTestLight: The class property for the &#39;Test Light&#39; button.</span>
+<span class="sd">    :ivar __btnTestFull: The class property for the &#39;Test Full Setup&#39; button.</span>
+<span class="sd">    :ivar __btnCheck: The class property for the &#39;Check Status&#39; button.</span>
+<span class="sd">    :ivar __btnHome: The class property for the &#39;Return to Home&#39; button.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize signals. Use for switching between views.</span>
+    <span class="n">sigReturnHome</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">sigGoodToFly</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+
+    <span class="c1"># Initalize status checkers</span>
+    <span class="n">phoneSync</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">lightSync</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">fullSetup</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phoneControl</span><span class="p">:</span> <span class="n">PhoneControl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class constructor.</span>
+
+<span class="sd">        :param phoneControl: The PhoneController.PhoneControl Object that is used to send/recieve signals to and from the phone.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qtw</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">550</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phoneControl</span> <span class="o">=</span> <span class="n">phoneControl</span>
+        <span class="c1"># self.rpiControl = rpiControl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initView</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VerifySetupWindow.initView"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.initView">[docs]</a>    <span class="k">def</span> <span class="nf">initView</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the view and lays out all of the components.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set window title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Verify Setup Screen&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Set the title label</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setTitle</span><span class="p">()</span>
+        <span class="n">logo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupPicture</span><span class="p">()</span>
+
+        <span class="c1"># Initialize check status and home buttons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnCheck</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Check Setup Status&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Return to Home&#39;</span><span class="p">)</span>
+        <span class="n">statusUpdateButtons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setButtonLayout</span><span class="p">()</span>
+
+        <span class="c1"># Attach functionality to buttons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnHome</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">returnHome</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnCheck</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkStatus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnPhoneSync</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">syncPhone</span><span class="p">)</span>
+        <span class="c1">#self.BtnTestLight.clicked.connect(self.testLight)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnTestFull</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">testFull</span><span class="p">)</span>
+
+        <span class="c1"># Spacer to make the view more pleasing</span>
+        <span class="n">verticalSpacer</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="n">verticalSpacer2</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+
+        <span class="c1"># Layout all of the above elements on a vertical layout</span>
+        <span class="n">vLayout</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">verticalSpacer</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">logo</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">verticalSpacer2</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">statusUpdateButtons</span><span class="p">)</span>  <span class="c1"># layout the buttons</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnCheck</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span><span class="p">)</span>
+
+        <span class="c1"># Attach the layout to the screen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vLayout</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VerifySetupWindow.syncPhone"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.syncPhone">[docs]</a>    <span class="k">def</span> <span class="nf">syncPhone</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs phone sync test.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phoneControl</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="s2">&quot;Phones synced!&quot;</span><span class="p">)</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phoneSync</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phoneSync</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="VerifySetupWindow.testLight"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.testLight">[docs]</a>    <span class="k">def</span> <span class="nf">testLight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs light test.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># self.rpiControl.flash()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lightSync</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lightSync</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="VerifySetupWindow.testFull"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.testFull">[docs]</a>    <span class="k">def</span> <span class="nf">testFull</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs full system test.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#if self.lightSync is True and self.phoneControl is True:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fullSetup</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1">#else:</span>
+        <span class="c1">#    self.fullSetup = False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullSetup</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigGoodToFly</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;center&gt;&lt;h1&gt;Setup confirmed!&lt;/h1&gt;&lt;/center&gt;</span><span class="se">\n</span><span class="s2">&lt;center&gt;&lt;br&gt;&lt;h2&gt;You are ready to fly!&lt;/h2&gt;&lt;/center&gt;&quot;</span><span class="p">)</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;center&gt;&lt;h1&gt;Stop!&lt;/h1&gt;&lt;/center&gt;</span><span class="se">\n</span><span class="s2">&lt;center&gt;&lt;h2&gt;Setup has not been verified!&lt;/h2&gt;&lt;/center&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;&lt;center&gt;&lt;br&gt;Please go back to the startup screen and click the Verify Status button. &quot;</span>
+                <span class="s2">&quot;Go through the setup process and verify that the performance tracker is set up properly.&lt;/center&gt;&quot;</span><span class="p">)</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VerifySetupWindow.returnHome"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.returnHome">[docs]</a>    <span class="k">def</span> <span class="nf">returnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Return Home button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigReturnHome</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VerifySetupWindow.setTitle"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.setTitle">[docs]</a>    <span class="k">def</span> <span class="nf">setTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the title with the application title on top and the name of the screen just below it.</span>
+
+<span class="sd">        :return: Layout with the application title and screen title labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;UAS Performance Tracker&quot;</span><span class="p">)</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">lblTitle2</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Verify Setup&#39;</span><span class="p">)</span>
+        <span class="n">lblTitle2</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle2</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTitle</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTitle2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="VerifySetupWindow.setButtonLayout"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.setButtonLayout">[docs]</a>    <span class="k">def</span> <span class="nf">setButtonLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lays out the &#39;Phone Sync&#39;, &#39;Test Light&#39; and &#39;Test Full Setup&#39; buttons into a horizontal layout to be</span>
+<span class="sd">        put on screen.</span>
+
+<span class="sd">        :return: The horizontal layout containing the 3 buttons</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnPhoneSync</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Phone Sync&#39;</span><span class="p">)</span>
+        <span class="c1">#self.__btnTestLight = qtw.QPushButton(&#39;Test Light&#39;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnTestFull</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Test Full Setup&#39;</span><span class="p">)</span>
+
+        <span class="n">buttonBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnPhoneSync</span><span class="p">)</span>
+        <span class="c1">#buttonBox.addWidget(self.__btnTestLight)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnTestFull</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">buttonBox</span></div>
+
+<div class="viewcode-block" id="VerifySetupWindow.checkStatus"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.checkStatus">[docs]</a>    <span class="k">def</span> <span class="nf">checkStatus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Shows the status of the system setup.</span>
+
+<span class="sd">         :return: None</span>
+<span class="sd">         &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phoneSync</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">phoneStatus</span> <span class="o">=</span> <span class="s2">&quot;Phone Status: Not synced</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">phoneStatus</span> <span class="o">=</span> <span class="s2">&quot;Phone Status: Synced</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        if self.lightSync is False:</span>
+<span class="sd">            lightStatus = &quot;Light Status: Not synced\n&quot;</span>
+<span class="sd">        else:</span>
+<span class="sd">            lightStatus = &quot;Light Status: Synced\n&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullSetup</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">fullSetupStatus</span> <span class="o">=</span> <span class="s2">&quot;Full setup: Not synced</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fullSetupStatus</span> <span class="o">=</span> <span class="s2">&quot;Full setup: Synced</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="n">phoneStatus</span> <span class="o">+</span> <span class="n">fullSetupStatus</span><span class="p">)</span>
+        <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="VerifySetupWindow.setupPicture"><a class="viewcode-back" href="../../../index.html#src.Views.View_VerifySetupScreen.VerifySetupWindow.setupPicture">[docs]</a>    <span class="k">def</span> <span class="nf">setupPicture</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Used for configuring the display for the logo on the screen.</span>
+
+<span class="sd">        :return: Returns the label that contains our logo so it can be put on the main panel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">()</span>
+        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QPixmap</span><span class="p">(</span><span class="s1">&#39;../resources/DroneLogo.png&#39;</span><span class="p">)</span>
+        <span class="n">pixmap2</span> <span class="o">=</span> <span class="n">pixmap</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">KeepAspectRatio</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">pixmap2</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">label</span></div>
+
+    <span class="c1"># region &gt; Properties for the buttons so we can attach functionality to them in child classes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnPhoneSync</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The phone sync button so we can attach functionality to it later on.</span>
+
+<span class="sd">        :return: The reference to the phoneSync button</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnPhoneSync</span>
+
+    <span class="nd">@BtnPhoneSync</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnPhoneSync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the phone sync button.</span>
+
+<span class="sd">        :param btn: The button we want to replace the current one with</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnPhoneSync</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnPhoneSync</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnPhoneSync</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the phone sync button</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnPhoneSync</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnTestLight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The test light button so we can attach functionality to it later on.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnTestLight</span>
+
+    <span class="nd">@BtnTestLight</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnTestLight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The setter for the test light button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton we want to replace the start button with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnTestLight</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnTestLight</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnTestLight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the test light button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnTestLight</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnTestFull</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The test full setup button for the view so we can attach functionality to it later on.</span>
+<span class="sd">        Is used to import past flight files.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnTestFull</span>
+
+    <span class="nd">@BtnTestFull</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnTestFull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the test full setup button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton we want to replace the test full setup button with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnTestFull</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnTestFull</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnTestFull</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the test full setup button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnTestFull</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The home for the view. Is used to return to home screen.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span>
+
+    <span class="nd">@BtnHome</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the home button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton we want to replace the home button with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnHome</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the home button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnCheck</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The check status button for the view so we can attach functionality to it later on.</span>
+<span class="sd">        Is used to check the status of the set up procedures.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnCheck</span>
+
+    <span class="nd">@BtnCheck</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnCheck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the check status button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton we want to replace the check status button with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnCheck</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnCheck</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnCheck</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the check status button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnCheck</span></div>
+
+    <span class="c1"># endregion</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
