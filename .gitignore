@@ -670,3 +670,11 @@ MigrationBackup/
 /lib/
 
 *node_modules*
+
+
+*pixel*
+*s10*
+
+dead_code
+
+launch.json
