@@ -3,6 +3,7 @@ from PyQt5 import QtCore as qtc
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from Controllers.PhoneController import PhoneControl
+from datetime import datetime
 
 class TrackingWindow(qtw.QWidget):
     """
@@ -99,7 +100,8 @@ class TrackingWindow(qtw.QWidget):
         """
         if self.startedTracking is False:
             try:
-                # self.phoneControl.startRecording()
+                self.phoneControl.startRecording()
+                self.startTrackingTime = datetime.now()
                 msgBox = qtw.QMessageBox()
                 msgBox.setText(
                     "Tracking started!")
@@ -123,13 +125,45 @@ class TrackingWindow(qtw.QWidget):
         :return: none
         """
         try:
-            # self.phoneControl.stopRecording()
-            msgBox = qtw.QMessageBox()
-            msgBox.setText(
-                "Tracking stopped! \nPlease wait while file transfer is initiated.\n You will be redirected shortly.")
-            msgBox.exec()
-            self.sigStopTracking.emit()
-            self.status.setText("Flight Status: Tracking Completed")
+            self.phoneControl.stopRecording()
+
+            duration = datetime.now() - self.startTrackingTime
+            maxTime = 600 # max time in seconds
+
+            if duration.total_seconds() > maxTime:
+                buttonReply = qtw.QMessageBox.question(self,
+                                                       'Tracking Time Notification', "You have tracked for longer than "
+                                                                                     "the maximum allowed time of "
+                                                                                     "10 minutes. \n \n"
+                                                                                     "Do you want to record a new run? "
+                                                                                     "If so, press yes. \n"
+                                                                                     "If you wish to analyze the first "
+                                                                                     "10 minutes of this run instead, "
+                                                                                     "press no. ",
+                                                   qtw.QMessageBox.Yes | qtw.QMessageBox.No, qtw.QMessageBox.No)
+                if buttonReply == qtw.QMessageBox.Yes:
+                    self.status.setText("Flight Status: Tracking Halted.")
+                    self.phoneControl.stopRecording()
+                    self.startedTracking = False
+                else:
+                    msgBox = qtw.QMessageBox()
+                    msgBox.setText(
+                        "Tracking stopped! \nPlease wait while file transfer is initiated."
+                        "\n You will be redirected shortly.")
+                    msgBox.exec()
+                    self.sigStopTracking.emit()
+                    self.status.setText("Flight Status: Tracking Completed")
+
+            else:
+                msgBox = qtw.QMessageBox()
+                msgBox.setText(
+                    "Tracking stopped! \n"
+                    "Please wait while file transfer is initiated.\n "
+                    "You will be redirected shortly.")
+                msgBox.exec()
+                self.sigStopTracking.emit()
+                self.status.setText("Flight Status: Tracking Completed")
+
         except Exception as e:
             msgBox = qtw.QMessageBox()
             msgBox.setText(str(e))
