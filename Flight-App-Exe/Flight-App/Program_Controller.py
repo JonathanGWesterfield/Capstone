@@ -1,4 +1,12 @@
-import sys, os, signal, subprocess, shutil, glob, time, re, json
+import sys
+import os
+import signal
+import subprocess
+import shutil
+import glob
+import time 
+import re
+import json
 from multiprocessing import Process
 from PyQt5 import QtWidgets as qtw, QtCore as qtc
 from View_TrackingScreen import TrackingWindow
@@ -366,8 +374,8 @@ class Controller:
 
         try:
             # Call the functions to transfer the files
-            # phoneControl.startFileTransfer(self.pathToFTPDir)
-            # phoneControl.waitForFileTransfer()
+            phoneControl.startFileTransfer(self.pathToFTPDir)
+            phoneControl.waitForFileTransfer()
 
             self.start_analysis()
 
@@ -392,8 +400,8 @@ class Controller:
 
         print("Files to analyze: ", file1, ", ", file2)
 
-        # subprocess.Popen(['python3', 'OpenCVThreadedController.py', file1])
-        # subprocess.Popen(['python3', 'OpenCVThreadedController.py', file2])
+        subprocess.Popen(['python3', 'OpenCVThreadedController.py', file1])
+        subprocess.Popen(['python3', 'OpenCVThreadedController.py', file2])
 
         self.wait_for_analysis() # wait for the analysis of the files to complete
 

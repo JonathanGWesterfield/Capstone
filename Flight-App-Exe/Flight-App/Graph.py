@@ -173,15 +173,11 @@ def generateGraph(flightData: dict, displayVelocity: bool, t1: float, t2: float)
     y_data = []
     z_data = []
     if displayVelocity is False:
-        # for coord in flightData["legalPoints"]:
-        for coord in flightData["coords"]:
-            if (coord[0] is not None and coord[1] is not None):
-                if coord[0] >= t1 and coord[0] <= t2:
-                    # x_data.append(15 - coord[1])
-                    x_data.append(coord[1])
-                    y_data.append(coord[2])
-                    # z_data.append(10 - coord[3])
-                    z_data.append(coord[3])
+        for coord in flightData["legalPoints"]:
+            if coord[0] >= t1 and coord[0] <= t2:
+                x_data.append(15 - coord[1])
+                y_data.append(coord[2])
+                z_data.append(10 - coord[3])
 
         ax.scatter(x_data, y_data, z_data, s=6, c="k", marker='o')
 
@@ -193,11 +189,11 @@ def generateGraph(flightData: dict, displayVelocity: bool, t1: float, t2: float)
         for i in range(len(flightData["legalPoints"])-1):
             if flightData["legalPoints"][i][0] >= t1 and flightData["legalPoints"][i][0] <= t2 \
                     and flightData["legalPoints"][i+1][0] <= t2:
-                ax.scatter(flightData["legalPoints"][i][1], flightData["legalPoints"][i][2],
-                         flightData["legalPoints"][i][3], s=6, c=colors[i], marker='o')
-                plt.plot([flightData["legalPoints"][i][1], flightData["legalPoints"][i+1][1]],
+                ax.scatter(15-flightData["legalPoints"][i][1], flightData["legalPoints"][i][2],
+                         10-flightData["legalPoints"][i][3], s=6, c=colors[i], marker='o')
+                plt.plot([15-flightData["legalPoints"][i][1], 15-flightData["legalPoints"][i+1][1]],
                          [flightData["legalPoints"][i][2], flightData["legalPoints"][i+1][2]],
-                         [flightData["legalPoints"][i][3], flightData["legalPoints"][i+1][3]],
+                         [10-flightData["legalPoints"][i][3], 10-flightData["legalPoints"][i+1][3]],
                          colors[i], linewidth=1)
 
     # Set axis limits
