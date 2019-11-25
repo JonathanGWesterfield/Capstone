@@ -1,0 +1,925 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.Views.View_ReportScreen &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.Views.View_ReportScreen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.Views.View_ReportScreen</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span> <span class="k">as</span> <span class="n">qtc</span><span class="p">,</span> <span class="n">QtWidgets</span> <span class="k">as</span> <span class="n">qtw</span><span class="p">,</span> <span class="n">QtGui</span> <span class="k">as</span> <span class="n">qtg</span>
+<span class="kn">import</span> <span class="nn">Views.Graph</span>
+<span class="kn">import</span> <span class="nn">Graph</span>
+<span class="kn">import</span> <span class="nn">Export.ExportFile</span>
+<span class="kn">import</span> <span class="nn">Export.ImportFile</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<div class="viewcode-block" id="ReportWindow"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow">[docs]</a><span class="k">class</span> <span class="nc">ReportWindow</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The view for the report page that is shown when the user opens the application.</span>
+
+<span class="sd">    :ivar __btnExport: The class property for the &#39;Export Results&#39; button.</span>
+<span class="sd">    :ivar __btnFlyAgain: The class property for the &#39;Fly Again&#39; button.</span>
+<span class="sd">    :ivar __btnHome: The class property for the &#39;Return to Home&#39; button.</span>
+<span class="sd">    :ivar __btnViewGraphVelocity: The class property for the &#39;View Flight Path&#39; button.</span>
+<span class="sd">    :ivar __btnViewGraphNoVelocity: The class property for the &#39;View Flight Path with Velocity Changes&#39; button.</span>
+<span class="sd">    :var __btnViewInstructions: The class property for the &#39;View Flight Instructions&#39; button.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize signals. Use for switching between views.</span>
+    <span class="n">sigStartTracking</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">sigReturnHome</span> <span class="o">=</span> <span class="n">qtc</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pilotName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instructorName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">flightInstructions</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">previousFlight</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">usingPreviousFlight</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">flightData</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class Constructor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qtw</span><span class="o">.</span><span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Initiate the view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initView</span><span class="p">(</span><span class="n">pilotName</span><span class="p">,</span> <span class="n">instructorName</span><span class="p">,</span> <span class="n">flightInstructions</span><span class="p">,</span> <span class="n">previousFlight</span><span class="p">,</span> <span class="n">usingPreviousFlight</span><span class="p">,</span> <span class="n">flightData</span><span class="p">)</span>
+
+        <span class="c1"># Format window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">700</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ReportWindow.initView"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.initView">[docs]</a>    <span class="k">def</span> <span class="nf">initView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pilotName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instructorName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">flightInstructions</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">previousFlight</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">usingPreviousFlight</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">flightData</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the view and lays out all of the components.</span>
+
+<span class="sd">        :param pilotName: String containing pilot name</span>
+<span class="sd">        :param instructorName: String containing instructor name</span>
+<span class="sd">        :param flightInstructions: String containing flight instructions.</span>
+<span class="sd">        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is true, or blank if usingPreviousFlight is false.</span>
+<span class="sd">        :param usingPreviousFlight: Boolean denoting if the report should be populated from the same file or a different one.</span>
+<span class="sd">        :param flightDict: Dictionary containing flight data. Should be empty if usingPreviousFlight is true.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Analyze the flight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">usingPreviousFlight</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzeFlight</span><span class="p">(</span><span class="n">flightData</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;pilotName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pilotName</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;instructorName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instructorName</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;flightInstr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flightInstructions</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;flightDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%Y-%H:%M:%S&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span> <span class="o">=</span> <span class="n">Export</span><span class="o">.</span><span class="n">ImportFile</span><span class="o">.</span><span class="n">importData</span><span class="p">(</span><span class="n">previousFlight</span><span class="p">)</span>
+
+        <span class="c1"># Load in information for sliders</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxTime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minRangeTime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxRangeTime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sliderMin</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sliderMax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span>
+
+        <span class="c1"># Set up the title, flight information table, and statistics table.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Report Screen&#39;</span><span class="p">)</span>
+        <span class="n">titleLayout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupTitle</span><span class="p">()</span>
+        <span class="n">flInfoLayout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupFlightInfo</span><span class="p">()</span>
+        <span class="n">statistics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createStatisticsTable</span><span class="p">()</span>
+
+        <span class="c1"># Set up more labels</span>
+        <span class="n">graph_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setSubTitle</span><span class="p">(</span><span class="s2">&quot;Flight Graph&quot;</span><span class="p">)</span>
+        <span class="n">slider_label</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Select time range to view: &quot;</span><span class="p">)</span>
+        <span class="n">slider_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+
+        <span class="c1"># Initialize buttons.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnViewGraphNoVelocity</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;View Flight Path&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnViewGraphVelocity</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;View Flight Path with Velocity Changes&#39;</span><span class="p">)</span>
+        <span class="n">btnLayout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setButtonLayout</span><span class="p">()</span>
+
+        <span class="c1"># Attach functionality to buttons.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnExport</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signalExportResults</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnFlyAgain</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signalStartTracking</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnHome</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signalReturnHome</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnViewGraphNoVelocity</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BtnViewGraphVelocity</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+
+        <span class="c1"># Add a slider</span>
+        <span class="n">slider</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setupSlider</span><span class="p">()</span>
+
+        <span class="c1"># Create a grid layout for all elements except the title.</span>
+        <span class="n">gridLayout</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="n">gridLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">flInfoLayout</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">statistics</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">graph_label</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">slider_label</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">gridLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BtnViewGraphNoVelocity</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">gridLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BtnViewGraphVelocity</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">gridLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">btnLayout</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># layout the buttons</span>
+
+        <span class="c1"># Layout all of the above elements on a vertical layout</span>
+        <span class="n">vLayout</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">titleLayout</span><span class="p">)</span>
+        <span class="n">vLayout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">gridLayout</span><span class="p">)</span>
+
+        <span class="c1"># Attach the layout to the screen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">vLayout</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReportWindow.signalExportResults"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.signalExportResults">[docs]</a>    <span class="k">def</span> <span class="nf">signalExportResults</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Export Results button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Save flight results to .flight file.</span>
+        <span class="n">outFolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)),</span> <span class="s1">&#39;Desktop/drone-tracker/Flights/&#39;</span><span class="p">)</span>
+        <span class="n">outPath</span> <span class="o">=</span> <span class="n">outFolder</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;pilotName&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;flightDate&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.flight&#39;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outPath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+        <span class="c1"># Show message box saying that exporting was completed.</span>
+        <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+        <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+            <span class="s2">&quot;Results exported!&quot;</span><span class="p">)</span>
+        <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReportWindow.signalStartTracking"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.signalStartTracking">[docs]</a>    <span class="k">def</span> <span class="nf">signalStartTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Fly Again button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigStartTracking</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReportWindow.signalReturnHome"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.signalReturnHome">[docs]</a>    <span class="k">def</span> <span class="nf">signalReturnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a signal to the main controller that the Return Home button was pushed.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigReturnHome</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReportWindow.setupTitle"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.setupTitle">[docs]</a>    <span class="k">def</span> <span class="nf">setupTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the title with the application title on top and the name of the screen just below it.</span>
+
+<span class="sd">        :return: Layout with the application title and screen title labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;UAS Performance Tracker&quot;</span><span class="p">)</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">lblScreenTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Flight Report&#39;</span><span class="p">)</span>
+        <span class="n">lblScreenTitle</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblScreenTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTitle</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblScreenTitle</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="ReportWindow.setSubTitle"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.setSubTitle">[docs]</a>    <span class="k">def</span> <span class="nf">setSubTitle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up a subtitle label for the window</span>
+
+<span class="sd">        :param text: String as name for label</span>
+<span class="sd">        :return: Subtitle label</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lblTitle</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">(</span><span class="s2">&quot;Helvetica Neue&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">))</span>
+        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">lblTitle</span></div>
+
+<div class="viewcode-block" id="ReportWindow.setupFlightInfo"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.setupFlightInfo">[docs]</a>    <span class="k">def</span> <span class="nf">setupFlightInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QGridLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the flight info (pilot, instructor, date, length, and smoothness score) in a grid.</span>
+
+<span class="sd">        :return: Grid layout of the flight information</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Setup all labels with default values for testing and detecting errors in the controls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;pilotName&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstructor</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;instructorName&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlDate</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;flightDate&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlLength</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]))</span>
+
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="n">flightInfoTitle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setSubTitle</span><span class="p">(</span><span class="s1">&#39;Flight Information&#39;</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">flightInfoTitle</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Pilot: &#39;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LblPilot</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Instructor: &#39;</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LblInstructor</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Flight Date: &#39;</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LblFlightDate</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Flight Length: &#39;</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LblFlightLength</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">statisticsInfoTitle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setSubTitle</span><span class="p">(</span><span class="s2">&quot;Statistics&quot;</span><span class="p">)</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">statisticsInfoTitle</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">grid</span></div>
+
+<div class="viewcode-block" id="ReportWindow.setupGraph"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.setupGraph">[docs]</a>    <span class="k">def</span> <span class="nf">setupGraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flightData</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">displayVelocity</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Sets up the 3d plot for viewing upon click of button. displayVelocity is a boolean denoting if the graph should</span>
+<span class="sd">         display colored segments for velocity.</span>
+
+<span class="sd">         :param flightData: Dictionary of flight data</span>
+<span class="sd">         :param displayVelocity: Bool denoting if velocity should be plotted or not.</span>
+<span class="sd">         :return: None</span>
+<span class="sd">         &quot;&quot;&quot;</span>
+        <span class="c1"># Generate and show graph</span>
+        <span class="n">minTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">maxTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Min slider value:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">minTime</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max slider value:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxTime</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">maxTime</span> <span class="o">&lt;=</span> <span class="n">minTime</span><span class="p">:</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span>
+                <span class="s2">&quot;Start time must be less than end time!</span><span class="se">\n</span><span class="s2"> Please reselect a time range using the sliders.&quot;</span><span class="p">)</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">generateGraph</span><span class="p">(</span><span class="n">flightData</span><span class="p">,</span> <span class="n">displayVelocity</span><span class="p">,</span> <span class="n">minTime</span><span class="p">,</span> <span class="n">maxTime</span><span class="p">)</span>
+
+            <span class="c1"># Define manager so figure can be viewed upon button click</span>
+            <span class="n">new_manager</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">manager</span>
+            <span class="n">new_manager</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="n">fig</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">set_canvas</span><span class="p">(</span><span class="n">new_manager</span><span class="o">.</span><span class="n">canvas</span><span class="p">)</span>
+
+            <span class="c1"># Show the figure</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReportWindow.setButtonLayout"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.setButtonLayout">[docs]</a>    <span class="k">def</span> <span class="nf">setButtonLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lays out the &#39;Export Results&#39;, &#39;Fly Again&#39; and &#39;Import Previous Flight&#39; buttons into a horizontal layout to be</span>
+<span class="sd">        put on screen.</span>
+
+<span class="sd">        :return: The horizontal layout containing the 3 buttons</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnExport</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Export Results&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnFlyAgain</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Fly Again&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Return to Home&#39;</span><span class="p">)</span>
+
+        <span class="n">buttonBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnExport</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnFlyAgain</span><span class="p">)</span>
+        <span class="n">buttonBox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">buttonBox</span></div>
+
+<div class="viewcode-block" id="ReportWindow.showWindow"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.showWindow">[docs]</a>    <span class="k">def</span> <span class="nf">showWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes all of the elements from the view and displays the window.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ReportWindow.createStatisticsTable"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.createStatisticsTable">[docs]</a>    <span class="k">def</span> <span class="nf">createStatisticsTable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a table containing flight statistics.</span>
+
+<span class="sd">        :return: QTableWidget containing flight statistics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s1">&#39;Property&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">])</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setFixedHeight</span><span class="p">(</span><span class="mi">144</span><span class="p">)</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="s2">&quot;Smoothness Metric as Jerk (m/s^3)&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;smoothness&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="s2">&quot;Average Velocity Change (m/s)&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;avgVel&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="s2">&quot;Minimum Velocity Change (m/s)&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;minVel&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="s2">&quot;Maximum Velocity Change (m/s)&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;maxVel&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">))))</span>
+
+        <span class="c1"># Make non-editable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span><span class="o">.</span><span class="n">setEditTriggers</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">NoEditTriggers</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tableWidget</span></div>
+
+<div class="viewcode-block" id="ReportWindow.analyzeFlight"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.analyzeFlight">[docs]</a>    <span class="k">def</span> <span class="nf">analyzeFlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flightDict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analyzes the flight data to extract coordinates, velocity values, and statistics.</span>
+
+<span class="sd">        :param flightDict: Dictionary of flight data, with only coordinates populated.</span>
+<span class="sd">        :return: Updated dictionary, with legal points and flight statistics included.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check legality of coordinates.</span>
+        <span class="n">flightDict</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">checkCoordinates</span><span class="p">(</span><span class="n">flightDict</span><span class="p">)</span>
+
+        <span class="c1"># Update flightDict to contain velocity</span>
+        <span class="n">flightDict1</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">velocityPoints</span><span class="p">(</span><span class="n">flightDict</span><span class="p">)</span>
+
+        <span class="c1"># Update flightDict to contain statistics on velocity points</span>
+        <span class="n">flightDict2</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">computeVelocityStatistics</span><span class="p">(</span><span class="n">flightDict1</span><span class="p">)</span>
+
+        <span class="c1"># Compute smoothness value</span>
+        <span class="n">flightDict2</span><span class="p">[</span><span class="s2">&quot;smoothness&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">log_dimensionless_jerk</span><span class="p">(</span><span class="n">flightDict2</span><span class="p">[</span><span class="s2">&quot;velocities&quot;</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">flightDict2</span></div>
+
+<div class="viewcode-block" id="ReportWindow.setupSlider"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.setupSlider">[docs]</a>    <span class="k">def</span> <span class="nf">setupSlider</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setups the slider that will be used to adjust the times of the flight path that will be displayed</span>
+<span class="sd">        on the graph. This lets us control the beginning and ending bounds of the time of the flight</span>
+<span class="sd">        that we want to view. We have to use 2 sliders. One for the start time and one for the end.</span>
+<span class="sd">        We originally wanted to make this such that both sliders were on top of each other to make</span>
+<span class="sd">        it more intuitive, but we ran into a bug that prevented us from doing that.</span>
+
+<span class="sd">        :return: A horizontal layout containing both sliders and the labels displaying the time that they represent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">horizontalLayout0</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">horizontalLayout0</span><span class="o">.</span><span class="n">setSizeConstraint</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QLayout</span><span class="o">.</span><span class="n">SetMinimumSize</span><span class="p">)</span>
+        <span class="n">horizontalLayout0</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">horizontalLayout0</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">horizontalLayout0</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;horizontalLayout&quot;</span><span class="p">)</span>
+
+        <span class="c1">## Start Slider Widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSlider</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setMinimumSize</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setMaximumSize</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">16777215</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+        <span class="n">font</span> <span class="o">=</span> <span class="n">qtg</span><span class="o">.</span><span class="n">QFont</span><span class="p">()</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setKerning</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setAcceptDrops</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setAutoFillBackground</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setInvertedAppearance</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;startSlider&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handleStartSliderValueChange</span><span class="p">)</span>
+        <span class="n">horizontalLayout0</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="p">)</span>
+
+        <span class="n">horizontalLayout1</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">horizontalLayout1</span><span class="o">.</span><span class="n">setSizeConstraint</span><span class="p">(</span><span class="n">qtw</span><span class="o">.</span><span class="n">QLayout</span><span class="o">.</span><span class="n">SetMinimumSize</span><span class="p">)</span>
+        <span class="n">horizontalLayout1</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">horizontalLayout1</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">horizontalLayout1</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;horizontalLayout&quot;</span><span class="p">)</span>
+
+        <span class="c1">## End Slider Widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSlider</span><span class="p">()</span>
+        <span class="c1">#self.endSlider.setMaximum(100 * self.MAXVAL/2)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">setMinimumSize</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">setMaximumSize</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">QSize</span><span class="p">(</span><span class="mi">16777215</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">setTracking</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">setOrientation</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">&quot;endSlider&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handleEndSliderValueChange</span><span class="p">)</span>
+        <span class="n">horizontalLayout1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="p">)</span>
+
+        <span class="c1"># Add minimum and maximum values</span>
+        <span class="n">horizontalLayout2</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_minimum</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;0 s&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_minimum</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_maximum</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; s&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_maximum</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+        <span class="n">horizontalLayout2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_minimum</span><span class="p">)</span>
+        <span class="n">horizontalLayout2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_maximum</span><span class="p">)</span>
+
+        <span class="c1"># Add current value</span>
+        <span class="n">horizontalLayout3</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_min_title</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;Start Time: &quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_min_title</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_min</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_min</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+        <span class="n">horizontalLayout3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_current_min_title</span><span class="p">)</span>
+        <span class="n">horizontalLayout3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_current_min</span><span class="p">)</span>
+        <span class="n">horizSpacer</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_max_title</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">&quot;End Time: &quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_max_title</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_max</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_max</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">qtc</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+        <span class="n">horizontalLayout3</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">horizSpacer</span><span class="p">)</span>
+        <span class="n">horizontalLayout3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_current_max_title</span><span class="p">)</span>
+        <span class="n">horizontalLayout3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_current_max</span><span class="p">)</span>
+
+        <span class="n">vbox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">horizontalLayout2</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">horizontalLayout0</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">horizontalLayout1</span><span class="p">)</span>
+        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">horizontalLayout3</span><span class="p">)</span>
+
+        <span class="n">qtc</span><span class="o">.</span><span class="n">QMetaObject</span><span class="o">.</span><span class="n">connectSlotsByName</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vbox</span></div>
+
+<div class="viewcode-block" id="ReportWindow.handleStartSliderValueChange"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.handleStartSliderValueChange">[docs]</a>    <span class="nd">@qtc</span><span class="o">.</span><span class="n">pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">handleStartSliderValueChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Listener that will updated the start time label when the user moves the start</span>
+<span class="sd">        time slider.</span>
+
+<span class="sd">        :param value: The value that the start slider has been moved to horizontally.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">minTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MAXVAL</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startSlider</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_min</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">minTime</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span></div>
+        <span class="c1"># print(&quot;start &quot; + str(value))</span>
+
+<div class="viewcode-block" id="ReportWindow.handleEndSliderValueChange"><a class="viewcode-back" href="../../../index.html#src.Views.View_ReportScreen.ReportWindow.handleEndSliderValueChange">[docs]</a>    <span class="nd">@qtc</span><span class="o">.</span><span class="n">pyqtSlot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">handleEndSliderValueChange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Listener that will updated the stop time label when the user moves the stop</span>
+<span class="sd">        time slider.</span>
+
+<span class="sd">        :param value: The value that the stop slider has been moved to horizontally.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">maxTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endSlider</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_current_max</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">maxTime</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span></div>
+        <span class="c1"># print(&quot;stop &quot; + str(value))</span>
+
+    <span class="c1"># region &gt; Report View Properties</span>
+
+    <span class="c1"># region &gt; Pilot Label Property</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">LblPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the Pilot label so we can set who the pilot is for the flight in child class.</span>
+
+<span class="sd">        :return: Reference to the pilot label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span>
+
+    <span class="nd">@LblPilot</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_LblPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the pilot Label.</span>
+
+<span class="sd">        :param lbl: The label we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span> <span class="o">=</span> <span class="n">lbl</span>
+
+    <span class="nd">@LblPilot</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_LblPilot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the pilot label.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblPilot</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Instructor Label Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">LblInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the instructor label.</span>
+
+<span class="sd">        :return: Reference to the instructor label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstructor</span>
+
+    <span class="nd">@LblInstructor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_LblInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the instructor Label.</span>
+
+<span class="sd">        :param lbl: The label we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstructor</span> <span class="o">=</span> <span class="n">lbl</span>
+
+    <span class="nd">@LblInstructor</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_LblInstructor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the instructor label.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblInstructor</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Flight Date Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">LblFlightDate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the flight date label.</span>
+
+<span class="sd">        :return: Reference to the flight date label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlDate</span>
+
+    <span class="nd">@LblFlightDate</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_LblFlightDate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the Flight date label.</span>
+
+<span class="sd">        :param lbl: The label we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlDate</span> <span class="o">=</span> <span class="n">lbl</span>
+
+    <span class="nd">@LblFlightDate</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_LblFlightDate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the flight date label.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlDate</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Flight Length Label Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">LblFlightLength</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the flight length label.</span>
+
+<span class="sd">        :return: Reference to the flight length label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlLength</span>
+
+    <span class="nd">@LblFlightLength</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_LblFlightLength</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the flight length label.</span>
+
+<span class="sd">        :param lbl: The label we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlLength</span> <span class="o">=</span> <span class="n">lbl</span>
+
+    <span class="nd">@LblFlightLength</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_LblFlightLength</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the flight length label.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlLength</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Flight Instructions Label Property</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">LblFlightInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter for the flight instructions label.</span>
+
+<span class="sd">        :return: Reference to the flight length label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlInstructions</span>
+
+    <span class="nd">@LblFlightInstructions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_LblFlightInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the flight instructions label.</span>
+
+<span class="sd">        :param lbl: The label we want to replace the current one with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlLengthInstructions</span> <span class="o">=</span> <span class="n">lbl</span>
+
+    <span class="nd">@LblFlightInstructions</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_LblFlightInstructions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the flight length label.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lblFlInstructions</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region &gt; Properties for the buttons</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnExport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The export button for the view.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnExport</span>
+
+    <span class="nd">@BtnExport</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnExport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The setter for the export button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton we want to replace the export button with.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnExport</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnExport</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnExport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the export button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnExport</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnFlyAgain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The fly again button for the view.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnFlyAgain</span>
+
+    <span class="nd">@BtnFlyAgain</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnFlyAgain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the fly again button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnFlyAgain</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnFlyAgain</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnFlyAgain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the fly again button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnFlyAgain</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The home for the view. Is used to return to home screen.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span>
+
+    <span class="nd">@BtnHome</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the home button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnHome</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnHome</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the home button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnHome</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnViewGraphVelocity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The home for the view graph with velocity button.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnViewGraphVelocity</span>
+
+    <span class="nd">@BtnViewGraphVelocity</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnViewGraphVelocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the view graph with velocity button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnViewGraphVelocity</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnViewGraphVelocity</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnViewGraphVelocity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the view graph with velocity button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnViewGraphVelocity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">BtnViewGraphNoVelocity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The home for the view graph without velocity button.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnViewGraphNoVelocity</span>
+
+    <span class="nd">@BtnViewGraphNoVelocity</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">set_BtnViewGraphNoVelocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">btn</span><span class="p">:</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QPushButton</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter for the view graph without velocity button.</span>
+
+<span class="sd">        :param btn: A Qt QPushButton.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__btnViewGraphNoVelocity</span> <span class="o">=</span> <span class="n">btn</span>
+
+    <span class="nd">@BtnViewGraphNoVelocity</span><span class="o">.</span><span class="n">deleter</span>
+    <span class="k">def</span> <span class="nf">del_BtnViewGraphNoVelocity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deleter for the view graph without velocity button. Never call this.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btnViewGraphNoVelocity</span></div>
+
+    <span class="c1"># endregion</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

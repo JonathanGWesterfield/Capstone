@@ -1,0 +1,679 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>src.Controllers.Program_Controller &mdash; Drone Tracker 1.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Drone Tracker
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Drone Tracker</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>src.Controllers.Program_Controller</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for src.Controllers.Program_Controller</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">signal</span><span class="o">,</span> <span class="nn">subprocess</span><span class="o">,</span> <span class="nn">shutil</span><span class="o">,</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtWidgets</span> <span class="k">as</span> <span class="n">qtw</span><span class="p">,</span> <span class="n">QtCore</span> <span class="k">as</span> <span class="n">qtc</span>
+<span class="kn">from</span> <span class="nn">View_TrackingScreen</span> <span class="k">import</span> <span class="n">TrackingWindow</span>
+<span class="kn">from</span> <span class="nn">View_StartupScreen</span> <span class="k">import</span> <span class="n">StartupWindow</span>
+<span class="kn">from</span> <span class="nn">View_VerifySetupScreen</span> <span class="k">import</span> <span class="n">VerifySetupWindow</span>
+<span class="kn">from</span> <span class="nn">View_ReportScreen</span> <span class="k">import</span> <span class="n">ReportWindow</span>
+<span class="kn">from</span> <span class="nn">View_LoadingScreen</span> <span class="k">import</span> <span class="n">LoadingWindow</span>
+<span class="kn">from</span> <span class="nn">Controllers.PhoneController</span> <span class="k">import</span> <span class="n">PhoneControl</span> <span class="k">as</span> <span class="n">PhoneControl</span>
+<span class="c1"># from Controllers.RPIController import RPIController as RPIController</span>
+<span class="kn">from</span> <span class="nn">Controllers.OpenCVThreadedController</span> <span class="k">import</span> <span class="n">merge_data_points</span><span class="p">,</span> <span class="n">DroneTracker</span>
+<span class="kn">from</span> <span class="nn">Export.ImportFile</span> <span class="k">import</span> <span class="n">importData</span>
+
+<div class="viewcode-block" id="Controller"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller">[docs]</a><span class="k">class</span> <span class="nc">Controller</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Controller class for the application. Changes between application views based on user input.</span>
+<span class="sd">    Run this file in order to begin the application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phoneControl</span><span class="p">:</span> <span class="n">PhoneControl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class constructor. Creates an empty .flight file structure to be overwritten by the flight</span>
+<span class="sd">        output from the opencv processes.</span>
+
+<span class="sd">        :param phoneControl: The phone controller object used to send/receive signals to/from the phones.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pilotName</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructorName</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightInstructions</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightModeEnabled</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phoneControl</span> <span class="o">=</span> <span class="n">phoneControl</span>
+        <span class="c1"># self.rpiControl = rpiControl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;pilotName&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;instructorName&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;flightInstr&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;flightDate&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;flightLength&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;velocities&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;avgVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;maxVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;minVel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;smoothness&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;legalPoints&quot;</span><span class="p">:</span> <span class="p">[]</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupFileStructure</span><span class="p">()</span> <span class="c1"># setup the file structure needed for the program</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span> <span class="c1"># make sure we start with a clean file directory structure (except for past .flight files)</span>
+
+<div class="viewcode-block" id="Controller.show_home"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.show_home">[docs]</a>    <span class="k">def</span> <span class="nf">show_home</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads the home startup screen for the user.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Close previous window.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracking_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tracking window not open&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Main window not open&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">verify_screen</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Verify screen window not open&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Report window not open&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loading_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading window not open&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize home startup screen by instantiating StartupWindow class.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">home</span> <span class="o">=</span> <span class="n">StartupWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightModeEnabled</span><span class="p">)</span>
+
+        <span class="c1"># Attach functionality to signals in StartupWindow.</span>
+        <span class="c1"># Signals are generated by the StartupWindow class when a button is pushed to change views.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">sigVerifySetup</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_verify_screen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">sigStartTracking</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_tracking_window</span><span class="p">)</span>
+
+        <span class="c1"># Import previous flight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">sigImportFlight</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">import_flight</span><span class="p">)</span>
+
+        <span class="c1"># Show the screen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Controller.import_flight"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.import_flight">[docs]</a>    <span class="k">def</span> <span class="nf">import_flight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flightPath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reads in a .flight file and displays the report view for it.</span>
+
+<span class="sd">        :param flightPath: String with file path of chosen file to import.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">flightPath</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Importing file &#39;</span> <span class="o">+</span> <span class="n">flightPath</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_report_window</span><span class="p">(</span><span class="n">flightPath</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">{})</span></div>
+
+<div class="viewcode-block" id="Controller.show_verify_screen"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.show_verify_screen">[docs]</a>    <span class="k">def</span> <span class="nf">show_verify_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads the verify setup screen for the user.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize verify setup screen by instantiating VerifySetupWindow class.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verify_screen</span> <span class="o">=</span> <span class="n">VerifySetupWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phoneControl</span><span class="p">)</span> <span class="c1">#, self.rpiControl)</span>
+
+        <span class="c1"># Attach functionality to signals in VerifySetupWindow.</span>
+        <span class="c1"># Signals are generated by the VerifySetupWindow class when a button is pushed to change views.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verify_screen</span><span class="o">.</span><span class="n">sigReturnHome</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_home</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verify_screen</span><span class="o">.</span><span class="n">sigGoodToFly</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateFlightStatus</span><span class="p">)</span>
+
+        <span class="c1"># Close previous screen.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Home window not open&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Show verify setup screen.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verify_screen</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Controller.updateFlightStatus"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.updateFlightStatus">[docs]</a>    <span class="k">def</span> <span class="nf">updateFlightStatus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the status of the system verification test.</span>
+
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightModeEnabled</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Controller.show_tracking_window"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.show_tracking_window">[docs]</a>    <span class="k">def</span> <span class="nf">show_tracking_window</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads the tracking screen for the user.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Close report window if open.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">report_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Report window not open&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the tracking screen by instantiating TrackingWindow class.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracking_window</span> <span class="o">=</span> <span class="n">TrackingWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phoneControl</span><span class="p">)</span>
+
+        <span class="c1"># Attach functionality to signals in TrackingWindow.</span>
+        <span class="c1"># Signals are generated by the TrackingWindow class when a button is pushed to change views.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracking_window</span><span class="o">.</span><span class="n">sigReturnHome</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_home</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracking_window</span><span class="o">.</span><span class="n">sigStopTracking</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_loading_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracking_window</span><span class="o">.</span><span class="n">sigFlightInfoConfirmed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_flight_info</span><span class="p">)</span>
+
+        <span class="c1"># Close the previous screen.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Home window not open&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Show the tracking screen.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracking_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Controller.get_flight_info"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.get_flight_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_flight_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pilotName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">instructorName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">flightInstructions</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">         Saves the pilot name, instructor name, and flight instructions once confirmed by the user.</span>
+
+<span class="sd">         :param pilotName: String containing the pilot name</span>
+<span class="sd">         :param instructorName: String containing the instructor name</span>
+<span class="sd">         :param flightInstructions: String containing the flight instructions</span>
+<span class="sd">         :return: None</span>
+<span class="sd">         &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pilotName</span> <span class="o">=</span> <span class="n">pilotName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructorName</span> <span class="o">=</span> <span class="n">instructorName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightInstructions</span> <span class="o">=</span> <span class="n">flightInstructions</span></div>
+
+<div class="viewcode-block" id="Controller.show_report_window"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.show_report_window">[docs]</a>    <span class="k">def</span> <span class="nf">show_report_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previousFlight</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">usingPreviousFlight</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">flightData</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads the report screen for the user.</span>
+
+<span class="sd">        :param previousFlight: String containing path to flight data. Should be .flight file if usingPreviousFlight is true, or empty if usingPreviousFlight is false.</span>
+<span class="sd">        :param usingPreviousFlight: Boolean representing if the report view is for an existing .flight file or a new analysis.</span>
+<span class="sd">        :param flightData: Dictionary containing the flight data. Should be populated with only coordinates if usingPreviousFlight is false, and empty if usingPreviousFlight is true.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the report by instantiating ReportWindow class.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_window</span> <span class="o">=</span> <span class="n">ReportWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pilotName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructorName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flightInstructions</span><span class="p">,</span>
+                                          <span class="n">previousFlight</span><span class="p">,</span> <span class="n">usingPreviousFlight</span><span class="p">,</span> <span class="n">flightData</span><span class="p">)</span>
+
+        <span class="c1"># Attach functionality to signals in ReportWindow.</span>
+        <span class="c1"># Signals are generated by the ReportWindow class when a button is pushed to change views.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_window</span><span class="o">.</span><span class="n">sigReturnHome</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_home</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_window</span><span class="o">.</span><span class="n">sigStartTracking</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_tracking_window</span><span class="p">)</span>
+
+        <span class="c1"># Close the previous screen.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">usingPreviousFlight</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loading_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Show the report screen.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Controller.show_loading_window"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.show_loading_window">[docs]</a>    <span class="k">def</span> <span class="nf">show_loading_window</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads the loading screen for the user.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the report by instantiating LoadingWindow class.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loading_window</span> <span class="o">=</span> <span class="n">LoadingWindow</span><span class="p">()</span>
+
+        <span class="c1"># Attach functionality to signals in LoadingWindow.</span>
+        <span class="c1"># Signals are generated by the LoadingWindow class when a button is pushed to change views.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loading_window</span><span class="o">.</span><span class="n">sigReturnHome</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_home</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span> <span class="c1"># make sure we sterilize our destination directories</span>
+
+        <span class="c1"># Show report view on flight coordinates.</span>
+        <span class="n">flightData</span> <span class="o">=</span> <span class="n">importData</span><span class="p">(</span><span class="s1">&#39;../Tests/TestFiles/JSONDUMP_with_illegal.flight&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loading_window</span><span class="o">.</span><span class="n">sigTestReport</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_report_window</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">flightData</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loading_window</span><span class="o">.</span><span class="n">sigTransferFootage</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfer_footage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phoneControl</span><span class="p">))</span>
+
+        <span class="c1"># Close the previous screen.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracking_window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Show the loading screen.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loading_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Window shown&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Controller.setupFileStructure"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.setupFileStructure">[docs]</a>    <span class="k">def</span> <span class="nf">setupFileStructure</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the folders that need to exist before we can transfer footage and analyze. The file structure</span>
+<span class="sd">        should be: drone-tracker &gt; FTP, opencv-output, Flights. This makes it easier to keep track of</span>
+<span class="sd">        the files that we are working with during the application lifecycle.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pathToFiles</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)),</span> <span class="s1">&#39;Desktop/drone-tracker/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pathToFTPDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathToFiles</span> <span class="o">+</span> <span class="s1">&#39;FTP/&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathToFiles</span> <span class="o">+</span> <span class="s1">&#39;opencv-output/&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pathToFlightsDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathToFiles</span> <span class="o">+</span> <span class="s1">&#39;Flights/&#39;</span>
+
+
+        <span class="c1"># make sure that ~/Desktop/drone-tracker directory exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFiles</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFiles</span><span class="p">)</span>
+
+        <span class="c1"># make sure that the ~/Desktop/drone-tracker/FTP directory exists for transferring footage from</span>
+        <span class="c1"># the phone to the laptop.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFTPDir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFTPDir</span><span class="p">)</span>
+
+        <span class="c1"># make sure that the ~/Desktop/drone-tracker/opencv-output directory exists for the image processing</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span><span class="p">)</span>
+
+        <span class="c1"># make sure that the ~/Desktop/drone-tracker/Flights directory exists for depositing completed flight files</span>
+        <span class="c1"># after a flight has been analyzed</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFlightsDir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFlightsDir</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="Controller.cleanup"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Goes through our file structure and deletes all files (except anything in the Flight folder).</span>
+<span class="sd">        This is for when we are done with the program and want to delete the raw footage from the phone,</span>
+<span class="sd">        the output points from the opencv processing and any other files that were used during the</span>
+<span class="sd">        program execution. Should also be called before any time the user wants to fly.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Delete everything in the FTP folder</span>
+        <span class="k">for</span> <span class="n">the_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFTPDir</span><span class="p">):</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFTPDir</span><span class="p">,</span> <span class="n">the_file</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span> <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="c1"># Delete all subfolders</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="c1"># Delete everything in the opencv-output folder</span>
+        <span class="k">for</span> <span class="n">the_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span><span class="p">):</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span><span class="p">,</span> <span class="n">the_file</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span> <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="c1"># Delete all subfolders</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="Controller.get_all_files"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.get_all_files">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folderPath</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Will get all of the file names in a folder. This will be used after the video footage is transferred from</span>
+<span class="sd">        the phone to the laptop. We need to grab the 2 videos filenames in the folder in order to send them to</span>
+<span class="sd">        the opencv analysis to have the coordinates extracted. This will also be used when we need to splice</span>
+<span class="sd">        together all of the coordinates output by the OpenCVController json files.</span>
+
+<span class="sd">        :param folderPath: The directory that we need to get all of the files from.</span>
+<span class="sd">        :return: A list of all of the file names in that directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">folderPath</span><span class="p">)</span> <span class="k">as</span> <span class="n">entries</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">files</span></div>
+
+<div class="viewcode-block" id="Controller.get_in_order"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.get_in_order">[docs]</a>    <span class="k">def</span> <span class="nf">get_in_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">:</span><span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Will return the file names in order. This means that phone-1 will be first in the list and</span>
+<span class="sd">        phone-2 will be second. Need this to ensure that a specific phone&#39;s coordinates are being</span>
+<span class="sd">        used for the Z, X axis and the other is used for Z, Y</span>
+
+<span class="sd">        :param files: The list of files we get from the get_all_files() function</span>
+<span class="sd">        :return: The list of file names starting with phone-1 first and phone-2 second</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># should only have 2 files in the folder</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Num Files in directory: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;More files in the directory than was expected!!&quot;</span><span class="p">)</span>
+
+
+
+        <span class="n">inOrder</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># this is very dirty but I&#39;m in a hurry</span>
+        <span class="n">file1</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">file2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">file1Tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_|\.&#39;</span><span class="p">,</span> <span class="n">file1</span><span class="p">)</span>
+        <span class="n">file2Tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_|\.&#39;</span><span class="p">,</span> <span class="n">file2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">file1Tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;phone-1&#39;</span><span class="p">):</span>
+            <span class="n">inOrder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+            <span class="n">inOrder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">inOrder</span>
+
+        <span class="n">inOrder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
+        <span class="n">inOrder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inOrder</span></div>
+
+
+<div class="viewcode-block" id="Controller.transfer_footage"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.transfer_footage">[docs]</a>    <span class="k">def</span> <span class="nf">transfer_footage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phoneControl</span><span class="p">:</span> <span class="n">PhoneControl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transfers footage and calls DroneController to analyze the footage.</span>
+
+<span class="sd">        :param phoneControl: Phone Controller object for the active phone connection.</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Call the functions to transfer the files</span>
+            <span class="c1"># phoneControl.startFileTransfer(self.pathToFTPDir)</span>
+            <span class="c1"># phoneControl.waitForFileTransfer()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_analysis</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">msgBox</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">msgBox</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Controller.start_analysis"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.start_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">start_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Spawns the sub processes that will analyze the footage of the drone footage. We will need</span>
+<span class="sd">        to have the files before hand so we can pass them into each OpenCVController process.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the files deposited into the FTP directory from the phone</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToFTPDir</span><span class="p">)</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_in_order</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="c1"># order the files</span>
+
+        <span class="n">file1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathToFTPDir</span> <span class="o">+</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">file2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathToFTPDir</span> <span class="o">+</span> <span class="n">files</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Files to analyze: &quot;</span><span class="p">,</span> <span class="n">file1</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="p">,</span> <span class="n">file2</span><span class="p">)</span>
+
+        <span class="c1"># subprocess.Popen([&#39;python3&#39;, &#39;OpenCVThreadedController.py&#39;, file1])</span>
+        <span class="c1"># subprocess.Popen([&#39;python3&#39;, &#39;OpenCVThreadedController.py&#39;, file2])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_analysis</span><span class="p">()</span> <span class="c1"># wait for the analysis of the files to complete</span>
+
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="Controller.wait_for_analysis"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.wait_for_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">wait_for_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Waits for the analysis of the footage to complete. Essentially is just a loop that checks to</span>
+<span class="sd">        see if the file locks (*.lock) for our files are still in that directory. If they are, we wait,</span>
+<span class="sd">        otherwise, we will exit the loop. From there, we need to get the output from those processes and splice</span>
+<span class="sd">        the points together into a single 3D coordinate list.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">finished</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># need to sleep to give some time for the opencv processes to start and create their .lock files</span>
+        <span class="k">while</span><span class="p">(</span><span class="ow">not</span> <span class="n">finished</span><span class="p">):</span>
+            <span class="n">lockFiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span> <span class="o">+</span> <span class="s1">&#39;*.lock&#39;</span><span class="p">)</span> <span class="c1"># find all files with a .lock extension</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lockFiles</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">finished</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># sleep so we don&#39;t poll too frequently</span>
+
+        <span class="c1"># get the output json so we can load up the data and splice together.</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span><span class="p">)</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_in_order</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+
+        <span class="n">phone1Data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span> <span class="o">+</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span>
+        <span class="n">phone2Data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathToOpenCVDir</span> <span class="o">+</span> <span class="n">files</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merge_data_points</span><span class="p">(</span><span class="n">phone1Data</span><span class="p">,</span> <span class="n">phone2Data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Flight Length: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s2">&quot;flightLength&quot;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flightDict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Controller.transfer_complete"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.Controller.transfer_complete">[docs]</a>    <span class="k">def</span> <span class="nf">transfer_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flightData</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls the report view using the flight data dictionary.</span>
+
+<span class="sd">        :param flightData: Dictionary of flight data</span>
+<span class="sd">        :return: none.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_report_window</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">flightData</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="createPhoneConnection"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.createPhoneConnection">[docs]</a><span class="k">def</span> <span class="nf">createPhoneConnection</span><span class="p">(</span><span class="n">portNo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PhoneControl</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a PhoneControl object used to commmunicate with the phones.</span>
+
+<span class="sd">    :param portNo: Port number we are going to be listening for signals from the phone over.</span>
+<span class="sd">    :return: PhoneControl object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">phoneControl</span> <span class="o">=</span> <span class="n">PhoneControl</span><span class="p">(</span><span class="n">portNo</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">phoneControl</span></div>
+
+<div class="viewcode-block" id="close_conn"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.close_conn">[docs]</a><span class="k">def</span> <span class="nf">close_conn</span><span class="p">(</span><span class="n">phoneControl</span><span class="p">:</span> <span class="n">PhoneControl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Closes the connection from the laptop to the phones.</span>
+
+<span class="sd">    :param phoneControl: PhoneControl object containing the active connection.</span>
+<span class="sd">    :return: None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connection closed&quot;</span><span class="p">)</span>
+        <span class="n">phoneControl</span><span class="o">.</span><span class="n">closeConn</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../index.html#src.Controllers.Program_Controller.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Begins the main application.</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create the main application.</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">qtw</span><span class="o">.</span><span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="c1"># Create phone controller</span>
+    <span class="n">phoneControl</span> <span class="o">=</span> <span class="n">createPhoneConnection</span><span class="p">(</span><span class="mi">8000</span><span class="p">)</span>
+
+    <span class="c1"># Create the RPI controller</span>
+    <span class="c1"># control = RPIController(&#39;localhost&#39;, &#39;9876&#39;)</span>
+    <span class="c1"># control = RPIController(&#39;192.168.1.2&#39;, &#39;9876&#39;)</span>
+
+    <span class="c1"># Create a controller for the application.</span>
+    <span class="n">controller</span> <span class="o">=</span> <span class="n">Controller</span><span class="p">(</span><span class="n">phoneControl</span><span class="o">=</span><span class="n">phoneControl</span><span class="p">)</span> <span class="c1">#, rpiControl=control)</span>
+
+    <span class="c1"># Start the application on the home startup screen.</span>
+    <span class="n">controller</span><span class="o">.</span><span class="n">show_home</span><span class="p">()</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">aboutToQuit</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">close_conn</span><span class="p">(</span><span class="n">phoneControl</span><span class="p">))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Hayley Eckert, Jonathan Westerfield, Donald Elrod, Ismael Rodriguez
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
